@@ -50,12 +50,13 @@ export default async function ContactPage({
         <div className="container py-16">
             {/* Header */}
             <header className="mb-10 text-center">
-                <p className="text-xs font-semibold tracking-widest text-primary">
+                <p className="text-ms font-semibold tracking-widest text-primary">
                     {t("eyebrow")}
                 </p>
                 <h1 className="mt-2 text-3xl md:text-5xl font-extrabold">
                     {t("title")}
                 </h1>
+                <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
                 <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                     {t("subtitle")}
                 </p>

@@ -28,13 +28,13 @@ export default function HomeBlogSection({
             <div className="container max-w-6xl mx-auto">
                 {/* Header – centered like Projects */}
                 <header className="text-center mb-10">
-                    <p className="text-[10px] md:text-xs tracking-[0.22em] text-white/60 uppercase">
+                    {/* <p className="text-[10px] md:text-xs tracking-[0.22em] text-white/60 uppercase">
                         {L ? "INSIGHTS & EXPERTISE" : "INSIGHTS & EXPERTISE"}
-                    </p>
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-2">
+                    </p> */}
+                    <h2 className="text-4xl md:text-4xl font-extrabold mb-4">
                         {L ? "Blog" : "Blog"}
                     </h2>
-                    <p className="text-white/70 mt-3 max-w-3xl mx-auto">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         {L
                             ? "Onze laatste inzichten over web development, design en social media."
                             : "Latest insights on web development, design, and social media."}

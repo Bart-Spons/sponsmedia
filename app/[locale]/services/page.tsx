@@ -76,9 +76,9 @@ export default async function ServicesPage({
             </div>
 
             {/* Hero */}
-            <section className="container relative z-10 py-16 sm:py-20 md:py-24">
-                <header className="mx-auto max-w-4xl text-center px-4">
-                    <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-primary">
+            <section className="container relative z-10 py-16 ">
+                <header className="mx-auto max-w-3xl text-center px-4">
+                    <p className="mb-3 text-ms font-semibold tracking-[0.2em] text-primary">
                         {locale === "nl" ? "WAT WE DOEN" : "WHAT WE DO"}
                     </p>
                     <h1 className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-4xl sm:text-5xl md:text-6xl font-extrabold text-transparent">

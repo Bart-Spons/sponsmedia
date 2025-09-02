@@ -54,14 +54,15 @@ export default async function BlogIndex({
         <div className="container py-16">
             {/* Hero Section */}
             <header className="mb-14 text-center">
-                <span className="text-sm font-semibold tracking-wider text-[#e2b76f]">
+                <span className="text-ms font-semibold tracking-wider text-[#e2b76f]">
                     {locale === "nl"
                         ? "INZICHTEN & EXPERTISE"
                         : "INSIGHTS & EXPERTISE"}
                 </span>
-                <h1 className="text-4xl md:text-6xl font-extrabold mt-3 mb-5 text-white">
+                <h1 className="text-3xl md:text-6xl font-extrabold mt-3 mb-5 text-white">
                     Blog
                 </h1>
+                <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
                 <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
                     {locale === "nl"
                         ? "Blijf voorop met de laatste inzichten in web development, digitaal ontwerp en marketing strategieën. Expert kennis om je online aanwezigheid te laten groeien."

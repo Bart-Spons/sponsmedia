@@ -199,7 +199,7 @@ export default function CTASection({
                             variant === "compact" ? "mb-6" : "mb-10"
                         }`}
                     >
-                        <h1
+                        <h2
                             className={`font-bold text-white ${
                                 variant === "compact"
                                     ? "text-4xl"
@@ -207,7 +207,7 @@ export default function CTASection({
                             } mb-4`}
                         >
                             {t.hero.title}
-                        </h1>
+                        </h2>
                         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
                             {t.hero.subtitle}
                         </p>
@@ -528,7 +528,7 @@ export default function CTASection({
                                 </a>
 
                                 <a
-                                    href="https://linkedin.com/in/bartspons/"
+                                    href="https://linkedin.com/company/sponsmedia/"
                                     target="_blank"
                                     rel="noopener noreferrer me"
                                     className="flex items-center gap-3 group"

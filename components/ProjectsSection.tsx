@@ -22,7 +22,7 @@ export default async function HomeProjectsSection({
             <div className="container">
                 {/* Header — same tone as /projects */}
                 <header className="mb-12 text-center">
-                    <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
+                    <h2 className="text-4xl md:text-4xl font-extrabold mb-4">
                         {t("title")}
                     </h2>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

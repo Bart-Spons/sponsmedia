@@ -59,10 +59,10 @@ export default async function Page({
         <div className="container">
             {/* HERO */}
             <section className="relative" aria-labelledby="hero-title">
-                <div className="py-12 sm:py-8 md:py-12 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+                <div className="py-12 sm:py-8 md:py-6 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
                     <header className="min-w-0">
                         <p
-                            className="text-xs sm:text-sm font-medium tracking-widest text-primary"
+                            className="text-xl xl:text-xl font-medium tracking-widest text-primary"
                             role="doc-subtitle"
                         >
                             {tHero("eyebrow")}

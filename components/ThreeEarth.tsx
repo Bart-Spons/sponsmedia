@@ -22,12 +22,9 @@ async function loadWorld(): Promise<FC> {
 }
 
 function colorsForPhase(phase: number, componentStartTime: number) {
-    // Base colors
     const baseWhite = "#F5F5F5";
-    const activeGreen = "#22C55E";
     const redColor = "#EF4444";
 
-    // European countries
     const europeCountries = [
         "Germany",
         "France",
@@ -69,7 +66,6 @@ function colorsForPhase(phase: number, componentStartTime: number) {
         "Belarus",
     ];
 
-    // Rest of world countries
     const worldCountries = [
         "United States of America",
         "Canada",
@@ -149,14 +145,12 @@ function colorsForPhase(phase: number, componentStartTime: number) {
     let highlightedCountries: string[] = [];
 
     if (timeInSeconds <= 6) {
-        // First 6 seconds: fill Europe
         const europeProgress = timeInSeconds / 6;
         const europeCountriesToColor = Math.floor(
             europeProgress * europeCountries.length
         );
         highlightedCountries = europeCountries.slice(0, europeCountriesToColor);
     } else if (timeInSeconds <= 12) {
-        // Seconds 6-12: all Europe + progressive world
         const worldColoringTime = timeInSeconds - 6;
         const worldProgress = worldColoringTime / 6;
         const worldCountriesToColor = Math.floor(
@@ -167,7 +161,6 @@ function colorsForPhase(phase: number, componentStartTime: number) {
             ...worldCountries.slice(0, worldCountriesToColor),
         ];
     } else {
-        // After 12 seconds: all countries colored
         highlightedCountries = [...europeCountries, ...worldCountries];
     }
 
@@ -200,7 +193,6 @@ export default function ThreeEarth({
             canvas.height = 1024;
             const ctx = canvas.getContext("2d")!;
 
-            // Ocean background
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             grad.addColorStop(0, "#E0F2FE");
             grad.addColorStop(0.5, "#BAE6FD");
@@ -208,12 +200,11 @@ export default function ThreeEarth({
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Setup projection
             const projection = d3
                 .geoEquirectangular()
                 .translate([canvas.width / 2, canvas.height / 2])
                 .scale(canvas.width / (2 * Math.PI));
-            const path = d3.geoPath(projection, ctx);
+            const path = d3.geoPath(projection, ctx as any);
 
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
@@ -226,7 +217,6 @@ export default function ThreeEarth({
                 startTime
             );
 
-            // Draw countries
             for (const f of world.features) {
                 const countryName = (f.properties as any)?.name as
                     | string
@@ -235,12 +225,11 @@ export default function ThreeEarth({
                 ctx.beginPath();
                 path(f as any);
 
-                let fillColor = land; // Default white
-
+                let fillColor = land;
                 if (countryName === "Netherlands") {
-                    fillColor = netherlands; // Netherlands red
+                    fillColor = netherlands;
                 } else if (highlightedCountries.includes(countryName || "")) {
-                    fillColor = "#22C55E"; // Activated countries green
+                    fillColor = "#22C55E";
                 }
 
                 ctx.fillStyle = fillColor;
@@ -255,7 +244,6 @@ export default function ThreeEarth({
             return texture;
         } catch (error) {
             console.error("Error creating texture:", error);
-            // Return a simple fallback texture
             const canvas = document.createElement("canvas");
             canvas.width = 256;
             canvas.height = 128;
@@ -267,23 +255,14 @@ export default function ThreeEarth({
     };
 
     useEffect(() => {
-        console.log(
-            "🌍 ThreeEarth mounting with animationPhase:",
-            animationPhase
-        );
-        if (!mountRef.current || typeof window === "undefined") {
-            console.log("🚫 No mount ref or not in browser");
-            return;
-        }
+        if (!mountRef.current || typeof window === "undefined") return;
 
-        console.log("✅ Starting Three.js setup...");
         setStartTime(Date.now());
         setIsLoading(true);
         setHasError(false);
 
         // Clean up existing renderer
         if (rendererRef.current) {
-            console.log("🧹 Cleaning up existing renderer");
             if (mountRef.current?.contains(rendererRef.current.domElement)) {
                 mountRef.current.removeChild(rendererRef.current.domElement);
             }
@@ -294,6 +273,7 @@ export default function ThreeEarth({
         const scene = new THREE.Scene();
         sceneRef.current = scene;
 
+        // Vierkante camera (aspect 1:1)
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         camera.position.set(0, 0.3, 2.5);
         camera.lookAt(0, 0, 0);
@@ -302,29 +282,42 @@ export default function ThreeEarth({
             antialias: true,
             alpha: true,
         });
-        renderer.setSize(450, 450);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setClearColor(0x000000, 0);
         rendererRef.current = renderer;
-        mountRef.current.appendChild(renderer.domElement);
+
+        const mount = mountRef.current;
+        mount.appendChild(renderer.domElement);
+
+        // Init size: alleen width gebruiken (vierkant)
+        const init = () => {
+            const size = Math.max(1, Math.floor(mount.clientWidth || 450));
+            renderer.setSize(size, size, false);
+            // CSS sizing laat de container bepalen
+            renderer.domElement.style.width = "100%";
+            renderer.domElement.style.height = "100%";
+            camera.aspect = 1;
+            camera.updateProjectionMatrix();
+        };
+        init();
 
         const geometry = new THREE.SphereGeometry(1.15, 64, 64);
         const material = new THREE.MeshPhongMaterial({ shininess: 0.1 });
         const earth = new THREE.Mesh(geometry, material);
         earthRef.current = earth;
 
-        // Position to show Europe initially
+        // Startpositie Europa
         earth.rotation.y = Math.PI * 1.4;
         earth.rotation.x = Math.PI * 0.15;
         scene.add(earth);
 
-        // Add lighting
+        // Licht
         scene.add(new THREE.AmbientLight(0x404040, 0.6));
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight.position.set(-1, 0, 1);
         scene.add(directionalLight);
 
-        // Netherlands marker
+        // NL marker
         const netherlands = new THREE.Mesh(
             new THREE.SphereGeometry(0.035, 16, 16),
             new THREE.MeshBasicMaterial({
@@ -333,8 +326,6 @@ export default function ThreeEarth({
                 opacity: 1,
             })
         );
-
-        // Netherlands position
         const lat = 52.1326,
             lng = 5.2913;
         const r = 1.17;
@@ -347,31 +338,23 @@ export default function ThreeEarth({
         );
         scene.add(netherlands);
 
-        // Load initial texture
+        // Texture laden
         let isMounted = true;
         (async () => {
             try {
-                console.log("📡 Loading texture for phase:", animationPhase);
                 const texture = await createTexture(animationPhase, startTime);
-                if (!isMounted) {
-                    console.log("❌ Component unmounted during texture load");
-                    return;
-                }
-                console.log(
-                    "✅ Texture loaded successfully, setting on material"
-                );
+                if (!isMounted) return;
                 material.map = texture;
                 material.needsUpdate = true;
                 setIsLoading(false);
-                console.log("🎉 Earth should now be visible!");
             } catch (error) {
-                console.error("❌ Error loading earth texture:", error);
+                console.error("Error loading earth texture:", error);
                 setHasError(true);
                 setIsLoading(false);
             }
         })();
 
-        // Progressive coloring timer
+        // Progressieve inkleuring
         const progressiveColoringTimer = setInterval(async () => {
             if (!isMounted || !material) return;
             const texture = await createTexture(animationPhase, startTime);
@@ -379,18 +362,23 @@ export default function ThreeEarth({
             material.needsUpdate = true;
         }, 250);
 
-        // Animation loop
+        // ResizeObserver: schaal alleen op basis van width (vierkant)
+        const ro = new ResizeObserver((entries) => {
+            const w = Math.max(1, Math.floor(entries[0].contentRect.width));
+            renderer.setSize(w, w, false);
+            camera.aspect = 1;
+            camera.updateProjectionMatrix();
+        });
+        ro.observe(mount);
+
+        // Animatie
         const animate = () => {
             if (!renderer || !scene) return;
-
             const elapsedTime = Date.now() - startTime;
             const shouldRotate = elapsedTime > 5000;
-
             if (shouldRotate) {
                 earth.rotation.y += 0.008;
             }
-
-            // Netherlands marker pulse
             const pulse = Math.sin(Date.now() * 0.005) * 0.5 + 1;
             netherlands.scale.setScalar(pulse);
 
@@ -399,28 +387,25 @@ export default function ThreeEarth({
         };
         animate();
 
+        // Cleanup
         return () => {
-            console.log("🧹 ThreeEarth cleanup starting...");
             isMounted = false;
             if (animRef.current) {
                 cancelAnimationFrame(animRef.current);
                 animRef.current = null;
             }
-            if (progressiveColoringTimer) {
-                clearInterval(progressiveColoringTimer);
-            }
+            clearInterval(progressiveColoringTimer);
+            ro.disconnect();
 
-            // Cleanup Three.js objects
             if (scene) {
-                console.log("🗑️ Disposing scene objects");
                 while (scene.children.length > 0) {
                     const child = scene.children[0];
                     scene.remove(child);
                     if (child instanceof THREE.Mesh) {
                         child.geometry.dispose();
                         if (child.material instanceof THREE.Material) {
-                            const material = child.material as any;
-                            if (material.map) material.map.dispose();
+                            const m: any = child.material;
+                            if (m.map) m.map.dispose();
                             child.material.dispose();
                         }
                     }
@@ -428,22 +413,24 @@ export default function ThreeEarth({
                 sceneRef.current = null;
             }
 
-            if (renderer) {
-                console.log("🗑️ Disposing renderer");
-                if (mountRef.current?.contains(renderer.domElement)) {
-                    mountRef.current.removeChild(renderer.domElement);
+            if (rendererRef.current) {
+                if (
+                    mountRef.current?.contains(rendererRef.current.domElement)
+                ) {
+                    mountRef.current.removeChild(
+                        rendererRef.current.domElement
+                    );
                 }
-                renderer.dispose();
+                rendererRef.current.dispose();
                 rendererRef.current = null;
             }
 
             earthRef.current = null;
             europeMarkersRef.current = [];
-            console.log("✅ ThreeEarth cleanup complete");
         };
     }, []);
 
-    // Update texture when animation phase changes
+    // Texture updaten bij fase-wijziging
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -465,8 +452,9 @@ export default function ThreeEarth({
             ref={mountRef}
             className={className}
             style={{
-                width: "450px",
-                height: "450px",
+                width: "100%",
+                maxWidth: "450px", // oude breedte als maximum
+                aspectRatio: "1 / 1", // houdt 'm perfect rond
                 filter: "drop-shadow(0 0 30px rgba(59,130,246,0.4))",
                 display: "flex",
                 alignItems: "center",

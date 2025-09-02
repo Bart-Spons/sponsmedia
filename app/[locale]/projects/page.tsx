@@ -36,10 +36,7 @@ export async function generateMetadata({
         },
         alternates: {
             canonical: `/${locale}/projects`,
-            languages: {
-                "en-US": "/en/projects",
-                "nl-NL": "/nl/projects",
-            },
+            languages: { "en-US": "/en/projects", "nl-NL": "/nl/projects" },
         },
     };
 }
@@ -51,7 +48,6 @@ export default async function ProjectsIndex({
 }) {
     const { locale } = await params;
 
-    // Import messages based on locale
     const messages = (await import(`@/messages/${locale}.json`)).default;
     const tProjects = createTranslator({
         locale,
@@ -61,16 +57,26 @@ export default async function ProjectsIndex({
 
     return (
         <div className="container py-16">
-            <header className="mb-12">
-                <h1 className="text-3xl md:text-5xl font-extrabold mb-4">
+            {/* Centered hero */}
+            <header className="mx-auto max-w-xl text-center">
+                <p className="mb-3 text-ms font-semibold tracking-[0.25em] text-primary">
+                    {locale === "nl" ? "ONS WERK" : "OUR WORK"}
+                </p>
+
+                <h1 className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl font-extrabold">
                     {tProjects("title")}
                 </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl">
+
+                {/* gold underline */}
+                <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
+
+                <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
                     {tProjects("subtitle")}
                 </p>
             </header>
 
-            <section aria-label="Project portfolio">
+            {/* Grid stays the same */}
+            <section aria-label="Project portfolio" className="mt-12">
                 <div className="grid md:grid-cols-2 gap-6">
                     {projectsData.map((project, index) => (
                         <article
@@ -98,6 +104,7 @@ export default async function ProjectsIndex({
                                     </span>
                                 ))}
                             </div>
+
                             <header>
                                 <h2 className="mt-3 text-xl font-semibold">
                                     <Link
@@ -109,6 +116,7 @@ export default async function ProjectsIndex({
                                     </Link>
                                 </h2>
                             </header>
+
                             <p
                                 id={`project-desc-${project.id}`}
                                 className="text-sm text-muted-foreground mt-2 line-clamp-2"
@@ -117,6 +125,7 @@ export default async function ProjectsIndex({
                                     ? project.descriptionNl
                                     : project.description}
                             </p>
+
                             <footer className="mt-4">
                                 <Link
                                     className="inline-flex items-center text-sm underline hover:no-underline text-primary group-hover:translate-x-1 transition-transform"

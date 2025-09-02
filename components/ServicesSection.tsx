@@ -95,7 +95,7 @@ export default function ServicesSection({ locale }: { locale: "en" | "nl" }) {
 
                 <h2
                     id="services-heading"
-                    className="text-4xl md:text-6xl font-black mb-8 relative"
+                    className="text-4xl md:text-4xl font-black mb-8 relative"
                 >
                     <span className="bg-gradient-to-r from-white via-gray-100 to-gray-200 bg-clip-text text-transparent">
                         {t("servicesTitle")}
