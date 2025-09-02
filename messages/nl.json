@@ -1,7 +1,8 @@
 {
     "Hero": {
-        "eyebrow": "SPONSMEDIA",
-        "title": "Verbeter je online zichtbaarheid.",
+        "eyebrow": "Verbeter je online zichtbaarheid!",
+        "title": "SponsMedia",
+        "tagline": "We helpen je om online op te vallen!",
         "sub": "Krijg meer bezoekers op je website en volgers op je sociale media.",
         "seeWork": "Bekijk ons werk",
         "getInTouch": "Neem contact op",
@@ -102,7 +103,6 @@
             "submitButton": "Verstuur Bericht",
             "submittingButton": "Versturen..."
         },
-       
 
         "success": {
             "title": "Bericht Succesvol Verzonden!",
@@ -120,11 +120,11 @@
         },
         "email": "contact@sponsmedia.com"
     },
-     "Contact": {
-            "metaTitle": "Contact – Start je project",
-            "metaDescription": "Vertel over je project en ontvang duidelijke vervolgstappen.",
-            "eyebrow": "NEEM CONTACT OP",
-            "title": "Vertel me over jouw project",
-            "subtitle": "Deel je doelen en uitdagingen. Ik reageer met vervolgstappen en een helder plan."
-        }
+    "Contact": {
+        "metaTitle": "Contact – Start je project",
+        "metaDescription": "Vertel over je project en ontvang duidelijke vervolgstappen.",
+        "eyebrow": "NEEM CONTACT OP",
+        "title": "Vertel me over jouw project",
+        "subtitle": "Deel je doelen en uitdagingen. Ik reageer met vervolgstappen en een helder plan."
+    }
 }

@@ -44,7 +44,7 @@ export default function HeroGraphic() {
     ];
 
     return (
-        <div className="text-center flex flex-col items-center justify-center py-16 sm:py-20 md:py-24 lg:py-28">
+        <div className="text-center flex flex-col items-center justify-center py-16 sm:py-20 md:py-24 lg:py-16">
             <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 mb-8 sm:mb-10 md:mb-12 lg:mb-14 flex items-center justify-center">
                 <SimpleThreeEarth
                     key="earth-globe" // Static key for stability

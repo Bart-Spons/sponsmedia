@@ -76,6 +76,9 @@ export default async function Page({
                         <p className="mt-3 sm:mt-4 md:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-prose break-words">
                             {tHero("sub")}
                         </p>
+                        {/* <p className="mt-3 sm:mt-4 md:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-prose break-words">
+                            {tHero("tagline")}
+                        </p> */}
                         <nav
                             className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 min-w-0"
                             role="navigation"
