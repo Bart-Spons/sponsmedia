@@ -1,0 +1,130 @@
+{
+    "Hero": {
+        "eyebrow": "SPONSMEDIA",
+        "title": "Verbeter je online zichtbaarheid.",
+        "sub": "Krijg meer bezoekers op je website en volgers op je sociale media.",
+        "seeWork": "Bekijk ons werk",
+        "getInTouch": "Neem contact op",
+        "projectsDescription": "Bekijk ons portfolio van voltooide projecten",
+        "contactDescription": "Neem contact op om je project te bespreken"
+    },
+    "Homepage": {
+        "servicesTitle": "Diensten",
+        "servicesSubtitle": "We transformeren je digitale aanwezigheid met geavanceerde web development, prachtig design en strategische social media oplossingen.",
+        "moreFeatures": "meer functies",
+        "moreTechnologies": "meer",
+        "viewCaseStudy": "Bekijk case study",
+        "projectsTitle": "Projecten",
+        "seeAllProjects": "Bekijk alle projecten",
+        "viewAllProjects": "Bekijk alle projecten in ons portfolio",
+        "blogTitle": "Blog",
+        "seeAllBlog": "Bekijk alle posts",
+        "viewAllBlog": "Bekijk alle blog posts",
+        "blogSection": {
+            "title": "Blog",
+            "subtitle": "Blijf op de hoogte van onze laatste inzichten over web development, design trends en digitale marketing strategieën.",
+            "readMore": "Lees verder",
+            "viewAll": "Bekijk Alle Posts",
+            "featuredArticles": "⭐ Uitgelichte Artikelen",
+            "latestArticles": "Laatste Artikelen",
+            "featured": "UITGELICHT"
+        }
+    },
+    "Services": {
+        "title": "Diensten",
+        "subtitle": "We helpen merken om meer zichtbaar te worden online door strategische web development, doordacht ontwerp en authentieke social media aanwezigheid.",
+        "technologiesLabel": "Technologieën & Tools",
+        "whatsIncluded": "Wat is inbegrepen",
+        "readyTitle": "Klaar om te beginnen?",
+        "readySubtitle": "Laten we je project bespreken en kijken hoe we je visie tot leven kunnen brengen.",
+        "startProject": "Start een Project",
+        "scheduleCall": "Plan een Gesprek"
+    },
+    "Projects": {
+        "title": "Projecten",
+        "subtitle": "Ontdek ons portfolio van succesvolle web development, digitaal ontwerp en digital marketing projecten. Zie hoe we bedrijven hebben geholpen om hun online aanwezigheid te laten groeien en hun doelen te bereiken.",
+        "viewCaseStudy": "Bekijk case study",
+        "projectScreenshot": "Screenshot van {title} project",
+        "viewDetailed": "Bekijk gedetailleerde case study van {title}",
+        "seeAllProjects": "Bekijk alle projecten",
+        "projectNotFound": "Project Niet Gevonden",
+        "backToProjects": "← Terug naar projecten",
+        "theChallenge": "De Uitdaging",
+        "theSolution": "De Oplossing",
+        "projectGallery": "Project Galerij",
+        "resultsImpact": "Resultaten & Impact",
+        "projectDetails": "Project Details",
+        "client": "Klant",
+        "category": "Categorie",
+        "duration": "Duur",
+        "completed": "Voltooid",
+        "technologiesUsed": "Gebruikte Technologieën",
+        "team": "Team",
+        "links": "Links",
+        "viewLiveSite": "Bekijk Live Site",
+        "viewCode": "Bekijk Code",
+        "readyTitle": "Klaar om Je Project te Starten?",
+        "readySubtitle": "Laten we bespreken hoe ik je visie tot leven kan brengen met dezelfde aandacht voor detail en kwaliteit.",
+        "startProject": "Start een Project",
+        "viewMoreProjects": "Bekijk Meer Projecten"
+    },
+
+    "CTA": {
+        "title": "Laten We Iets Geweldigs Bouwen",
+        "subtitle": "Klaar om je digitale aanwezigheid te transformeren? Vertel ons over je project en we creëren een oplossing die je verwachtingen overtreft.",
+        "form": {
+            "nameLabel": "Volledige Naam",
+            "namePlaceholder": "Jan de Vries",
+            "emailLabel": "E-mailadres",
+            "emailPlaceholder": "jan@voorbeeld.nl",
+            "companyLabel": "Bedrijf (Optioneel)",
+            "companyPlaceholder": "Je Bedrijfsnaam",
+            "projectTypeLabel": "Project Type",
+            "projectTypeDefault": "Selecteer een project type",
+            "projectTypes": {
+                "website": "Website Development",
+                "ecommerce": "E-commerce Winkel",
+                "webapp": "Web Applicatie",
+                "mobile": "Mobiele App",
+                "design": "Design & Branding",
+                "other": "Anders"
+            },
+            "timelineLabel": "Tijdschema",
+            "timelineDefault": "Wanneer moet dit klaar zijn?",
+            "timelines": {
+                "asap": "Zo spoedig mogelijk",
+                "month": "Binnen 1 maand",
+                "months": "2-3 maanden",
+                "flexible": "Ik ben flexibel"
+            },
+            "messageLabel": "Project Details",
+            "messagePlaceholder": "Vertel ons over je project doelen, vereisten en specifieke functies die je nodig hebt...",
+            "submitButton": "Verstuur Bericht",
+            "submittingButton": "Versturen..."
+        },
+       
+
+        "success": {
+            "title": "Bericht Succesvol Verzonden!",
+            "message": "Bedankt voor je bericht! We hebben je bericht ontvangen en nemen contact met je op.",
+            "contactInfo": "We nemen contact met je op via:"
+        },
+        "errors": {
+            "offline": "Onze e-mailserver is momenteel offline. Neem direct contact met ons op via",
+            "generic": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact met ons op via",
+            "validation": {
+                "nameRequired": "Naam moet minimaal 2 tekens bevatten",
+                "emailRequired": "Voer een geldig e-mailadres in",
+                "messageRequired": "Bericht moet minimaal 10 tekens bevatten"
+            }
+        },
+        "email": "contact@sponsmedia.com"
+    },
+     "Contact": {
+            "metaTitle": "Contact – Start je project",
+            "metaDescription": "Vertel over je project en ontvang duidelijke vervolgstappen.",
+            "eyebrow": "NEEM CONTACT OP",
+            "title": "Vertel me over jouw project",
+            "subtitle": "Deel je doelen en uitdagingen. Ik reageer met vervolgstappen en een helder plan."
+        }
+}

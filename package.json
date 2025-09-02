@@ -1,0 +1,44 @@
+{
+    "name": "sponsmedia",
+    "version": "1.2.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@hookform/resolvers": "^5.2.1",
+        "@radix-ui/react-select": "^2.2.6",
+        "@tailwindcss/typography": "^0.5.16",
+        "d3-geo": "^3.1.1",
+        "firebase": "^12.1.0",
+        "isomorphic-dompurify": "^2.26.0",
+        "lucide-react": "^0.542.0",
+        "next": "^14.2.5",
+        "next-intl": "3.17.3",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.62.0",
+        "resend": "^6.0.2",
+        "three": "^0.168.0",
+        "topojson-client": "^3.1.0",
+        "zod": "^4.1.5"
+    },
+    "devDependencies": {
+        "@tailwindcss/line-clamp": "^0.4.4",
+        "@types/d3-geo": "^3.1.0",
+        "@types/geojson": "^7946.0.16",
+        "@types/node": "^20.19.11",
+        "@types/react": "^18.3.5",
+        "@types/react-dom": "^18.3.0",
+        "@types/three": "^0.168.0",
+        "autoprefixer": "^10.4.19",
+        "eslint": "8.57.0",
+        "eslint-config-next": "14.2.5",
+        "postcss": "^8.4.39",
+        "tailwindcss": "^3.4.9",
+        "typescript": "^5.9.2"
+    }
+}
