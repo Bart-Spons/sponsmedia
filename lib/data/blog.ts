@@ -27,11 +27,11 @@ export const blogData: BlogPost[] = [
         publishDate: "2025-08-01",
         tags: ["SEO", "Google", "Ranking", "Digital Marketing"],
         tagsNl: ["SEO", "Google", "Ranking", "Digitale Marketing"],
-        image: "/images/blog/seo-analytics.webp",
+        image: "/images/blog/seo-landscape-banner.png",
         content: `
-** SEO in 2025: The Complete Guide to Ranking Higher **
+<h2>SEO in 2025: The Complete Guide to Ranking Higher</h2>
 <p>Master modern SEO with proven strategies that actually work. From technical optimization to content marketing, here's everything you need to dominate search results in 2025.</p>
-<img src="/images/blog/seo-landscape-banner.png" alt="SEO Strategy Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
+<img src="/images/blog/seo-analytics.webp" alt="SEO Strategy Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <p><strong>Personal Story Time:</strong> In 2024, I was working in a Japanese marketing agency in Tokyo, Japan. I helped them from the second page to the first page on Google for "marketing agency Japan." The secret? It wasn't some black-hat trick or expensive tool. It was understanding how SEO has fundamentally changed in 2024.</p>
 <p>If you're still using 2022 SEO tactics, you're probably wondering why your rankings are stuck. Here's the reality: <strong>Google's AI revolution has rewritten the rules.</strong></p>
 <h3>What Actually Works in 2025</h3>

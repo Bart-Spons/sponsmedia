@@ -105,7 +105,7 @@ export const servicesData: Service[] = [
             "Community Management & Betrokkenheid",
             "Analytics & Prestatie Rapportage",
         ],
-        technologies: ["Figma", "TokTok", "After Effects", "Adobe Premiere"],
+        technologies: ["Figma", "TikTok", "After Effects", "Adobe Premiere"],
         highlight: "Platform-native content that actually engages",
         highlightNl: "Platform-native content die daadwerkelijk betrekt",
         color: "blue",
