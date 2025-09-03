@@ -91,7 +91,7 @@ export const projectsData: Project[] = [
         title: "MindMelt",
         description: "Web development for a Japanese marketing agency.",
         image: "/images/projects/mindmelt/mindmelt.webp",
-        video: "./video/mindmelt.mp4",
+        video: "/video/mindmelt.mp4",
         technologies: ["Wordpress", "Adobe XD", "HTML", "CSS", "JavaScript"],
         category: "Web Development",
         featured: true,
