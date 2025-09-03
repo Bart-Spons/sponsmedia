@@ -43,7 +43,7 @@ export const projectsData: Project[] = [
         description:
             "Onboarding platform for new employees to learn different frameworks.",
         image: "/images/projects/capgemini/cap.webp",
-        video: "/video/cap-video.mp4",
+        video: "/video/capgemini.mp4",
         videoMuted: true,
         technologies: ["HTML", "CSS", "Javascript", "Figma"],
         category: "Web Design, Web Development",
@@ -91,7 +91,7 @@ export const projectsData: Project[] = [
         title: "MindMelt",
         description: "Web development for a Japanese marketing agency.",
         image: "/images/projects/mindmelt/mindmelt.webp",
-        video: "./video/mind-melt-video-showcase.mp4",
+        video: "./video/mindmelt.mp4",
         technologies: ["Wordpress", "Adobe XD", "HTML", "CSS", "JavaScript"],
         category: "Web Development",
         featured: true,
