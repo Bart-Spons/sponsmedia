@@ -9,7 +9,4 @@ out/
 static-deploy/
 deploy/
 
-public/video/
-*.mov
-*.mp4
-*.gif
+
