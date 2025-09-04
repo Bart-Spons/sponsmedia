@@ -1,5 +1,6 @@
+// app/[locale]/services/page.tsx
 import Link from "next/link";
-import { servicesData } from "../../../lib/data/services";
+import { servicesData } from "@/lib/data/services";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
 
@@ -10,9 +11,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ locale: "en" | "nl" }>;
+    params: { locale: "en" | "nl" };
 }): Promise<Metadata> {
-    const { locale } = await params;
+    const { locale } = params;
     const messages = (await import(`@/messages/${locale}.json`)).default;
     const tServices = createTranslator({
         locale,
@@ -46,10 +47,15 @@ export async function generateMetadata({
             title,
             description,
             locale: locale === "en" ? "en_US" : "nl_NL",
+            // optioneel: zet url voor rijkere OG
+            url: `https://sponsmedia.com/${locale}/services`,
         },
         alternates: {
             canonical: `/${locale}/services`,
-            languages: { "en-US": "/en/services", "nl-NL": "/nl/services" },
+            languages: {
+                "en-US": "/en/services",
+                "nl-NL": "/nl/services",
+            },
         },
     };
 }
@@ -57,9 +63,9 @@ export async function generateMetadata({
 export default async function ServicesPage({
     params,
 }: {
-    params: Promise<{ locale: "en" | "nl" }>;
+    params: { locale: "en" | "nl" };
 }) {
-    const { locale } = await params;
+    const { locale } = params;
     const messages = (await import(`@/messages/${locale}.json`)).default;
     const tServices = createTranslator({
         locale,
@@ -110,7 +116,10 @@ export default async function ServicesPage({
                                     {/* Links — hoofdinfo */}
                                     <div>
                                         <div className="mb-5 flex items-start gap-4">
-                                            <div className="rounded-2xl bg-primary/12 p-3 text-3xl text-primary ring-1 ring-primary/25">
+                                            <div
+                                                className="rounded-2xl bg-primary/12 p-3 text-3xl text-primary ring-1 ring-primary/25"
+                                                aria-hidden
+                                            >
                                                 {service.icon}
                                             </div>
                                             <div className="min-w-0">
@@ -170,7 +179,10 @@ export default async function ServicesPage({
                                                     key={idx}
                                                     className="flex items-start gap-3"
                                                 >
-                                                    <span className="mt-2 inline-block h-2 w-2 rounded-full bg-primary shadow-[0_0_14px] shadow-primary/60" />
+                                                    <span
+                                                        className="mt-2 inline-block h-2 w-2 rounded-full bg-primary shadow-[0_0_14px] shadow-primary/60"
+                                                        aria-hidden
+                                                    />
                                                     <p className="text-sm md:text-base text-gray-300 transition-colors group-hover:text-white">
                                                         {feature}
                                                     </p>
@@ -190,7 +202,7 @@ export default async function ServicesPage({
                     ))}
                 </div>
 
-                {/* --- CTA Footer Strip (gold) --- */}
+                {/* CTA Footer Strip (gold) */}
                 <div className="mt-12 sm:mt-16 lg:mt-20">
                     <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 lg:p-10">
                         {/* subtle gold glow */}
@@ -220,6 +232,7 @@ export default async function ServicesPage({
                                     href={`/${locale}/contact`}
                                     className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold bg-primary text-black hover:bg-accent transition-colors"
                                     aria-label={tServices("startProject")}
+                                    prefetch={false}
                                 >
                                     {tServices("startProject")}
                                     <svg
@@ -237,6 +250,7 @@ export default async function ServicesPage({
                                     href={`/${locale}/contact`}
                                     className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold border border-white/15 text-white hover:bg-white/10 transition-colors"
                                     aria-label={tServices("scheduleCall")}
+                                    prefetch={false}
                                 >
                                     {tServices("scheduleCall")}
                                 </Link>
@@ -244,7 +258,7 @@ export default async function ServicesPage({
                         </div>
                     </div>
                 </div>
-                {/* --- /CTA --- */}
+                {/* /CTA */}
             </section>
         </div>
     );

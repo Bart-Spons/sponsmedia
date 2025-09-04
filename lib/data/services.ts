@@ -1,5 +1,6 @@
 // lib/data/services.ts
 export interface Service {
+    slug: string; // 👈 nieuw: stabiele URL-sleutel
     title: string;
     titleNl?: string;
     icon: string;
@@ -19,6 +20,7 @@ export interface Service {
 
 export const servicesData: Service[] = [
     {
+        slug: "web-development",
         title: "Web Development",
         titleNl: "Web Development",
         icon: "💻",
@@ -52,6 +54,7 @@ export const servicesData: Service[] = [
         gradient: "from-emerald-500/20 via-green-500/10 to-teal-500/20",
     },
     {
+        slug: "digital-design",
         title: "Digital Design",
         titleNl: "Digital Design",
         icon: "🎨",
@@ -83,6 +86,7 @@ export const servicesData: Service[] = [
         gradient: "from-purple-500/20 via-violet-500/10 to-pink-500/20",
     },
     {
+        slug: "social-media",
         title: "Social Media",
         titleNl: "Social Media",
         icon: "📱",
@@ -90,7 +94,7 @@ export const servicesData: Service[] = [
         desc: "Social-first content strategy that builds authentic connections and drives measurable engagement",
         descNl: "Social-first content strategie die authentieke verbindingen opbouwt en meetbare betrokkenheid stimuleert",
         features: [
-            "Social Media Mangement & Strategy",
+            "Social Media Management & Strategy", // 👈 kleine typo gefixed
             "Content Strategy & Editorial Planning",
             "Platform Optimization (Instagram, TikTok, LinkedIn)",
             "Creative Campaigns & Video Content",
@@ -110,11 +114,7 @@ export const servicesData: Service[] = [
         highlightNl: "Platform-native content die daadwerkelijk betrekt",
         color: "blue",
         pattern: "dots",
-        stats: {
-            focus: "Trending",
-            content: "Creative",
-            growth: "Fast",
-        },
+        stats: { focus: "Trending", content: "Creative", growth: "Fast" },
         gradient: "from-blue-500/20 via-cyan-500/10 to-indigo-500/20",
     },
 ];

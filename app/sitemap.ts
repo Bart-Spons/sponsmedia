@@ -1,70 +1,96 @@
-import { MetadataRoute } from "next";
+// app/sitemap.ts
+import type { MetadataRoute } from "next";
 import { blogData } from "../lib/data/blog";
 import { projectsData } from "../lib/data/projects";
-import { servicesData } from "../lib/data/services";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = "https://sponsmedia.com";
-    const locales = ["en", "nl"];
+    const base = "https://sponsmedia.com";
+    const locales = ["en", "nl"] as const;
+    const nowIso = new Date().toISOString();
 
-    // Static pages
-    const staticPages = ["", "/blog", "/projects", "/services"];
+    // Root (x-default) – handig bij i18n
+    const entries: MetadataRoute.Sitemap = [
+        {
+            url: `${base}/`,
+            lastModified: nowIso,
+            changeFrequency: "weekly",
+            priority: 1,
+            alternates: {
+                languages: {
+                    "x-default": `${base}/`,
+                    en: `${base}/en`,
+                    nl: `${base}/nl`,
+                },
+            },
+        },
+    ];
 
-    const sitemapEntries: MetadataRoute.Sitemap = [];
+    // Statische pagina’s per taal (inclusief /services lijstpagina)
+    const staticPages = [
+        "",
+        "/about",
+        "/services",
+        "/projects",
+        "/blog",
+        "/contact",
+        "/terms",
+        "/privacy-policy",
+        "/cookies",
+    ];
 
-    // Add static pages for each locale
     for (const locale of locales) {
         for (const page of staticPages) {
-            sitemapEntries.push({
-                url: `${baseUrl}/${locale}${page}`,
-                lastModified: new Date(),
+            entries.push({
+                url: `${base}/${locale}${page}`,
+                lastModified: nowIso,
                 changeFrequency: page === "" ? "weekly" : "monthly",
                 priority: page === "" ? 1 : 0.8,
                 alternates: {
                     languages: {
-                        en: `${baseUrl}/en${page}`,
-                        nl: `${baseUrl}/nl${page}`,
+                        en: `${base}/en${page}`,
+                        nl: `${base}/nl${page}`,
                     },
                 },
             });
         }
     }
 
-    // Add blog posts for each locale
+    // Blogposts per taal
     for (const locale of locales) {
         for (const post of blogData) {
-            sitemapEntries.push({
-                url: `${baseUrl}/${locale}/blog/${post.id}`,
-                lastModified: new Date(post.publishDate),
+            const lastMod = new Date(post.publishDate).toISOString();
+            entries.push({
+                url: `${base}/${locale}/blog/${post.id}`,
+                lastModified: lastMod,
                 changeFrequency: "monthly",
                 priority: 0.6,
                 alternates: {
                     languages: {
-                        en: `${baseUrl}/en/blog/${post.id}`,
-                        nl: `${baseUrl}/nl/blog/${post.id}`,
+                        en: `${base}/en/blog/${post.id}`,
+                        nl: `${base}/nl/blog/${post.id}`,
                     },
                 },
             });
         }
     }
 
-    // Add project pages for each locale
+    // Projectdetailpagina’s per taal (laat staan als je die routes hebt)
     for (const locale of locales) {
         for (const project of projectsData) {
-            sitemapEntries.push({
-                url: `${baseUrl}/${locale}/projects/${project.id}`,
-                lastModified: new Date(),
+            entries.push({
+                url: `${base}/${locale}/projects/${project.id}`,
+                lastModified: nowIso,
                 changeFrequency: "monthly",
                 priority: 0.7,
                 alternates: {
                     languages: {
-                        en: `${baseUrl}/en/projects/${project.id}`,
-                        nl: `${baseUrl}/nl/projects/${project.id}`,
+                        en: `${base}/en/projects/${project.id}`,
+                        nl: `${base}/nl/projects/${project.id}`,
                     },
                 },
             });
         }
     }
 
-    return sitemapEntries;
+    return entries;
 }

@@ -1,6 +1,8 @@
-import { MetadataRoute } from "next";
+// app/robots.ts
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+    const base = "https://sponsmedia.com";
     return {
         rules: [
             {
@@ -9,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ["/api/", "/_next/", "/admin/"],
             },
         ],
-        sitemap: "https://sponsmedia.com/sitemap.xml",
-        host: "https://sponsmedia.com",
+        sitemap: `${base}/sitemap.xml`,
+        host: "sponsmedia.com", // <- zonder https://
     };
 }
