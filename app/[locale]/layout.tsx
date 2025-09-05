@@ -1,20 +1,17 @@
 // app/[locale]/layout.tsx
-import "../globals.css";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 type Locale = "en" | "nl";
 
-export const dynamicParams = false; // alleen params uit generateStaticParams zijn geldig
+export const dynamicParams = false;
 export function generateStaticParams() {
     return [{ locale: "en" }, { locale: "nl" }];
 }
 
-// themeColor hoort in viewport (niet in metadata)
-export const viewport: Viewport = {
-    themeColor: "#000000",
-};
+export const viewport: Viewport = { themeColor: "#000000" };
 
 export async function generateMetadata({
     params,
@@ -23,7 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const isNL = params.locale === "nl";
     const base = new URL("https://sponsmedia.com");
-    const path = params.locale === "nl" ? "/nl" : "/en";
+    const path = isNL ? "/nl" : "/en";
 
     const description = isNL
         ? "SponsMedia helpt merken groeien met webdevelopment, digital design en social-first strategieën. Be more visible online."
@@ -37,17 +34,12 @@ export async function generateMetadata({
         },
         description,
         alternates: {
-            // canonical per taal
             canonical: path,
-            languages: {
-                en: "/en",
-                nl: "/nl",
-                "x-default": "/", // handig voor gebruikers/engines zonder voorkeur
-            },
+            languages: { en: "/en", nl: "/nl", "x-default": "/" },
         },
         openGraph: {
             type: "website",
-            url: path, // locale-URL
+            url: path,
             siteName: "SponsMedia",
             title: "SponsMedia — Be more visible online",
             description,
@@ -72,8 +64,6 @@ export async function generateMetadata({
                 { url: "/logo.png", sizes: "512x512", type: "image/png" },
             ],
         },
-        // Optioneel: GSC verificatie direct hier
-        // verification: { google: "PLAATS_HIER_JE_CODE" },
     };
 }
 
@@ -89,7 +79,7 @@ export default function LocaleLayout({
             <body className="bg-space text-white">
                 <Nav locale={params.locale} />
 
-                {/* Organization schema (E-E-A-T) */}
+                {/* Organization schema */}
                 <Script id="org-schema" type="application/ld+json">
                     {JSON.stringify({
                         "@context": "https://schema.org",
@@ -100,7 +90,14 @@ export default function LocaleLayout({
                         sameAs: [
                             "https://www.linkedin.com/in/bartspons",
                             "https://codepen.io/LuckyBart",
-                            // voeg hier je GitHub/Dribbble/Instagram toe indien relevant
+                        ],
+                        contactPoint: [
+                            {
+                                "@type": "ContactPoint",
+                                contactType: "customer support",
+                                email: "contact@sponsmedia.com",
+                                availableLanguage: ["nl", "en"],
+                            },
                         ],
                     })}
                 </Script>
@@ -108,11 +105,7 @@ export default function LocaleLayout({
                 {children}
 
                 <footer>
-                    {/* Als Footer een server component is kun je 'm direct importeren i.p.v. require */}
-                    {/* @ts-ignore */}
-                    {require("@/components/Footer").default({
-                        locale: params.locale,
-                    })}
+                    <Footer locale={params.locale} />
                 </footer>
             </body>
         </html>

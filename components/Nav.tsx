@@ -1,4 +1,6 @@
+// components/Nav.tsx
 "use client";
+
 import Link from "next/link";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useState } from "react";
@@ -6,13 +8,39 @@ import { useState } from "react";
 export default function Nav({ locale }: { locale: "en" | "nl" }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+    const L =
+        locale === "nl"
+            ? {
+                  brandAria: "SponsMedia - Home",
+                  mainNav: "Hoofdnavigatie",
+                  mobileNav: "Mobiele navigatie",
+                  openMenu: "Menu openen",
+                  closeMenu: "Menu sluiten",
+                  projects: "Projecten",
+                  services: "Diensten",
+                  about: "Over",
+                  blog: "Blog",
+                  contact: "Contact",
+                  cta: "Start een project",
+                  ctaAria: "Start een nieuw project met ons",
+              }
+            : {
+                  brandAria: "SponsMedia - Home",
+                  mainNav: "Main navigation",
+                  mobileNav: "Mobile navigation",
+                  openMenu: "Open menu",
+                  closeMenu: "Close menu",
+                  projects: "Projects",
+                  services: "Services",
+                  about: "About",
+                  blog: "Blog",
+                  contact: "Contact",
+                  cta: "Start a project",
+                  ctaAria: "Start a new project with us",
+              };
 
-    const closeMenu = () => {
-        setIsMenuOpen(false);
-    };
+    const toggleMenu = () => setIsMenuOpen((v) => !v);
+    const closeMenu = () => setIsMenuOpen(false);
 
     return (
         <header
@@ -23,7 +51,7 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                 <Link
                     href={`/${locale}`}
                     className="font-black text-lg sm:text-xl tracking-tight flex-shrink-0"
-                    aria-label="SponsMedia - Home"
+                    aria-label={L.brandAria}
                     onClick={closeMenu}
                 >
                     Spons<span className="text-primary">Media</span>
@@ -33,37 +61,37 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                 <nav
                     className="hidden md:flex gap-6 text-sm"
                     role="navigation"
-                    aria-label="Main navigation"
+                    aria-label={L.mainNav}
                 >
                     <Link
                         href={`/${locale}/projects`}
                         className="hover:text-primary transition-colors"
                     >
-                        Projects
+                        {L.projects}
                     </Link>
                     <Link
                         href={`/${locale}/services`}
                         className="hover:text-primary transition-colors"
                     >
-                        Services
+                        {L.services}
                     </Link>
                     <Link
                         href={`/${locale}/about`}
                         className="hover:text-primary transition-colors"
                     >
-                        About
+                        {L.about}
                     </Link>
                     <Link
                         href={`/${locale}/blog`}
                         className="hover:text-primary transition-colors"
                     >
-                        Blog
+                        {L.blog}
                     </Link>
                     <Link
                         href={`/${locale}/contact`}
                         className="hover:text-primary transition-colors"
                     >
-                        Contact
+                        {L.contact}
                     </Link>
                 </nav>
 
@@ -73,9 +101,9 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                     <Link
                         href={`/${locale}/contact`}
                         className="btn btn-primary"
-                        aria-label="Start a new project with us"
+                        aria-label={L.ctaAria}
                     >
-                        Start a project
+                        {L.cta}
                     </Link>
                 </div>
 
@@ -85,7 +113,7 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                     onClick={toggleMenu}
                     aria-expanded={isMenuOpen}
                     aria-controls="mobile-menu"
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    aria-label={isMenuOpen ? L.closeMenu : L.openMenu}
                 >
                     <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -119,7 +147,7 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                     id="mobile-menu"
                     className="md:hidden border-t border-white/10 bg-black/90 backdrop-blur"
                     role="navigation"
-                    aria-label="Mobile navigation"
+                    aria-label={L.mobileNav}
                 >
                     <div className="mx-auto max-w-7xl px-3 sm:px-4 py-4 space-y-3">
                         <Link
@@ -127,35 +155,35 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                             className="block py-2 text-base hover:text-primary transition-colors"
                             onClick={closeMenu}
                         >
-                            Projects
+                            {L.projects}
                         </Link>
                         <Link
                             href={`/${locale}/services`}
                             className="block py-2 text-base hover:text-primary transition-colors"
                             onClick={closeMenu}
                         >
-                            Services
+                            {L.services}
                         </Link>
                         <Link
                             href={`/${locale}/about`}
                             className="block py-2 text-base hover:text-primary transition-colors"
                             onClick={closeMenu}
                         >
-                            About
+                            {L.about}
                         </Link>
                         <Link
                             href={`/${locale}/blog`}
                             className="block py-2 text-base hover:text-primary transition-colors"
                             onClick={closeMenu}
                         >
-                            Blog
+                            {L.blog}
                         </Link>
                         <Link
                             href={`/${locale}/contact`}
                             className="block py-2 text-base hover:text-primary transition-colors"
                             onClick={closeMenu}
                         >
-                            Contact
+                            {L.contact}
                         </Link>
 
                         <div className="pt-3 border-t border-white/10 flex flex-col gap-3">
@@ -164,9 +192,9 @@ export default function Nav({ locale }: { locale: "en" | "nl" }) {
                                 href={`/${locale}/contact`}
                                 className="btn btn-primary w-full text-center text-sm"
                                 onClick={closeMenu}
-                                aria-label="Start a new project with us"
+                                aria-label={L.ctaAria}
                             >
-                                Start a project
+                                {L.cta}
                             </Link>
                         </div>
                     </div>

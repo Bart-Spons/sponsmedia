@@ -16,7 +16,7 @@ const FAQ_NL = [
     },
     {
         q: "Hoe snel kunnen we live?",
-        a: "Vaak binnen 2–4 weken, afhankelijk van de scope en of content/beeldmateriaal klaarstaat.",
+        a: "Vaak binnen 4 weken, afhankelijk van de scope en of content/beeldmateriaal klaarstaat.",
     },
     {
         q: "Werken jullie met ons bestaande CMS of design?",
@@ -47,7 +47,7 @@ const FAQ_EN = [
     },
     {
         q: "How fast can we go live?",
-        a: "Typically within 2–4 weeks, depending on scope and content readiness.",
+        a: "Typically within 4 weeks, depending on scope and content readiness.",
     },
     {
         q: "Can you work with our existing CMS or design?",

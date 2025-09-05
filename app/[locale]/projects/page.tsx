@@ -81,9 +81,9 @@ export default async function ProjectsIndex({
                     {projectsData.map((project, index) => (
                         <article
                             key={project.id}
-                            className="rounded-2xl border border-white/10 bg-white/5 p-4 group hover:bg-white/10 transition-colors"
+                            className="rounded-xl border border-white/10 bg-white/5 p-4 group hover:bg-white/10 transition-colors"
                         >
-                            <div className="rounded-2xl bg-muted overflow-hidden">
+                            <div className="rounded-xl bg-muted overflow-hidden">
                                 <img
                                     src={project.image}
                                     alt={tProjects("projectScreenshot", {

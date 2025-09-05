@@ -1,3 +1,4 @@
+// app/[locale]/page.tsx
 import { createTranslator } from "next-intl";
 import Link from "next/link";
 import ProjectsSection from "@/components/ProjectsSection";
@@ -7,6 +8,8 @@ import HeroGraphic from "@/components/HeroGraphic";
 import CTASection from "@/components/CTASection";
 import type { Metadata } from "next";
 
+type Locale = "en" | "nl";
+
 export async function generateStaticParams() {
     return [{ locale: "en" }, { locale: "nl" }];
 }
@@ -14,9 +17,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ locale: "en" | "nl" }>;
+    params: { locale: Locale };
 }): Promise<Metadata> {
-    const { locale } = await params;
+    const { locale } = params;
     const messages = (await import(`@/messages/${locale}.json`)).default;
     const tHero = createTranslator({ locale, messages, namespace: "Hero" });
 
@@ -29,25 +32,18 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
+            url: `/${locale}`,
             locale: locale === "en" ? "en_US" : "nl_NL",
         },
         alternates: {
             canonical: `/${locale}`,
-            languages: {
-                "en-US": "/en",
-                "nl-NL": "/nl",
-            },
+            languages: { "en-US": "/en", "nl-NL": "/nl" },
         },
     };
 }
 
-export default async function Page({
-    params,
-}: {
-    params: Promise<{ locale: "en" | "nl" }>;
-}) {
-    const { locale } = await params;
-
+export default async function Page({ params }: { params: { locale: Locale } }) {
+    const { locale } = params;
     const messages =
         locale === "nl"
             ? (await import("@/messages/nl.json")).default
@@ -76,9 +72,7 @@ export default async function Page({
                         <p className="mt-3 sm:mt-4 md:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-prose break-words">
                             {tHero("sub")}
                         </p>
-                        {/* <p className="mt-3 sm:mt-4 md:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-prose break-words">
-                            {tHero("tagline")}
-                        </p> */}
+
                         <nav
                             className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 min-w-0"
                             role="navigation"
@@ -118,12 +112,10 @@ export default async function Page({
                 </div>
             </section>
 
-            {/* SECTIONS — alles netjes BINNEN de return */}
             <ServicesSection locale={locale} />
             <ProjectsSection locale={locale} />
             <BlogSection locale={locale} />
 
-            {/* CTA onderaan: compact + zonder extra hero */}
             <CTASection locale={locale} variant="compact" />
         </div>
     );

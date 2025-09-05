@@ -455,7 +455,7 @@ export default function CTASection({
 
                     {/* Contact + Socials */}
                     <div className="space-y-8 md:sticky md:top-8">
-                        <div className="rounded-4xl bg-black/60 p-6 shadow-lg border border-white/10 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]">
+                        <div className="rounded-2xl bg-black/60 p-6 shadow-lg border border-white/10 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]">
                             <h3 className="text-lg font-semibold text-white mb-2">
                                 {t.contact.title}
                             </h3>

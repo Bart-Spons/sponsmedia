@@ -2,10 +2,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import { blogData } from "@/lib/data/blog";
 
-// — Helpers —
+// Helpers
 function getLocalePost(post: any, locale: "en" | "nl") {
     const L = locale === "nl";
     return {
@@ -21,20 +22,15 @@ function getLocalePost(post: any, locale: "en" | "nl") {
 }
 
 function estimateReadTime(htmlOrMd: string) {
-    // simpele schatting: 200 wpm
     const text = htmlOrMd.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
     const words = text.trim().split(" ").filter(Boolean).length;
     return Math.max(1, Math.round(words / 200));
 }
 
-/** Strip het embedded share-blok dat onderaan in sommige content-items zit */
 function stripEmbeddedShareFooter(html: string) {
-    // Matcht het laatste blok dat in je data staat (begint met mt-16 ...)
-    // en verwijdert dat aan het einde van de content.
     return html.replace(/<div class="mt-16[\s\S]*?<\/div>\s*$/i, "");
 }
 
-/** Voeg nette img-klassen toe als er nog geen class="" op de <img> staat */
 function enhanceImagesIfMissingClass(html: string) {
     return html.replace(
         /<img(?![^>]*\bclass=)([^>]*)>/g,
@@ -42,7 +38,6 @@ function enhanceImagesIfMissingClass(html: string) {
     );
 }
 
-// — Static params (locale + slug) —
 export async function generateStaticParams() {
     const locales: Array<"en" | "nl"> = ["en", "nl"];
     return locales.flatMap((locale) =>
@@ -50,7 +45,6 @@ export async function generateStaticParams() {
     );
 }
 
-// — Metadata —
 export async function generateMetadata({
     params,
 }: {
@@ -61,6 +55,7 @@ export async function generateMetadata({
     if (!raw) return { title: "Post Not Found" };
 
     const post = getLocalePost(raw, locale);
+    const isNL = locale === "nl";
 
     return {
         title: post.title,
@@ -75,7 +70,7 @@ export async function generateMetadata({
             authors: [post.author],
             tags: post.tags,
             images: post.image ? [{ url: post.image }] : undefined,
-            locale: locale === "en" ? "en_US" : "nl_NL",
+            locale: isNL ? "nl_NL" : "en_US",
         },
         twitter: {
             card: "summary_large_image",
@@ -93,7 +88,6 @@ export async function generateMetadata({
     };
 }
 
-// — Page —
 export default async function BlogPost({
     params,
 }: {
@@ -104,15 +98,81 @@ export default async function BlogPost({
     if (!raw) notFound();
 
     const post = getLocalePost(raw!, locale);
+    const isNL = locale === "nl";
     const readTime = estimateReadTime(post.content);
 
-    // ✨ Content opschonen + img’s verrijken
     const enhancedHtml = enhanceImagesIfMissingClass(
         stripEmbeddedShareFooter(post.content)
     );
 
+    // Prev/next (optioneel voor UX)
+    const sorted = [...blogData].sort(
+        (a, b) => +new Date(b.publishDate) - +new Date(a.publishDate)
+    );
+    const idx = sorted.findIndex((p) => p.id === slug);
+    const prev = idx > 0 ? sorted[idx - 1] : null;
+    const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+
+    // JSON-LD: Article + Breadcrumbs
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: post.title,
+        description: post.excerpt,
+        datePublished: post.publishDate,
+        dateModified: post.publishDate,
+        inLanguage: isNL ? "nl-NL" : "en-US",
+        author: { "@type": "Person", name: post.author },
+        publisher: {
+            "@type": "Organization",
+            name: "SponsMedia",
+            logo: {
+                "@type": "ImageObject",
+                url: "https://sponsmedia.com/logo.png",
+            },
+        },
+        image: post.image ? [`https://sponsmedia.com${post.image}`] : undefined,
+        mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://sponsmedia.com/${locale}/blog/${slug}`,
+        },
+    };
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: `https://sponsmedia.com/${locale}`,
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blog",
+                item: `https://sponsmedia.com/${locale}/blog`,
+            },
+            {
+                "@type": "ListItem",
+                position: 3,
+                name: post.title,
+                item: `https://sponsmedia.com/${locale}/blog/${slug}`,
+            },
+        ],
+    };
+
     return (
         <div className="container py-10 md:py-16 max-w-4xl mx-auto">
+            {/* JSON-LD */}
+            <Script id="article-schema" type="application/ld+json">
+                {JSON.stringify(articleSchema)}
+            </Script>
+            <Script id="breadcrumbs-schema" type="application/ld+json">
+                {JSON.stringify(breadcrumbSchema)}
+            </Script>
+
             {/* Back */}
             <nav className="mb-8">
                 <Link
@@ -132,14 +192,13 @@ export default async function BlogPost({
                             d="M15 19l-7-7 7-7"
                         />
                     </svg>
-                    {locale === "nl" ? "Terug naar Blog" : "Back to Blog"}
+                    {isNL ? "Terug naar Blog" : "Back to Blog"}
                 </Link>
             </nav>
 
             <article>
                 {/* Header */}
                 <header className="mb-8 text-center">
-                    {/* Tags */}
                     {post.tags.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-2 mb-5">
                             {post.tags.map((tag: string) => (
@@ -162,7 +221,7 @@ export default async function BlogPost({
                         <span>•</span>
                         <time dateTime={post.publishDate}>
                             {new Date(post.publishDate).toLocaleDateString(
-                                locale === "nl" ? "nl-NL" : "en-US",
+                                isNL ? "nl-NL" : "en-US",
                                 {
                                     year: "numeric",
                                     month: "long",
@@ -172,13 +231,12 @@ export default async function BlogPost({
                         </time>
                         <span>•</span>
                         <span>
-                            {readTime}{" "}
-                            {locale === "nl" ? "min lezen" : "min read"}
+                            {readTime} {isNL ? "min lezen" : "min read"}
                         </span>
                     </div>
                 </header>
 
-                {/* Hero image – contain en compacter */}
+                {/* Hero image */}
                 {post.image && (
                     <div className="relative w-full max-w-3xl mx-auto h-[220px] md:h-[320px] lg:h-[380px] rounded-2xl overflow-hidden mb-8 shadow-lg">
                         <Image
@@ -203,7 +261,6 @@ export default async function BlogPost({
               prose-strong:text-white
               prose-code:bg-gray-900/60 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
               prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:rounded-xl prose-blockquote:p-4
-              /* afbeeldingen links + compacte desktopbreedtes */
               prose-img:mx-0 prose-img:w-full md:prose-img:max-w-[70%] lg:prose-img:max-w-[58%]
               prose-img:rounded-2xl prose-img:ring-1 prose-img:ring-white/10 prose-img:shadow-xl
               prose-ul:marker:text-primary prose-ol:marker:text-primary
@@ -211,17 +268,17 @@ export default async function BlogPost({
                         dangerouslySetInnerHTML={{ __html: enhancedHtml }}
                     />
 
-                    {/* Enige share-balk (de embedded variant is gestript) */}
+                    {/* Share bar */}
                     <div className="mt-10 p-6 bg-white/5 rounded-xl border border-white/10">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div className="text-sm text-gray-300">
                                 <p className="font-semibold mb-1">
-                                    {locale === "nl"
+                                    {isNL
                                         ? "Artikel interessant?"
                                         : "Enjoyed this article?"}
                                 </p>
                                 <p>
-                                    {locale === "nl"
+                                    {isNL
                                         ? "Deel het met je netwerk!"
                                         : "Share it with your network!"}
                                 </p>
@@ -254,12 +311,41 @@ export default async function BlogPost({
                     </div>
                 </div>
 
+                {/* Prev / Next (optioneel) */}
+                {(prev || next) && (
+                    <nav className="mt-10 flex flex-col md:flex-row gap-3 justify-between">
+                        {prev ? (
+                            <Link
+                                href={`/${locale}/blog/${prev.id}`}
+                                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
+                            >
+                                ←{" "}
+                                {isNL && prev.titleNl
+                                    ? prev.titleNl
+                                    : prev.title}
+                            </Link>
+                        ) : (
+                            <span />
+                        )}
+                        {next && (
+                            <Link
+                                href={`/${locale}/blog/${next.id}`}
+                                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
+                            >
+                                {isNL && next.titleNl
+                                    ? next.titleNl
+                                    : next.title}{" "}
+                                →
+                            </Link>
+                        )}
+                    </nav>
+                )}
+
                 {/* Back button */}
                 <div className="text-center mt-10">
                     <Link
                         href={`/${locale}/blog`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium
-                       bg-white/10 hover:bg-white/15 text-white transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/15 text-white transition-colors"
                     >
                         <svg
                             className="w-5 h-5"
@@ -274,7 +360,7 @@ export default async function BlogPost({
                                 d="M15 19l-7-7 7-7"
                             />
                         </svg>
-                        {locale === "nl"
+                        {isNL
                             ? "Terug naar alle artikelen"
                             : "Back to all articles"}
                     </Link>
