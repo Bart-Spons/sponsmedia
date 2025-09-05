@@ -569,7 +569,6 @@ export default function SimpleThreeEarth({
             className={`${className} mt-8 md:mt-0`}
             style={{
                 width: "450px",
-                height: "450px",
                 filter: "drop-shadow(0 0 30px rgba(59,130,246,0.4))",
                 opacity: 1, // Always visible immediately
                 transition: "none", // No fade transition for instant appearance
