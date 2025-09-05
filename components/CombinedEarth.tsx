@@ -13,10 +13,7 @@ export default function CombinedEarth({
     className = "",
 }: CombinedEarthProps) {
     return (
-        <div
-            className={`relative ${className}`}
-            style={{ width: "450px", height: "450px" }}
-        >
+        <div className={`relative ${className}`} style={{ width: "450px" }}>
             {/* Base rotating Earth - never re-renders */}
             <ThreeEarthRotation className="absolute top-0 left-0" />
 

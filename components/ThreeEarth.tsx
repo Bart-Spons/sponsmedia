@@ -455,6 +455,7 @@ export default function ThreeEarth({
                 width: "100%",
                 maxWidth: "450px", // oude breedte als maximum
                 aspectRatio: "1 / 1", // houdt 'm perfect rond
+                
                 filter: "drop-shadow(0 0 30px rgba(59,130,246,0.4))",
                 display: "flex",
                 alignItems: "center",

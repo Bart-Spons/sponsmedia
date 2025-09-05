@@ -414,6 +414,7 @@ export default function ThreeEarthColoring({
             className={className}
             style={{
                 width: "450px",
+                height: "auto",
                 position: "absolute",
                 top: 0,
                 left: 0,

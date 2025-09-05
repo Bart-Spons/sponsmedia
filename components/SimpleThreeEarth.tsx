@@ -18,7 +18,7 @@ async function loadWorld(): Promise<FC> {
         console.log("🌍 Loading world-110m.geojson...");
         const res = await fetch("/world-110m.geojson", {
             cache: "force-cache",
-            priority: "low", // Lower priority to not block critical resources
+            priority: "low",
         });
         if (!res.ok) {
             console.error(
@@ -53,18 +53,18 @@ export default function SimpleThreeEarth({
     const animationRef = useRef<number | null>(null);
     const markerRef = useRef<THREE.Mesh | null>(null);
     const europeanMarkersRef = useRef<THREE.Mesh[]>([]);
-    const startTimeRef = useRef<number | null>(null); // Initialize as null
+    const startTimeRef = useRef<number | null>(null);
     const [isReady, setIsReady] = useState(false);
 
     const createTexture = async (
         animationPhase: number
     ): Promise<THREE.CanvasTexture> => {
         const canvas = document.createElement("canvas");
-        canvas.width = 1536; // Good balance for quality and performance
-        canvas.height = 768; // Proportional to maintain quality
+        canvas.width = 1536;
+        canvas.height = 768;
         const ctx = canvas.getContext("2d")!;
 
-        // Create linear gradient ocean background exactly like live site
+        // Gradient ocean
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
         gradient.addColorStop(0, "#E0F2FE");
         gradient.addColorStop(0.5, "#BAE6FD");
@@ -72,7 +72,7 @@ export default function SimpleThreeEarth({
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Setup projection
+        // Projection
         const projection = d3
             .geoEquirectangular()
             .translate([canvas.width / 2, canvas.height / 2])
@@ -80,7 +80,7 @@ export default function SimpleThreeEarth({
 
         const path = d3.geoPath(projection, ctx);
 
-        // Drawing settings exactly like live site
+        // Strokes
         ctx.lineJoin = "round";
         ctx.lineCap = "round";
         ctx.lineWidth = 0.9;
@@ -88,11 +88,9 @@ export default function SimpleThreeEarth({
 
         const world = await loadWorld();
 
-        // Check if mobile device for performance optimization
         const isMobile =
             typeof window !== "undefined" && window.innerWidth < 768;
 
-        // Country lists exactly like live site
         const europeCountries = [
             "Germany",
             "France",
@@ -212,18 +210,15 @@ export default function SimpleThreeEarth({
         let highlightedCountries: string[] = [];
 
         if (isMobile) {
-            // Mobile: Show all countries immediately for better performance
             highlightedCountries = [...europeCountries, ...worldCountries];
             console.log(
                 "📱 Mobile detected: Showing all countries immediately"
             );
         } else {
-            // Desktop: Progressive loading for visual effect
             const startTime = startTimeRef.current || Date.now();
             const elapsed = (Date.now() - startTime) / 1000;
 
             if (elapsed <= 6) {
-                // First 6 seconds: progressively show Europe
                 const count = Math.floor(
                     (elapsed / 6) * europeCountries.length
                 );
@@ -234,7 +229,6 @@ export default function SimpleThreeEarth({
                     }`
                 );
             } else if (elapsed <= 12) {
-                // Next 6 seconds: Europe + progressively show world countries
                 const count = Math.floor(
                     ((elapsed - 6) / 6) * worldCountries.length
                 );
@@ -248,7 +242,6 @@ export default function SimpleThreeEarth({
                     )}s): Europe + World ${count}/${worldCountries.length}`
                 );
             } else {
-                // After 12 seconds: show all countries permanently
                 highlightedCountries = [...europeCountries, ...worldCountries];
                 console.log(
                     `🌏 Phase 3 (${elapsed.toFixed(1)}s): All countries visible`
@@ -263,12 +256,12 @@ export default function SimpleThreeEarth({
             ctx.beginPath();
             path(feature as any);
 
-            let fillColor = "#F5F5F5"; // Default color
+            let fillColor = "#F5F5F5"; // Default
 
             if (countryName === "Netherlands") {
-                fillColor = "#EF4444"; // Red for Netherlands
+                fillColor = "#EF4444"; // Netherlands red
             } else if (highlightedCountries.includes(countryName || "")) {
-                fillColor = "#22C55E"; // Green for highlighted countries
+                fillColor = "#22C55E"; // Highlighted green
             }
 
             ctx.fillStyle = fillColor;
@@ -279,16 +272,16 @@ export default function SimpleThreeEarth({
         const texture = new THREE.CanvasTexture(canvas);
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.anisotropy = 4; // Balanced for performance
+        texture.anisotropy = 4;
 
         return texture;
     };
 
-    // Single effect that handles everything - like the working /out version
+    // Setup scene, renderer, camera, objects
     useEffect(() => {
         console.log("🚀 SimpleThreeEarth mounting with phase:", animationPhase);
 
-        // Initialize start time only once - this prevents the Earth from resetting
+        // Initialize start time only once
         if (startTimeRef.current === null) {
             startTimeRef.current = Date.now();
             console.log("⏱️ Animation start time set:", startTimeRef.current);
@@ -309,31 +302,35 @@ export default function SimpleThreeEarth({
             rendererRef.current = null;
         }
 
-        // Create scene
+        // Scene
         const scene = new THREE.Scene();
         sceneRef.current = scene;
 
-        // Camera
+        // Camera (square aspect)
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         camera.position.set(0, 0.3, 2.5);
         camera.lookAt(0, 0, 0);
 
-        // Renderer
+        // Renderer (responsive)
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true,
         });
-        renderer.setSize(450, 450);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setClearColor(0x000000, 0);
         rendererRef.current = renderer;
         mountRef.current.appendChild(renderer.domElement);
 
-        // Earth - restore original quality like /out version
+        // CSS sizing to keep it responsive & square
+        renderer.domElement.style.width = "100%";
+        renderer.domElement.style.height = "auto";
+        (renderer.domElement.style as any).aspectRatio = "1 / 1";
+
+        // Earth
         const earthGeometry = new THREE.SphereGeometry(1.15, 64, 64);
         const earthMaterial = new THREE.MeshPhongMaterial({
             shininess: 0.1,
-            color: 0x4a90e2, // Base blue color while texture loads
+            color: 0x4a90e2, // Base while texture loads
         });
         const earth = new THREE.Mesh(earthGeometry, earthMaterial);
         const initialRotationY = 1.4 * Math.PI;
@@ -349,7 +346,7 @@ export default function SimpleThreeEarth({
         directionalLight.position.set(-1, 0, 1);
         scene.add(directionalLight);
 
-        // Atmosphere - restore original quality like /out version
+        // Atmosphere
         const atmosphere = new THREE.Mesh(
             new THREE.SphereGeometry(1.22, 64, 64),
             new THREE.MeshBasicMaterial({
@@ -361,9 +358,9 @@ export default function SimpleThreeEarth({
         );
         scene.add(atmosphere);
 
-        // Netherlands marker - initial size, will be updated by animationPhase effect
+        // Netherlands marker
         const nethMarker = new THREE.Mesh(
-            new THREE.SphereGeometry(0.035, 16, 16), // Start with phase 0 size
+            new THREE.SphereGeometry(0.035, 16, 16),
             new THREE.MeshBasicMaterial({
                 color: 0xff4444,
                 transparent: true,
@@ -388,7 +385,6 @@ export default function SimpleThreeEarth({
             { name: "Spain", lat: 40.4637, lng: -3.7492 },
             { name: "Belgium", lat: 50.5039, lng: 4.4699 },
         ];
-
         const europeanMarkers: THREE.Mesh[] = [];
         europeanCities.forEach((city) => {
             const marker = new THREE.Mesh(
@@ -411,19 +407,17 @@ export default function SimpleThreeEarth({
         });
         europeanMarkersRef.current = europeanMarkers;
 
-        let isMounted = true;
-
-        // Show Earth immediately - no waiting for texture loading
+        // Mark ready
         setIsReady(true);
 
-        // Load initial texture in background - like the working /out version
+        // Initial texture
         (async () => {
             try {
                 console.log("🎨 Creating initial texture...");
                 const texture = await createTexture(animationPhase);
-                if (isMounted && earthMaterial) {
+                if (earthMaterial) {
                     earthMaterial.map = texture;
-                    earthMaterial.color.setHex(0xffffff); // Reset to white when texture loads
+                    earthMaterial.color.setHex(0xffffff);
                     earthMaterial.needsUpdate = true;
                     console.log("✅ Initial texture applied successfully");
                 }
@@ -432,20 +426,30 @@ export default function SimpleThreeEarth({
             }
         })();
 
-        // Update texture every 250ms like the working /out version, but stop after animation completes
-        // On mobile, reduce frequency for better performance
+        // Responsive sizing (window + container)
+        const handleResize = () => {
+            if (!mountRef.current || !rendererRef.current) return;
+            const size = Math.min(450, mountRef.current.clientWidth || 450);
+            rendererRef.current.setSize(size, size, false);
+            camera.aspect = 1; // keep square
+            camera.updateProjectionMatrix();
+        };
+
+        window.addEventListener("resize", handleResize);
+        const ro = new ResizeObserver(() => handleResize());
+        ro.observe(mountRef.current);
+
+        // Initial sync
+        handleResize();
+
+        // Texture updates for progressive highlight
         const isMobile =
             typeof window !== "undefined" && window.innerWidth < 768;
-        const updateInterval = isMobile ? 500 : 250; // 500ms for mobile, 250ms for desktop
-
+        const updateInterval = isMobile ? 500 : 250;
         const textureInterval = setInterval(async () => {
-            if (!isMounted) return;
-
-            // Stop texture updates after 15 seconds to prevent unnecessary redraws
-            // On mobile, stop earlier since countries are shown immediately
-            const stopAfter = isMobile ? 5 : 15;
             const startTime = startTimeRef.current || Date.now();
             const elapsed = (Date.now() - startTime) / 1000;
+            const stopAfter = isMobile ? 5 : 15;
             if (elapsed > stopAfter) {
                 console.log(
                     `🛑 Stopping texture updates - animation complete (${
@@ -455,7 +459,6 @@ export default function SimpleThreeEarth({
                 clearInterval(textureInterval);
                 return;
             }
-
             try {
                 const texture = await createTexture(animationPhase);
                 if (earthMaterial) {
@@ -468,21 +471,18 @@ export default function SimpleThreeEarth({
         }, updateInterval);
 
         // Animation loop
+        let isMounted = true;
         const animate = () => {
             if (!isMounted) return;
 
-            // Start rotating after 5 seconds and never stop
             const startTime = startTimeRef.current || Date.now();
             if (Date.now() - startTime > 5000) {
-                // Simple continuous rotation - never stops
                 earth.rotation.y += 0.002;
             }
 
-            // Pulse Netherlands marker
+            // Pulse markers
             const time = Date.now() * 0.005;
             nethMarker.scale.setScalar(0.5 * Math.sin(time) + 1);
-
-            // Pulse European markers
             europeanMarkers.forEach((marker, index) => {
                 const markerTime = Date.now() * 0.003 + index * 0.5;
                 marker.scale.setScalar(0.3 * Math.sin(markerTime) + 1);
@@ -491,19 +491,21 @@ export default function SimpleThreeEarth({
             renderer.render(scene, camera);
             animationRef.current = requestAnimationFrame(animate);
         };
-
         animate();
 
+        // Cleanup
         return () => {
             isMounted = false;
+
+            window.removeEventListener("resize", handleResize);
+            ro.disconnect();
 
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
             }
-
             clearInterval(textureInterval);
 
-            // Clean up scene
+            // Clean scene
             while (scene.children.length > 0) {
                 const child = scene.children[0];
                 scene.remove(child);
@@ -517,7 +519,7 @@ export default function SimpleThreeEarth({
                 }
             }
 
-            // Clean up renderer
+            // Remove renderer
             if (renderer && mountRef.current?.contains(renderer.domElement)) {
                 mountRef.current.removeChild(renderer.domElement);
             }
@@ -530,13 +532,14 @@ export default function SimpleThreeEarth({
             markerRef.current = null;
             europeanMarkersRef.current = [];
         };
-    }, []); // NO dependencies - this effect runs only once and never re-renders
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // mount-only
 
-    // Separate effect to handle animationPhase changes - only updates markers
+    // React to animationPhase changes (markers only)
     useEffect(() => {
         console.log("🔄 Animation phase changed to:", animationPhase);
 
-        // Update European markers opacity based on animation phase
+        // Update European markers opacity
         europeanMarkersRef.current.forEach((marker) => {
             const material = marker.material as THREE.MeshBasicMaterial;
             if (animationPhase >= 1) {
@@ -546,7 +549,7 @@ export default function SimpleThreeEarth({
             }
         });
 
-        // Update Netherlands marker size based on animation phase
+        // Update Netherlands marker size
         if (markerRef.current) {
             const markerSize =
                 animationPhase === 0
@@ -561,20 +564,22 @@ export default function SimpleThreeEarth({
                 16
             );
         }
-    }, [animationPhase]); // Only animationPhase dependency - no scene recreation
+    }, [animationPhase]);
 
     return (
         <div
             ref={mountRef}
             className={`${className} mt-8 md:mt-0`}
             style={{
-                width: "450px",
+                width: "min(100%, 450px)", // shrink on mobile
+                aspectRatio: "1 / 1", // keep square
+                height: "auto",
                 filter: "drop-shadow(0 0 30px rgba(59,130,246,0.4))",
-                opacity: 1, // Always visible immediately
-                transition: "none", // No fade transition for instant appearance
+                opacity: 1,
+                transition: "none",
             }}
         >
-            {/* No loading text - Earth appears instantly */}
+            {/* Canvas injected here */}
         </div>
     );
 }

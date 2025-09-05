@@ -137,6 +137,7 @@ export default function CTASection({
             timeline: t.form.timelines[0],
             message: "",
             company_website: "",
+            startedAt: startedAtRef.current, // ✅ belangrijk voor geldige state
         },
     });
 
@@ -153,6 +154,7 @@ export default function CTASection({
                 timeline: t.form.timelines[0],
                 message: "",
                 company_website: "",
+                startedAt: Date.now(), // ✅ nieuwe sessie
             });
         }
     }, [isSubmitSuccessful, reset, t.form.projectTypes, t.form.timelines]);
@@ -160,28 +162,16 @@ export default function CTASection({
     const onSubmit = async (values: ContactInput) => {
         setServerMsg(null);
         const fd = new FormData();
-        Object.entries({ ...values, startedAt: startedAtRef.current }).forEach(
-            ([k, v]) => fd.append(k, String(v ?? ""))
+        Object.entries(values).forEach(([k, v]) =>
+            fd.append(k, String(v ?? ""))
         );
         const res = await sendContact(fd);
 
         if (res.ok) setServerMsg({ type: "ok", text: t.alerts.success });
         else if (res.code === "too_fast")
             setServerMsg({ type: "err", text: t.alerts.fast });
-        else {
-            setServerMsg({ type: "err", text: t.alerts.fail });
-            console.log("sendContact error:", res);
-        }
+        else setServerMsg({ type: "err", text: t.alerts.fail });
     };
-
-    const projectOptions = t.form.projectTypes.map((label) => ({
-        value: label,
-        label,
-    }));
-    const timelineOptions = t.form.timelines.map((label) => ({
-        value: label,
-        label,
-    }));
 
     return (
         <section
@@ -247,10 +237,14 @@ export default function CTASection({
                                     className="hidden"
                                     {...register("company_website")}
                                 />
+
+                                {/* Niet 'value' maar 'defaultValue' + valueAsNumber, zodat RHF het als number heeft */}
                                 <input
                                     type="hidden"
-                                    value={startedAtRef.current}
-                                    {...register("startedAt")}
+                                    defaultValue={startedAtRef.current}
+                                    {...register("startedAt", {
+                                        valueAsNumber: true,
+                                    })}
                                 />
 
                                 <div className="grid md:grid-cols-2 gap-6">
@@ -271,6 +265,9 @@ export default function CTASection({
                                                 locale === "nl"
                                                     ? "Jan Jansen"
                                                     : "John Doe"
+                                            }
+                                            aria-invalid={
+                                                !!errors.name || undefined
                                             }
                                         />
                                         {errors.name && (
@@ -299,6 +296,9 @@ export default function CTASection({
                                                 locale === "nl"
                                                     ? "jan@bedrijf.nl"
                                                     : "john@company.com"
+                                            }
+                                            aria-invalid={
+                                                !!errors.email || undefined
                                             }
                                         />
                                         {errors.email && (
@@ -403,6 +403,9 @@ export default function CTASection({
                                             locale === "nl"
                                                 ? "Vertel over je project, doelgroep en specifieke wensen..."
                                                 : "Tell me about your project, audience and any specific requirements..."
+                                        }
+                                        aria-invalid={
+                                            !!errors.message || undefined
                                         }
                                     />
                                     {errors.message && (
@@ -519,7 +522,7 @@ export default function CTASection({
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
-                                            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm8.75 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
+                                            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 0 7.75 3.5h-8.5Zm8.75 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
                                         </svg>
                                     </span>
                                     <span className="text-gray-300 group-hover:text-white transition-colors">
@@ -540,7 +543,7 @@ export default function CTASection({
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
-                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.063 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                                         </svg>
                                     </span>
                                     <span className="text-gray-300 group-hover:text-white transition-colors">

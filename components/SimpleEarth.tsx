@@ -135,6 +135,7 @@ export default function SimpleEarth() {
             <canvas
                 ref={canvasRef}
                 width={400}
+                height={"auto"}
                 className="rounded-full"
                 style={{
                     filter: "drop-shadow(0 0 20px rgba(59,130,246,0.3))",
