@@ -9,10 +9,7 @@ export const contactSchema = z.object({
     message: z
         .string()
         .min(20, { message: "Please write at least 20 characters" }),
-    // Honeypot -> client-side niet blokkeren; server-side controleren
-    company_website: z.string().optional(),
-    // Belangrijk: coerce naar number, anders blijft het formulier 'invalid'
-    startedAt: z.coerce.number().int().positive(),
+    company_website: z.string().optional(), // honeypot
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

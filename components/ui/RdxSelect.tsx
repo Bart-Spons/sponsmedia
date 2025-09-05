@@ -1,27 +1,52 @@
 "use client";
 import * as Select from "@radix-ui/react-select";
+import * as React from "react";
 
-type Option = { value: string; label: string };
+export type Option = { value: string; label: string };
+
+type Props = {
+    value?: string; // RHF field.value
+    onValueChange?: (v: string) => void; // RHF field.onChange
+    onBlur?: () => void; // RHF field.onBlur
+    options: Option[];
+    placeholder?: string;
+    className?: string;
+    disabled?: boolean;
+    id?: string;
+    name?: string;
+    "aria-invalid"?: boolean | "true" | "false";
+};
 
 export default function RdxSelect({
     value,
     onValueChange,
-    placeholder = "Select…",
+    onBlur,
     options,
+    placeholder = "Select…",
     className = "",
-}: {
-    value?: string;
-    onValueChange?: (v: string) => void;
-    placeholder?: string;
-    options: Option[];
-    className?: string;
-}) {
+    disabled,
+    id,
+    name,
+    "aria-invalid": ariaInvalid,
+}: Props) {
+    // voorkom uncontrolled→controlled warnings
+    const fallback = options[0]?.value ?? "";
+
     return (
-        <Select.Root value={value} onValueChange={onValueChange}>
+        <Select.Root
+            value={value ?? fallback}
+            onValueChange={onValueChange}
+            disabled={disabled}
+            name={name}
+        >
             <Select.Trigger
+                id={id}
+                onBlur={onBlur}
+                aria-invalid={ariaInvalid}
                 className={`w-full h-[48px] px-4 bg-black/30 border border-white/20 rounded-xl text-white text-left
           focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40
-          flex items-center justify-between ${className}`}
+          flex items-center justify-between ${className}
+          ${ariaInvalid ? "border-red-500" : ""}`}
                 aria-label={placeholder}
             >
                 <Select.Value placeholder={placeholder} />

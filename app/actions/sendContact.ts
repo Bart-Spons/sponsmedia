@@ -1,7 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
-import { contactSchema } from "@/lib/validators/contact";
+import { contactSchema } from "@/lib/validators/contact"; // schema ZONDER startedAt
 import { headers } from "next/headers";
 
 type SendResult =
@@ -22,12 +22,12 @@ export async function sendContact(fd: FormData): Promise<SendResult> {
     try {
         const raw = Object.fromEntries(fd.entries());
 
-        // Honeypot (server-side): als ingevuld => spam
+        // Honeypot (server-side)
         if (raw.company_website && String(raw.company_website).trim() !== "") {
             return { ok: false, code: "spam" };
         }
 
-        // Validate & coerce (incl. startedAt -> number)
+        // ✅ Valideer alleen de zichtbare formvelden (zonder startedAt)
         const parsed = contactSchema.safeParse(raw);
         if (!parsed.success) {
             console.error("contact validation failed", parsed.error.flatten());
@@ -35,9 +35,12 @@ export async function sendContact(fd: FormData): Promise<SendResult> {
         }
         const data = parsed.data;
 
-        // Tijd-val: te snel verstuurd? (bijv. < 5 sec)
-        const elapsed = Date.now() - data.startedAt;
-        if (elapsed < 5000) {
+        // ✅ startedAt apart parsen & beschermen
+        const startedAtNum = Number(raw.startedAt);
+        const hasStartedAt = Number.isFinite(startedAtNum);
+        const elapsed = hasStartedAt ? Date.now() - startedAtNum : null;
+
+        if (elapsed !== null && elapsed < 5000) {
             return { ok: false, code: "too_fast" };
         }
 
@@ -67,9 +70,13 @@ export async function sendContact(fd: FormData): Promise<SendResult> {
             data.message,
             "",
             `Submitted at: ${new Date().toISOString()}`,
-            `Started at: ${new Date(
-                data.startedAt
-            ).toISOString()} (${Math.round(elapsed / 1000)}s)`,
+            `Started at: ${
+                hasStartedAt
+                    ? `${new Date(startedAtNum).toISOString()} (${Math.round(
+                          (elapsed ?? 0) / 1000
+                      )}s)`
+                    : "-"
+            }`,
             `IP: ${ip}`,
             `UA: ${ua}`,
         ].join("\n");
@@ -82,7 +89,6 @@ export async function sendContact(fd: FormData): Promise<SendResult> {
             replyTo: data.email,
         });
 
-        // Het Resend SDK geeft bij fouten een 'error' terug
         if ((result as any)?.error) {
             console.error("Resend error:", (result as any).error);
             return { ok: false, code: "mail_error" };

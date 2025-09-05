@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactInput } from "@/lib/validators/contact";
 import { sendContact } from "@/app/actions/sendContact";
@@ -19,6 +19,7 @@ export default function CTASection({
     hideHero?: boolean;
     variant?: "full" | "compact";
 }) {
+    // We meten starttijd lokaal, buiten RHF/Zod om
     const startedAtRef = useRef<number>(Date.now());
     const [serverMsg, setServerMsg] = useState<{
         type: "ok" | "err";
@@ -137,7 +138,6 @@ export default function CTASection({
             timeline: t.form.timelines[0],
             message: "",
             company_website: "",
-            startedAt: startedAtRef.current, // ✅ belangrijk voor geldige state
         },
     });
 
@@ -154,17 +154,23 @@ export default function CTASection({
                 timeline: t.form.timelines[0],
                 message: "",
                 company_website: "",
-                startedAt: Date.now(), // ✅ nieuwe sessie
             });
+            // nieuwe starttijd voor de volgende submit
+            startedAtRef.current = Date.now();
         }
     }, [isSubmitSuccessful, reset, t.form.projectTypes, t.form.timelines]);
 
-    const onSubmit = async (values: ContactInput) => {
+    const onSubmit: SubmitHandler<ContactInput> = async (values) => {
         setServerMsg(null);
+
         const fd = new FormData();
         Object.entries(values).forEach(([k, v]) =>
             fd.append(k, String(v ?? ""))
         );
+
+        // ➕ startedAt alleen hier toevoegen (simpel, zonder Zod/RHF)
+        fd.append("startedAt", String(startedAtRef.current));
+
         const res = await sendContact(fd);
 
         if (res.ok) setServerMsg({ type: "ok", text: t.alerts.success });
@@ -172,6 +178,15 @@ export default function CTASection({
             setServerMsg({ type: "err", text: t.alerts.fast });
         else setServerMsg({ type: "err", text: t.alerts.fail });
     };
+
+    const projectOptions = t.form.projectTypes.map((label) => ({
+        value: label,
+        label,
+    }));
+    const timelineOptions = t.form.timelines.map((label) => ({
+        value: label,
+        label,
+    }));
 
     return (
         <section
@@ -229,22 +244,13 @@ export default function CTASection({
                                 onSubmit={handleSubmit(onSubmit)}
                                 noValidate
                             >
-                                {/* Honeypot + time-trap */}
+                                {/* Honeypot */}
                                 <input
                                     type="text"
                                     tabIndex={-1}
                                     autoComplete="off"
                                     className="hidden"
                                     {...register("company_website")}
-                                />
-
-                                {/* Niet 'value' maar 'defaultValue' + valueAsNumber, zodat RHF het als number heeft */}
-                                <input
-                                    type="hidden"
-                                    defaultValue={startedAtRef.current}
-                                    {...register("startedAt", {
-                                        valueAsNumber: true,
-                                    })}
                                 />
 
                                 <div className="grid md:grid-cols-2 gap-6">
@@ -329,7 +335,6 @@ export default function CTASection({
                                 </div>
 
                                 <div className="grid md:grid-cols-2 gap-6">
-                                    {/* Project Type */}
                                     <div className="w-full">
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
                                             {t.form.project}
@@ -337,25 +342,23 @@ export default function CTASection({
                                         <Controller
                                             name="projectType"
                                             control={control}
-                                            render={({ field }) => (
+                                            render={({ field, fieldState }) => (
                                                 <RdxSelect
                                                     value={field.value}
                                                     onValueChange={
                                                         field.onChange
                                                     }
+                                                    onBlur={field.onBlur}
+                                                    options={projectOptions}
                                                     placeholder={t.form.project}
-                                                    options={t.form.projectTypes.map(
-                                                        (label) => ({
-                                                            value: label,
-                                                            label,
-                                                        })
-                                                    )}
+                                                    aria-invalid={
+                                                        !!fieldState.error
+                                                    }
                                                 />
                                             )}
                                         />
                                     </div>
 
-                                    {/* Timeline */}
                                     <div className="w-full">
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
                                             {t.form.timeline}
@@ -363,21 +366,20 @@ export default function CTASection({
                                         <Controller
                                             name="timeline"
                                             control={control}
-                                            render={({ field }) => (
+                                            render={({ field, fieldState }) => (
                                                 <RdxSelect
                                                     value={field.value}
                                                     onValueChange={
                                                         field.onChange
                                                     }
+                                                    onBlur={field.onBlur}
+                                                    options={timelineOptions}
                                                     placeholder={
                                                         t.form.timeline
                                                     }
-                                                    options={t.form.timelines.map(
-                                                        (label) => ({
-                                                            value: label,
-                                                            label,
-                                                        })
-                                                    )}
+                                                    aria-invalid={
+                                                        !!fieldState.error
+                                                    }
                                                 />
                                             )}
                                         />
@@ -539,7 +541,7 @@ export default function CTASection({
                                 >
                                     <span className="w-6 h-6 flex items-center justify-center">
                                         <svg
-                                            className="w-5 h-5 text-[#0A66C2] transition-transform group-hover:scale-110"
+                                            className="w-5 h-5 text-[#0A66C2]"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
