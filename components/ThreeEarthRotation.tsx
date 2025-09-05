@@ -176,7 +176,7 @@ export default function ThreeEarthRotation({
             ref={mountRef}
             className={className}
             style={{
-                height: "450px",
+                width: "450px",
                 filter: "drop-shadow(0 0 30px rgba(59,130,246,0.4))",
                 opacity: 1,
                 transition: "none",

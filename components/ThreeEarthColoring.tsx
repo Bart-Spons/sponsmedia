@@ -413,7 +413,7 @@ export default function ThreeEarthColoring({
             ref={mountRef}
             className={className}
             style={{
-                height: "450px",
+                width: "450px",
                 position: "absolute",
                 top: 0,
                 left: 0,
