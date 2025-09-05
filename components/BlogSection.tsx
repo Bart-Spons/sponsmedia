@@ -46,7 +46,7 @@ export default function HomeBlogSection({
                     {posts.map((post) => (
                         <article
                             key={post.id}
-                            className="group rounded-3xl overflow-hidden border border-white/10 bg-[#0c0f14]
+                            className="group rounded-2xl overflow-hidden border border-white/10 bg-[#0c0f14]
                          ring-1 ring-white/5 hover:ring-[#e2b76f]/30 transition-all"
                         >
                             <Link
