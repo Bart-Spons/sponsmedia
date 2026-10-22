@@ -4,7 +4,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactInput } from "@/lib/validators/contact";
-import { sendContact } from "@/app/actions/sendContact";
+import { sendContact } from "@/lib/sendContact";
 import RdxSelect from "@/components/ui/RdxSelect";
 
 type Locale = "en" | "nl";
