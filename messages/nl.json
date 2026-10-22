@@ -67,9 +67,15 @@
         "readyTitle": "Klaar om Je Project te Starten?",
         "readySubtitle": "Laten we bespreken hoe ik je visie tot leven kan brengen met dezelfde aandacht voor detail en kwaliteit.",
         "startProject": "Start een Project",
-        "viewMoreProjects": "Bekijk Meer Projecten"
+        "viewMoreProjects": "Bekijk Meer Projecten",
+        "index": "Index",
+        "showcase": "Uitgelicht werk",
+        "yourProject": "Jouw project, als volgende?",
+        "nextCase": "Volgende case",
+        "scrollHint": "Scroll",
+        "builtWith": "Gemaakt met",
+        "year": "Jaar"
     },
-
     "CTA": {
         "title": "Laten We Iets Geweldigs Bouwen",
         "subtitle": "Klaar om je digitale aanwezigheid te transformeren? Vertel ons over je project en we creëren een oplossing die je verwachtingen overtreft.",
@@ -103,7 +109,6 @@
             "submitButton": "Verstuur Bericht",
             "submittingButton": "Versturen..."
         },
-
         "success": {
             "title": "Bericht Succesvol Verzonden!",
             "message": "Bedankt voor je bericht! We hebben je bericht ontvangen en nemen contact met je op.",
@@ -126,5 +131,31 @@
         "eyebrow": "NEEM CONTACT OP",
         "title": "Vertel me over jouw project",
         "subtitle": "Deel je doelen en uitdagingen. Ik reageer met vervolgstappen en een helder plan."
+    },
+    "Home": {
+        "kicker": "Webdevelopment, digital design en social media",
+        "headline": "Word online gezien.",
+        "focusWords": "Websites|Design|Social",
+        "sub": "Krijg meer bezoekers op je website en meer volgers op je social media.",
+        "seeWork": "Bekijk ons werk",
+        "startProject": "Start een project",
+        "recentFor": "Recent werk voor",
+        "statement": "Goed werk verdient het om gevonden te worden. We bouwen snelle websites, ontwerpen wat blijft hangen en maken content voor de feed, zodat meer van de juiste mensen je zien.",
+        "workTitle": "Geselecteerd werk",
+        "workIntro": "Een paar projecten waar we trots op zijn. Ze begonnen allemaal met dezelfde vraag: wie moet dit vinden, en hoe zorgen we dat ze het zien?",
+        "viewCase": "Lees de case",
+        "allProjects": "Alle projecten",
+        "servicesTitle": "Wat we doen",
+        "servicesIntro": "Drie disciplines, één doel. Kies er één of combineer ze.",
+        "included": "Wat je krijgt",
+        "tools": "Tools",
+        "showDetails": "Toon details",
+        "hideDetails": "Verberg details",
+        "allServices": "Alle diensten",
+        "blogTitle": "Van de blog",
+        "allPosts": "Alle artikelen",
+        "ctaTitle": "Heb je een project in gedachten?",
+        "ctaSub": "Vertel wat je wilt bereiken en je krijgt een reactie met duidelijke vervolgstappen.",
+        "orMail": "Of mail ons direct"
     }
 }

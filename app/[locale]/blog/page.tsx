@@ -1,9 +1,9 @@
 // app/[locale]/blog/page.tsx
-import Link from "next/link";
-import { Suspense } from "react";
 import Script from "next/script";
 import type { Metadata } from "next";
 import InteractiveBlogGrid from "@/components/InteractiveBlogGrid";
+import PageHeader from "@/components/PageHeader";
+import Choreography from "@/components/motion/Choreography";
 import { blogData } from "@/lib/data/blog";
 
 export async function generateStaticParams() {
@@ -75,48 +75,24 @@ export default async function BlogIndex({
     };
 
     return (
-        <div className="container py-16">
-            {/* JSON-LD */}
+        <Choreography>
             <Script id="blog-schema" type="application/ld+json">
                 {JSON.stringify(blogSchema)}
             </Script>
 
-            {/* Hero */}
-            <header className="mb-14 text-center">
-                <span className="text-ms font-semibold tracking-wider text-[#e2b76f]">
-                    {isNL ? "INZICHTEN & EXPERTISE" : "INSIGHTS & EXPERTISE"}
-                </span>
-                <h1 className="text-3xl md:text-6xl font-extrabold mt-3 mb-5 text-white">
-                    Blog
-                </h1>
-                <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
-                <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                    {isNL
-                        ? "Blijf voorop met de laatste inzichten in web development, digitaal ontwerp en marketing strategieën. Expert kennis om je online aanwezigheid te laten groeien."
-                        : "Stay ahead with the latest insights in web development, digital design, and marketing strategies. Expert knowledge to grow your online presence."}
-                </p>
-            </header>
-
-            {/* Grid */}
-            <Suspense
-                fallback={
-                    <div className="flex items-center justify-center py-16">
-                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#e2b76f]" />
-                    </div>
+            <PageHeader
+                title="Blog"
+                lens={false}
+                intro={
+                    isNL
+                        ? "Inzichten over webdevelopment, digitaal ontwerp en marketing. Praktische kennis om je online zichtbaarheid te laten groeien."
+                        : "Insights on web development, digital design and marketing. Practical knowledge to grow your visibility online."
                 }
-            >
-                <InteractiveBlogGrid posts={blogData} locale={locale} />
-            </Suspense>
+            />
 
-            {/* CTA to RSS (optioneel) */}
-            {/* <div className="mt-10 text-center text-sm text-gray-400">
-        <Link
-          className="hover:text-primary transition-colors"
-          href={`/${locale}/blog/rss.xml`}
-        >
-          RSS feed
-        </Link>
-      </div> */}
-        </div>
+            <div className="container pb-28 md:pb-44">
+                <InteractiveBlogGrid posts={blogData} locale={locale} />
+            </div>
+        </Choreography>
     );
 }

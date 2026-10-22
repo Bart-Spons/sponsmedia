@@ -27,9 +27,6 @@ const copy = {
         whoP1: "I started coding as a teenager, and the moment I shipped my first project to the web, there was no going back.",
         whoP2: "I moved from the south of the Netherlands to Amsterdam for university and recently graduated. During my degree I spent a year studying in the United States and later worked for a year in Japan at an international branding and marketing agency. That path gave me a front-row view of how digital behaviour and marketing differ across cultures.",
         whoP3: "Over the last few years I’ve noticed a pattern: many websites look great but load slowly or break on mobile. And many social accounts publish good content but still don’t grow.",
-        mainFocusStrong: "Main focus:",
-        mainFocusTail:
-            " make your digital presence perform — faster websites, higher search rankings, more visitors, and social audiences that actually grow.",
 
         linksLead: "Connect & see work:",
         socials: {
@@ -52,25 +49,6 @@ const copy = {
             "15+ projects",
         ],
 
-        // What I do
-        whatTitle: "What I Do",
-        whatLead: "Let’s skip the fluff and keep it practical.",
-        whatDevTitle: "Development",
-        whatDevBody:
-            "Fast, secure, accessible websites and apps — optimized for speed and search. Built with modern frameworks and clean code that scales.",
-        whatDevStack:
-            "Next.js • React • TypeScript • Tailwind CSS • Headless WordPress",
-        whatDesignTitle: "Design",
-        whatDesignBody:
-            "UI/UX that looks great and converts. Design systems, component libraries and brand-consistent visuals that are easy to ship.",
-        whatDesignStack: "Figma • Framer • Design Systems • Accessibility",
-        whatStratTitle: "Strategy",
-        whatStratBody:
-            "Data-driven growth: SEO that ranks, social that reaches and analytics that guide decisions.",
-        whatStratStack: "SEO • Social Media • Analytics • Content Strategy",
-        whatDevLink: "See services →",
-        whatDesignLink: "See work →",
-        whatStratLink: "Read insights →",
 
         // CTA
         ctaMidTitle: "Ready to talk?",
@@ -95,9 +73,6 @@ const copy = {
         whoP1: "Als tiener begon ik met programmeren en vanaf het moment dat ik mijn eerste project online zette, was er geen weg meer terug.",
         whoP2: "Ik verhuisde vanuit het zuiden van Nederland naar Amsterdam voor mijn studie die ik recent heb afgerond. Tijdens mijn studie heb ik een jaar in de Verenigde Staten gestudeerd en later een jaar in Japan gewerkt bij een internationaal branding- en marketingbureau. Deze ervaringen gaven me een uniek inkijkje in hoe digitaal gedrag en marketing per cultuur verschillen.",
         whoP3: "De afgelopen jaren viel me iets op: veel websites zien er goed uit, maar laden traag of werken slecht op mobiel. En veel social-accounts plaatsen goede content, maar groeien tóch niet.",
-        mainFocusStrong: "Hoofdfocus:",
-        mainFocusTail:
-            " Jouw digitale aanwezigheid verbeteren — snellere websites, hogere zoekposities, meer bezoekers en social media pagina's die wél groeien.",
 
         linksLead: "Connect & bekijk werk:",
         socials: {
@@ -120,25 +95,6 @@ const copy = {
             "15+ projecten",
         ],
 
-        // Wat ik doe
-        whatTitle: "Wat ik doe",
-        whatLead: "Zonder ruis — praktisch en helder.",
-        whatDevTitle: "Development",
-        whatDevBody:
-            "Snelle, veilige en toegankelijke websites en apps — geoptimaliseerd voor performance en vindbaarheid. Met moderne frameworks en schaalbare, schone code.",
-        whatDevStack:
-            "Next.js • React • TypeScript • Tailwind CSS • Headless WordPress",
-        whatDesignTitle: "Design",
-        whatDesignBody:
-            "UI/UX die er goed uitziet én converteert. Design systems, component libraries en consistente visuals die snel te bouwen zijn.",
-        whatDesignStack: "Figma • Framer • Design Systems • Toegankelijkheid",
-        whatStratTitle: "Strategie",
-        whatStratBody:
-            "Data-gedreven groei: SEO die scoort, social dat bereik opbouwt en analytics die keuzes onderbouwen.",
-        whatStratStack: "SEO • Social Media • Analytics • Content Strategie",
-        whatDevLink: "Bekijk diensten →",
-        whatDesignLink: "Bekijk werk →",
-        whatStratLink: "Lees inzichten →",
 
         // CTA
         ctaMidTitle: "Klaar om te sparren?",
@@ -247,14 +203,6 @@ export default async function AboutPage({
     return (
         <div className="min-h-screen bg-space">
             <section className="container py-16 relative">
-                {/* soft background accents */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0"
-                >
-                    <div className="absolute -top-32 -left-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(226,183,111,0.18),transparent)] blur-2xl" />
-                    <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(255,200,97,0.14),transparent)] blur-2xl" />
-                </div>
 
                 {/* JSON-LD */}
                 <script
@@ -271,14 +219,8 @@ export default async function AboutPage({
                 />
 
                 {/* HERO */}
-                <div className="text-center max-w-4xl mx-auto mb-10 relative z-10">
-                    <p className="text-ms font-semibold tracking-[0.2em] text-primary">
-                        {t.eyebrow}
-                    </p>
-                    <h1 className="text-5xl md:text-6xl font-extrabold mt-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                        {t.h1}
-                    </h1>
-                    <div className="mx-auto mt-5 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
+                <div className="relative z-10 mb-14 pt-8 md:mb-20 md:pt-16">
+                    <h1 className="display text-[clamp(3rem,8vw,7rem)]">{t.h1}</h1>
                 </div>
 
                 {/* STORY + PHOTO */}
@@ -288,7 +230,7 @@ export default async function AboutPage({
                             {/* Image */}
                             <div className="relative h-full min-h-[320px] lg:min-h-[520px] rounded-3xl overflow-hidden border border-white/15 shadow-xl">
                                 <Image
-                                    src="/placeholders/jp.png"
+                                    src="/placeholders/jp-1800.webp"
                                     alt="Bart Spons — Web Developer"
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 480px"
@@ -315,12 +257,6 @@ export default async function AboutPage({
                                     <p>{t.whoP1}</p>
                                     <p>{t.whoP2}</p>
                                     <p>{t.whoP3}</p>
-                                    <p>
-                                        <strong className="text-white">
-                                            {t.mainFocusStrong}
-                                        </strong>
-                                        {t.mainFocusTail}
-                                    </p>
                                     <p>{t.linksLead}</p>
                                 </div>
 
@@ -330,7 +266,7 @@ export default async function AboutPage({
                                         href="https://www.linkedin.com/in/bartspons/"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                         aria-label={`${t.socials.linkedin} (opens in new tab)`}
                                     >
                                         <svg
@@ -348,7 +284,7 @@ export default async function AboutPage({
                                         href="https://bartspons.com"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                         aria-label={`${t.socials.site} (opens in new tab)`}
                                     >
                                         <svg
@@ -390,90 +326,6 @@ export default async function AboutPage({
                         </div>
                     </div>
                 </div>
-
-                {/* WHAT I DO */}
-                {/* What I Do */}
-                <section className="container py-16">
-                    <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold text-white mb-3">
-                            {t.whatTitle}
-                        </h2>
-                        <p className="text-gray-300">{t.whatLead}</p>
-                    </div>
-
-                    {/* stretch alle items even hoog */}
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch">
-                        {/* Development */}
-                        <article className="group h-full rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col hover:bg-white/10 transition-colors">
-                            <div className="text-3xl mb-4">💻</div>
-                            <h3 className="text-xl font-bold text-white mb-2">
-                                {t.whatDevTitle}
-                            </h3>
-                            <p className="text-gray-300 leading-relaxed">
-                                {t.whatDevBody}
-                            </p>
-                            <div className="mt-4 text-sm text-gray-400">
-                                {t.whatDevStack}
-                            </div>
-
-                            {/* CTA onderaan */}
-                            <div className="mt-auto pt-6">
-                                <Link
-                                    href={`/${locale}/services`}
-                                    className="text-primary group-hover:text-accent"
-                                >
-                                    {t.whatDevLink}
-                                </Link>
-                            </div>
-                        </article>
-
-                        {/* Design */}
-                        <article className="group h-full rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col hover:bg-white/10 transition-colors">
-                            <div className="text-3xl mb-4">🎨</div>
-                            <h3 className="text-xl font-bold text-white mb-2">
-                                {t.whatDesignTitle}
-                            </h3>
-                            <p className="text-gray-300 leading-relaxed">
-                                {t.whatDesignBody}
-                            </p>
-                            <div className="mt-4 text-sm text-gray-400">
-                                {t.whatDesignStack}
-                            </div>
-
-                            <div className="mt-auto pt-6">
-                                <Link
-                                    href={`/${locale}/projects`}
-                                    className="text-primary group-hover:text-accent"
-                                >
-                                    {t.whatDesignLink}
-                                </Link>
-                            </div>
-                        </article>
-
-                        {/* Strategy */}
-                        <article className="group h-full rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col hover:bg-white/10 transition-colors">
-                            <div className="text-3xl mb-4">📈</div>
-                            <h3 className="text-xl font-bold text-white mb-2">
-                                {t.whatStratTitle}
-                            </h3>
-                            <p className="text-gray-300 leading-relaxed">
-                                {t.whatStratBody}
-                            </p>
-                            <div className="mt-4 text-sm text-gray-400">
-                                {t.whatStratStack}
-                            </div>
-
-                            <div className="mt-auto pt-6">
-                                <Link
-                                    href={`/${locale}/blog`}
-                                    className="text-primary group-hover:text-accent"
-                                >
-                                    {t.whatStratLink}
-                                </Link>
-                            </div>
-                        </article>
-                    </div>
-                </section>
 
                 {/* PROOF & TRUST */}
                 <ProofTrust

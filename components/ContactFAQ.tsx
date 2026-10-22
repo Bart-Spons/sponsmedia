@@ -84,32 +84,39 @@ export default function ContactFAQ({ locale }: { locale: Locale }) {
     return (
         <section
             aria-labelledby="faq-heading"
-            className="mt-12 sm:mt-16 lg:mt-20"
+            className="mt-28 md:mt-44"
         >
             <h2
                 id="faq-heading"
-                className="text-2xl md:text-3xl font-extrabold tracking-tight mb-4"
+                className="display mb-10 text-[clamp(2.5rem,5.5vw,5rem)] md:mb-14"
             >
                 {locale === "nl"
                     ? "Veelgestelde vragen"
                     : "Frequently Asked Questions"}
             </h2>
 
-            <div className="divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/5">
+            <div className="border-b border-line">
                 {items.map((item, i) => (
-                    <details key={i} className="group [&_summary]:list-none">
-                        <summary className="w-full cursor-pointer px-5 py-4 flex items-start justify-between">
-                            <span className="text-base md:text-lg font-semibold text-white">
-                                {item.q}
+                    <details key={i} data-row className="faq group relative [&_summary]:list-none">
+                        <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
+                        <summary className="flex w-full cursor-pointer items-start justify-between gap-6 py-7 md:py-9 [&::-webkit-details-marker]:hidden">
+                            <span className="overflow-hidden">
+                                <span
+                                    data-row-text
+                                    className="block text-[clamp(1.25rem,2.4vw,2rem)] font-bold leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary"
+                                >
+                                    {item.q}
+                                </span>
                             </span>
                             <span
                                 aria-hidden
-                                className="ml-4 mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-primary transition-transform duration-300 group-open:rotate-45"
+                                className="relative mt-1 h-10 w-10 shrink-0 rounded-full border border-line transition-colors duration-300 group-open:border-primary"
                             >
-                                +
+                                <span className="absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 bg-frost" />
+                                <span className="absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 rotate-90 bg-frost transition-transform duration-500 group-open:rotate-0" />
                             </span>
                         </summary>
-                        <div className="px-5 pb-5 pt-0 text-gray-300">
+                        <div className="max-w-[62ch] pb-9 text-lg leading-relaxed text-frost/75">
                             <p>{item.a}</p>
                         </div>
                     </details>

@@ -10,3 +10,6 @@ static-deploy/
 deploy/
 
 
+
+# Claude Code skill downloaded from GitHub (kept local)
+.claude/skills/ui-ux-pro-max/

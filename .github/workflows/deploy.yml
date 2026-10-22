@@ -1,0 +1,48 @@
+# Bouwt de site en zet hem live op Hostinger bij elke push naar main.
+#
+# Eenmalig instellen in GitHub: Settings → Secrets and variables → Actions → New repository secret
+#   FTP_SERVER    bijv. ftp.sponsmedia.com (staat in Hostinger hPanel → Files → FTP Accounts)
+#   FTP_USERNAME  je FTP-gebruikersnaam
+#   FTP_PASSWORD  je FTP-wachtwoord
+#
+# Vereist dat next.config.mjs bij een productie-build `output: "export"` gebruikt,
+# zodat `npm run build` de statische site in de map `out/` zet.
+
+name: Deploy naar Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # handmatig starten via het tabblad Actions
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      - name: Statische site bouwen
+        run: npm run build
+
+      - name: Uploaden naar Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./out/
+          # Map op de server waar je website staat. Bij Hostinger meestal public_html/.
+          server-dir: ./public_html/

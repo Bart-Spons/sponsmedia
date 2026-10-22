@@ -10,12 +10,20 @@ export default {
     theme: {
         extend: {
             colors: {
-                background: "#000000",
-                foreground: "#ffffff",
-                muted: "#141414",
-                "muted-foreground": "#b3b3b3",
-                primary: { DEFAULT: "#e2b76f", foreground: "#000000" }, // gold
-                accent: { DEFAULT: "#ffc861", foreground: "#000000" }, // lighter hover gold
+                night: "#0c1424",
+                deep: "#131e35",
+                frost: "#eaf0f8",
+                haze: "#8e9ab0",
+                line: "rgba(234,240,248,0.12)",
+                background: "#0c1424",
+                foreground: "#eaf0f8",
+                muted: "#131e35",
+                "muted-foreground": "#8e9ab0",
+                primary: { DEFAULT: "#e2b76f", foreground: "#0c1424" }, // brand gold
+                accent: { DEFAULT: "#f3cb86", foreground: "#0c1424" },
+            },
+            fontFamily: {
+                sans: ['"Schibsted Grotesk"', "ui-sans-serif", "system-ui", "sans-serif"],
             },
             borderRadius: { "2xl": "1rem" },
 
@@ -24,7 +32,7 @@ export default {
                 DEFAULT: {
                     css: {
                         // color tokens
-                        "--tw-prose-body": theme("colors.gray.200"),
+                        "--tw-prose-body": "#c9d2e0",
                         "--tw-prose-headings": theme("colors.white"),
                         "--tw-prose-links": theme("colors.primary.DEFAULT"),
                         "--tw-prose-bold": theme("colors.white"),
@@ -43,7 +51,7 @@ export default {
                         "p.lead": {
                             fontSize: theme("fontSize.xl")[0],
                             lineHeight: "1.8",
-                            color: theme("colors.gray.200"),
+                            color: "#c9d2e0",
                             marginBottom: theme("spacing.6"),
                         },
 
@@ -132,7 +140,7 @@ export default {
                 // expliciete dark variant (werkt met class "prose-invert")
                 invert: {
                     css: {
-                        "--tw-prose-body": theme("colors.gray.300"),
+                        "--tw-prose-body": "#c9d2e0",
                         "--tw-prose-headings": theme("colors.white"),
                         "--tw-prose-links": theme("colors.primary.DEFAULT"),
                         "--tw-prose-bold": theme("colors.white"),

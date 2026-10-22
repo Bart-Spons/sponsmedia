@@ -1,229 +1,228 @@
+@import url("https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------
+   SponsMedia design tokens
+   night  – page background (deep navy, not black)
+   deep   – raised surfaces
+   frost  – primary text
+   haze   – secondary text
+   gold   – brand accent, used sparingly for actions and focus
+---------------------------------------------------------------- */
 :root {
+    --night: #0c1424;
+    --deep: #131e35;
+    --frost: #eaf0f8;
+    --haze: #8e9ab0;
+    --gold: #e2b76f;
+    --gold-bright: #f3cb86;
+    --line: rgba(234, 240, 248, 0.12);
     --radius: 1rem;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: var(--night);
+    color: var(--frost);
 }
 
-/* Mobile overflow prevention only */
-@media (max-width: 768px) {
-    html,
-    body {
-        overflow-x: hidden;
-        max-width: 100vw;
-    }
-
-    /* Ensure all elements stay within viewport */
-    * {
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Force text wrapping on mobile */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p,
-    div,
-    span,
-    a {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        word-break: break-word;
-        hyphens: auto;
-    }
-
-    /* Prevent wide elements from causing overflow */
-    pre,
-    code {
-        overflow-x: auto;
-        max-width: 100%;
-    }
-
-    /* Additional mobile container constraints */
-    .container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
-
-    /* Ensure grid items don't overflow */
-    .grid > * {
-        min-width: 0;
-        overflow: hidden;
-    }
+body {
+    font-family: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01", "kern";
+    overflow-x: clip;
 }
 
-/* Prevent text overflow on all elements */
-* {
-    word-wrap: break-word;
+/* Lenis */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+    overflow: clip;
+}
+
+h1,
+h2,
+h3 {
     overflow-wrap: break-word;
+    text-wrap: balance;
+}
+p {
+    text-wrap: pretty;
+}
+
+:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
 }
 
 .container {
-    @apply mx-auto max-w-7xl px-3 sm:px-4;
-    width: 100%;
-    /* Remove max-width: 100vw; here! */
+    @apply mx-auto w-full max-w-[86rem] px-4 sm:px-6 lg:px-10;
 }
 
-/* Mobile container constraints */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        max-width: 100vw !important;
-    }
-}
-
-/* Gradient background */
+/* The old radial background, now a single quiet navy field */
 .bg-space {
-    background: radial-gradient(
-        ellipse at center top,
-        #121212 0%,
-        #000000 100%
-    );
-}
-
-.canvas {
-    justify-self: center;
+    background: var(--night);
 }
 
 select option {
-    background-color: #181c24; /* dark dropdown background */
-    color: #fff; /* white text */
+    background-color: var(--deep);
+    color: var(--frost);
 }
 
 @layer components {
-    /* Per-afbeelding varianten (kun je combineren met prose) */
     .blog-img-sm {
         max-width: 55% !important;
     }
     .blog-img-md {
         max-width: 70% !important;
-    } /* net iets groter dan default desktop */
+    }
     .blog-img-lg {
         max-width: 90% !important;
     }
     .blog-img-full {
         max-width: 100% !important;
     }
-
-    /* Optioneel: captions mooi maken als je <figcaption> gebruikt */
     .blog-figure {
         text-align: center;
     }
     .blog-figure figcaption {
         margin-top: 0.5rem;
         font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.65);
+        color: var(--haze);
+    }
+
+    /* Display type: tight, heavy, a little condensed in feel */
+    .display {
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 0.92;
+    }
+
+    /* Hairline that separates rows of content */
+    .rule {
+        border-top: 1px solid var(--line);
     }
 }
 
-/* Dotted moving overlay */
-.dots-overlay {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(white 1px, transparent 1px);
-    background-size: 3px 3px;
-    opacity: 0.04;
-    animation: starMovement 60s linear infinite;
-    z-index: 0;
-}
-@keyframes starMovement {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: 100% 100%;
-    }
-}
-
-/* Custom animations */
-@keyframes spin-slow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes float {
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes pulse-glow {
-    0%,
-    100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.05);
-    }
-}
-
-/* 3D Utilities */
-.preserve-3d {
-    transform-style: preserve-3d;
-}
-
-.perspective-1000 {
-    perspective: 1000px;
-}
-
-.backface-hidden {
-    backface-visibility: hidden;
-}
-
-.animate-spin-slow {
-    animation: spin-slow 10s linear infinite;
-}
-
-.animate-float {
-    animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Buttons */
+/* Buttons (kept for the pages that still use them) */
 .btn {
-    @apply inline-flex items-center gap-2 rounded px-3 sm:px-4 py-2 text-sm transition min-w-0 overflow-hidden;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
 }
 .btn-primary {
-    background: #e2b76f;
-    color: #000;
+    background: var(--gold);
+    color: var(--night);
 }
 .btn-primary:hover {
-    background: #ffc861;
+    background: var(--gold-bright);
 }
 .btn-ghost {
-    @apply border border-white/10 hover:bg-white/5;
+    border: 1px solid var(--line);
+    color: var(--frost);
+}
+.btn-ghost:hover {
+    background: rgba(234, 240, 248, 0.06);
 }
 
 /* Input */
 .input {
-    @apply rounded text-[1rem] px-4 py-3 outline-none w-full max-w-xs;
-    background: #ffffff;
-    color: #000000;
+    @apply w-full max-w-xs rounded-xl px-4 py-3 text-[1rem] outline-none;
+    background: var(--deep);
+    color: var(--frost);
+    border: 1px solid var(--line);
 }
 .input:focus {
-    box-shadow: 0 0 8px #e2b76f;
+    border-color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------------------------------------------------------------
+   Motion helpers
+---------------------------------------------------------------- */
+
+/* SplitTitle: hidden until GSAP has split it; failsafe shows it after 2.5s */
+@media (prefers-reduced-motion: no-preference) {
+    .split-pending {
+        visibility: hidden;
+        animation: split-failsafe 0s linear 2.5s forwards;
+    }
+}
+@keyframes split-failsafe {
+    to {
+        visibility: visible;
+    }
+}
+
+
+/* Horizontal reel: stacked by default, a pinned sideways track once GSAP enables it */
+.h-reel[data-horizontal] .h-reel-track {
+    flex-direction: row;
+    width: max-content;
+    height: 100svh;
+    align-items: center;
+}
+
+/* Autofocus lens (components/motion/FocusTitle.tsx).
+   Without the lens (no JS, reduced motion) the sharp heading shows as normal. */
+.focus-lens .focus-ghost {
+    visibility: hidden;
+}
+.focus-lens[data-lens] .focus-ghost {
+    visibility: visible;
+    opacity: 0.4;
+    filter: blur(14px);
+}
+.focus-lens[data-lens] .focus-sharp {
+    -webkit-mask-image: radial-gradient(circle var(--m, var(--r)) at var(--x) var(--y), #000 70%, transparent 100%);
+    mask-image: radial-gradient(circle var(--m, var(--r)) at var(--x) var(--y), #000 70%, transparent 100%);
+}
+/* Parked: the title is plain and sharp, only the ring stays */
+.focus-lens[data-lens="parked"] .focus-sharp {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+.focus-lens[data-lens="parked"] .focus-ghost {
+    visibility: hidden;
+}
+.focus-lens[data-lens] .focus-ring {
+    display: block;
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    transform: translate(calc(var(--x) - var(--r)), calc(var(--y) - var(--r)));
+}
+
+/* FAQ: answers glide open where the browser can animate to height: auto */
+:root {
+    interpolate-size: allow-keywords;
+}
+@media (prefers-reduced-motion: no-preference) {
+    details.faq::details-content {
+        height: 0;
+        overflow: clip;
+        transition: height 0.6s var(--ease-out), content-visibility 0.6s allow-discrete;
+    }
+    details.faq[open]::details-content {
+        height: auto;
+    }
 }

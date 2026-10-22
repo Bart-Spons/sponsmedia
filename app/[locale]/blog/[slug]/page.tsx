@@ -5,6 +5,10 @@ import Image from "next/image";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { blogData } from "@/lib/data/blog";
+import Choreography from "@/components/motion/Choreography";
+import SplitTitle from "@/components/motion/SplitTitle";
+import ReadingProgress from "@/components/motion/ReadingProgress";
+import NextCase from "@/components/projects/NextCase";
 
 // Helpers
 function getLocalePost(post: any, locale: "en" | "nl") {
@@ -17,6 +21,7 @@ function getLocalePost(post: any, locale: "en" | "nl") {
         tags: (L && post.tagsNl ? post.tagsNl : post.tags) || [],
         author: post.author,
         image: post.image,
+        cover: post.cover as string | undefined,
         publishDate: post.publishDate,
     };
 }
@@ -163,9 +168,12 @@ export default async function BlogPost({
         ],
     };
 
+    const following = next ?? prev;
+    const url = `https://sponsmedia.com/${locale}/blog/${slug}`;
+
     return (
-        <div className="container py-10 md:py-16 max-w-4xl mx-auto">
-            {/* JSON-LD */}
+        <Choreography>
+            <ReadingProgress />
             <Script id="article-schema" type="application/ld+json">
                 {JSON.stringify(articleSchema)}
             </Script>
@@ -173,199 +181,123 @@ export default async function BlogPost({
                 {JSON.stringify(breadcrumbSchema)}
             </Script>
 
-            {/* Back */}
-            <nav className="mb-8">
-                <Link
-                    href={`/${locale}/blog`}
-                    className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
-                >
-                    <svg
-                        className="w-5 h-5 transition-transform group-hover:-translate-x-1"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 19l-7-7 7-7"
-                        />
-                    </svg>
-                    {isNL ? "Terug naar Blog" : "Back to Blog"}
-                </Link>
-            </nav>
-
             <article>
-                {/* Header */}
-                <header className="mb-8 text-center">
-                    {post.tags.length > 0 && (
-                        <div className="flex flex-wrap justify-center gap-2 mb-5">
-                            {post.tags.map((tag: string) => (
-                                <span
-                                    key={tag}
-                                    className="px-3 py-1 text-sm bg-white/5 text-gray-300 rounded-full border border-white/10"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                <header className="container pt-10 md:pt-16">
+                    <Link
+                        href={`/${locale}/blog`}
+                        className="text-sm text-haze transition-colors hover:text-frost"
+                    >
+                        ← {isNL ? "Terug naar blog" : "Back to blog"}
+                    </Link>
 
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
-                        {post.title}
-                    </h1>
-
-                    <div className="text-sm text-gray-400 flex flex-wrap items-center justify-center gap-4">
-                        <span>{post.author}</span>
-                        <span>•</span>
+                    <div data-meta className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-haze md:mt-20">
                         <time dateTime={post.publishDate}>
-                            {new Date(post.publishDate).toLocaleDateString(
-                                isNL ? "nl-NL" : "en-US",
-                                {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                }
-                            )}
+                            {new Date(post.publishDate).toLocaleDateString(isNL ? "nl-NL" : "en-GB", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            })}
                         </time>
-                        <span>•</span>
+                        <span aria-hidden className="h-1 w-1 rounded-full bg-primary" />
                         <span>
                             {readTime} {isNL ? "min lezen" : "min read"}
                         </span>
+                        <span aria-hidden className="h-1 w-1 rounded-full bg-primary" />
+                        <span>{post.author}</span>
+                        {post.tags.length > 0 && (
+                            <span className="flex flex-wrap gap-2 md:ml-auto">
+                                {post.tags.map((tag: string) => (
+                                    <span key={tag} className="rounded-full border border-line px-3 py-1 text-xs">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </span>
+                        )}
                     </div>
+
+                    <SplitTitle
+                        as="h1"
+                        trigger="load"
+                        by="words"
+                        text={post.title}
+                        className="display mt-6 max-w-[18ch] text-[clamp(2.5rem,6.5vw,6rem)]"
+                    />
                 </header>
 
-                {/* Hero image */}
-                {post.image && (
-                    <div className="relative w-full max-w-3xl mx-auto h-[220px] md:h-[320px] lg:h-[380px] rounded-2xl overflow-hidden mb-8 shadow-lg">
-                        <Image
-                            src={post.image}
-                            alt={post.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 800px"
-                            className="object-contain object-center"
-                            priority={false}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/0 to-transparent" />
+                {/* Cover: a modest illustration in the reading column */}
+                {(post.cover ?? post.image) && (
+                    <div className="container mt-12 md:mt-16">
+                        <div
+                            data-rise
+                            className="relative mx-auto aspect-[16/10] max-w-[68ch] overflow-hidden rounded-[1.25rem] bg-deep md:max-w-[min(68ch,60rem)]"
+                        >
+                            <Image
+                                src={post.cover ?? post.image}
+                                alt=""
+                                fill
+                                priority
+                                sizes="(min-width: 768px) 60rem, 100vw"
+                                className="object-cover"
+                            />
+                        </div>
                     </div>
                 )}
 
                 {/* Body */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-6 md:p-10 shadow-xl">
+                <div className="container py-12 md:py-20">
                     <div
+                        data-rise
                         className="
-              prose prose-invert prose-lg max-w-none
-              prose-headings:font-black prose-headings:tracking-tight
-              prose-a:no-underline hover:prose-a:text-accent
-              prose-strong:text-white
-              prose-code:bg-gray-900/60 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+              prose prose-invert prose-lg mx-auto max-w-[68ch] md:prose-xl
+              prose-headings:font-extrabold prose-headings:tracking-[-0.03em]
+              prose-p:text-frost/80 prose-li:text-frost/80
+              prose-a:text-primary prose-a:no-underline hover:prose-a:text-accent
+              prose-strong:text-frost
+              prose-code:bg-deep prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
               prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:rounded-xl prose-blockquote:p-4
               prose-img:mx-0 prose-img:w-full md:prose-img:max-w-[70%] lg:prose-img:max-w-[58%]
-              prose-img:rounded-2xl prose-img:ring-1 prose-img:ring-white/10 prose-img:shadow-xl
+              prose-img:rounded-2xl prose-img:ring-1 prose-img:ring-white/10
               prose-ul:marker:text-primary prose-ol:marker:text-primary
             "
                         dangerouslySetInnerHTML={{ __html: enhancedHtml }}
                     />
 
-                    {/* Share bar */}
-                    <div className="mt-10 p-6 bg-white/5 rounded-xl border border-white/10">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div className="text-sm text-gray-300">
-                                <p className="font-semibold mb-1">
-                                    {isNL
-                                        ? "Artikel interessant?"
-                                        : "Enjoyed this article?"}
-                                </p>
-                                <p>
-                                    {isNL
-                                        ? "Deel het met je netwerk!"
-                                        : "Share it with your network!"}
-                                </p>
-                            </div>
-                            <div className="flex gap-3">
-                                <a
-                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                                        post.title
-                                    )}&url=${encodeURIComponent(
-                                        `https://sponsmedia.com/${locale}/blog/${slug}`
-                                    )}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm font-medium"
-                                >
-                                    Share on X
-                                </a>
-                                <a
-                                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                                        `https://sponsmedia.com/${locale}/blog/${slug}`
-                                    )}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-blue-700/20 hover:bg-blue-700/30 text-blue-300 rounded-lg transition-colors text-sm font-medium"
-                                >
-                                    Share on LinkedIn
-                                </a>
-                            </div>
+                    {/* Share */}
+                    <div className="mx-auto mt-16 flex max-w-[68ch] flex-col gap-5 border-t border-line pt-8 md:flex-row md:items-center md:justify-between">
+                        <p className="text-haze">
+                            {isNL ? "Artikel interessant? Deel het met je netwerk." : "Enjoyed this article? Share it with your network."}
+                        </p>
+                        <div className="flex gap-3">
+                            <a
+                                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(url)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-ghost h-11 px-5"
+                            >
+                                X
+                            </a>
+                            <a
+                                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-ghost h-11 px-5"
+                            >
+                                LinkedIn
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {/* Prev / Next (optioneel) */}
-                {(prev || next) && (
-                    <nav className="mt-10 flex flex-col md:flex-row gap-3 justify-between">
-                        {prev ? (
-                            <Link
-                                href={`/${locale}/blog/${prev.id}`}
-                                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
-                            >
-                                ←{" "}
-                                {isNL && prev.titleNl
-                                    ? prev.titleNl
-                                    : prev.title}
-                            </Link>
-                        ) : (
-                            <span />
-                        )}
-                        {next && (
-                            <Link
-                                href={`/${locale}/blog/${next.id}`}
-                                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
-                            >
-                                {isNL && next.titleNl
-                                    ? next.titleNl
-                                    : next.title}{" "}
-                                →
-                            </Link>
-                        )}
-                    </nav>
+                {following && (
+                    <NextCase
+                        href={`/${locale}/blog/${following.id}`}
+                        label={next ? (isNL ? "Volgend artikel" : "Next article") : isNL ? "Vorig artikel" : "Previous article"}
+                        title={(isNL && following.titleNl) || following.title}
+                        image={following.cover ?? following.image}
+                        long
+                    />
                 )}
-
-                {/* Back button */}
-                <div className="text-center mt-10">
-                    <Link
-                        href={`/${locale}/blog`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/15 text-white transition-colors"
-                    >
-                        <svg
-                            className="w-5 h-5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 19l-7-7 7-7"
-                            />
-                        </svg>
-                        {isNL
-                            ? "Terug naar alle artikelen"
-                            : "Back to all articles"}
-                    </Link>
-                </div>
             </article>
-        </div>
+        </Choreography>
     );
 }

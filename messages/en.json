@@ -67,7 +67,14 @@
         "readyTitle": "Ready to Start Your Project?",
         "readySubtitle": "Let's discuss how I can help bring your vision to life with the same attention to detail and quality.",
         "startProject": "Start a Project",
-        "viewMoreProjects": "View More Projects"
+        "viewMoreProjects": "View More Projects",
+        "index": "Index",
+        "showcase": "Selected work",
+        "yourProject": "Your project, next?",
+        "nextCase": "Next case",
+        "scrollHint": "Scroll",
+        "builtWith": "Built with",
+        "year": "Year"
     },
     "CTA": {
         "title": "Let's Build Something Amazing",
@@ -102,7 +109,6 @@
             "submitButton": "Send Message",
             "submittingButton": "Sending..."
         },
-
         "success": {
             "title": "Message Sent Successfully!",
             "message": "Thank you for reaching out! We've received your message and will get back to you.",
@@ -125,5 +131,31 @@
         "eyebrow": "GET IN TOUCH",
         "title": "Tell Me About Your Project",
         "subtitle": "Share your goals and challenges. I'll reply with next steps and a clear plan."
+    },
+    "Home": {
+        "kicker": "Web development, digital design and social media",
+        "headline": "Be more visible online.",
+        "focusWords": "Websites|Design|Social",
+        "sub": "Get more visitors to your website and more followers on your social media.",
+        "seeWork": "See our work",
+        "startProject": "Start a project",
+        "recentFor": "Recent work for",
+        "statement": "Good work deserves to be found. We build fast websites, design things people remember and make content for the feed, so more of the right people see you.",
+        "workTitle": "Selected work",
+        "workIntro": "A few projects we're proud of. Each one started with the same question: who needs to find this, and how do we get it in front of them?",
+        "viewCase": "Read the case",
+        "allProjects": "All projects",
+        "servicesTitle": "What we do",
+        "servicesIntro": "Three disciplines, one goal. Pick one or combine them.",
+        "included": "What's included",
+        "tools": "Tools",
+        "showDetails": "Show details",
+        "hideDetails": "Hide details",
+        "allServices": "All services",
+        "blogTitle": "From the blog",
+        "allPosts": "All posts",
+        "ctaTitle": "Got a project in mind?",
+        "ctaSub": "Tell us what you want to achieve and we'll reply with clear next steps.",
+        "orMail": "Or email us directly"
     }
 }

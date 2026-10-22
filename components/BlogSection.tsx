@@ -34,6 +34,7 @@ export default function HomeBlogSection({
                     <h2 className="text-4xl md:text-4xl font-extrabold mb-4">
                         {L ? "Blog" : "Blog"}
                     </h2>
+                    {/* here comes the text section */}
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         {L
                             ? "Onze laatste inzichten over web development, design en social media."

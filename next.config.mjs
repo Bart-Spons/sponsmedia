@@ -1,17 +1,26 @@
 /** @type {import('next').NextConfig} */
+
+// Statische export alleen bij `npm run build` (voor Hostinger).
+// In `npm run dev` draait een gewone dev-server, zodat die zonder fouten werkt.
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig = {
-    reactStrictMode: true,                 // prima om aan te hebben
-    trailingSlash: false,                  // geen / achter elke URL (consistent met Vercel)
-    transpilePackages: ['d3-geo'],
+    output: isProd ? "export" : undefined,
+    trailingSlash: true,
+
+    reactStrictMode: true,
+
+    transpilePackages: ["d3-geo"],
+
     experimental: {
-        esmExternals: false,                 // houdt je huidige bundling stabiel
+        esmExternals: false,
     },
+
     images: {
-        // Laat optimalisatie aan.
-        // Gebruik je externe images? Voeg dan je domeinen toe:
-        // domains: ['images.unsplash.com', 'your-cdn.com'],
+        // Nodig voor statische export: er is geen server die afbeeldingen optimaliseert
+        unoptimized: true,
     },
-    // Alleen een dev-optimalisatie; mag je ook weglaten.
+
     webpack: (config, { dev, isServer }) => {
         if (dev && !isServer) {
             config.cache = false;
