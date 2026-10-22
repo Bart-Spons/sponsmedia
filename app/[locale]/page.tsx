@@ -8,6 +8,8 @@ import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
 import ServicesList, { type ServiceRow } from "@/components/home/ServicesList";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import ClosingCta from "@/components/ClosingCta";
+import Choreography from "@/components/motion/Choreography";
+import SplitTitle from "@/components/motion/SplitTitle";
 
 type Locale = "en" | "nl";
 
@@ -87,7 +89,7 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
     });
 
     return (
-        <>
+        <Choreography>
             <Hero
                 locale={locale}
                 copy={{
@@ -124,10 +126,8 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
             {/* Work */}
             <section aria-labelledby="work-title" className="container pb-28 md:pb-44">
                 <header className="mb-16 grid gap-6 md:mb-24 md:grid-cols-12 md:items-end">
-                    <h2 id="work-title" className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5">
-                        {t("workTitle")}
-                    </h2>
-                    <p className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
+                    <SplitTitle id="work-title" text={t("workTitle")} className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5" />
+                    <p data-rise className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
                         {t("workIntro")}
                     </p>
                 </header>
@@ -144,10 +144,8 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
             {/* Services */}
             <section aria-labelledby="services-title" className="container pb-28 md:pb-44">
                 <header className="mb-10 grid gap-6 md:mb-14 md:grid-cols-12 md:items-end">
-                    <h2 id="services-title" className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5">
-                        {t("servicesTitle")}
-                    </h2>
-                    <p className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
+                    <SplitTitle id="services-title" text={t("servicesTitle")} className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5" />
+                    <p data-rise className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
                         {t("servicesIntro")}
                     </p>
                 </header>
@@ -165,9 +163,7 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
             {/* Blog */}
             <section aria-labelledby="blog-title" className="container pb-28 md:pb-44">
                 <header className="mb-10 flex items-end justify-between gap-6">
-                    <h2 id="blog-title" className="display text-[clamp(1.75rem,3vw,2.5rem)]">
-                        {t("blogTitle")}
-                    </h2>
+                    <SplitTitle id="blog-title" text={t("blogTitle")} className="display text-[clamp(1.75rem,3vw,2.5rem)]" />
                     <Link
                         href={`/${locale}/blog`}
                         className="font-semibold underline decoration-primary decoration-2 underline-offset-[6px] hover:text-primary"
@@ -177,19 +173,26 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                 </header>
                 <ul className="border-b border-line">
                     {posts.map((post) => (
-                        <li key={post.id} className="rule">
+                        <li key={post.id} data-row className="relative">
+                            <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
                             <Link
                                 href={`/${locale}/blog/${post.id}`}
                                 className="group grid gap-3 py-8 md:grid-cols-12 md:items-baseline md:gap-10"
                             >
-                                <time dateTime={post.publishDate} className="text-sm text-haze md:col-span-3">
-                                    {dateFmt.format(new Date(post.publishDate))}
-                                </time>
-                                <span className="text-[clamp(1.4rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.025em] transition-colors group-hover:text-primary md:col-span-7">
-                                    {(nl && post.titleNl) || post.title}
+                                <span className="overflow-hidden md:col-span-3">
+                                    <time data-row-text dateTime={post.publishDate} className="block text-sm text-haze">
+                                        {dateFmt.format(new Date(post.publishDate))}
+                                    </time>
                                 </span>
-                                <span className="text-sm text-haze md:col-span-2 md:text-right">
-                                    {((nl && post.tagsNl) || post.tags).slice(0, 2).join(", ")}
+                                <span className="overflow-hidden pb-1 md:col-span-7">
+                                    <span data-row-text className="block text-[clamp(1.4rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.025em] transition-[color,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2 group-hover:text-primary">
+                                        {(nl && post.titleNl) || post.title}
+                                    </span>
+                                </span>
+                                <span className="overflow-hidden md:col-span-2">
+                                    <span data-row-text className="block text-sm text-haze md:text-right">
+                                        {((nl && post.tagsNl) || post.tags).slice(0, 2).join(", ")}
+                                    </span>
                                 </span>
                             </Link>
                         </li>
@@ -204,6 +207,6 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                 button={t("startProject")}
                 orMail={t("orMail")}
             />
-        </>
+        </Choreography>
     );
 }

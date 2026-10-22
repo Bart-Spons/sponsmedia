@@ -1,378 +1,268 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
-import { projectsData } from "../../../../lib/data/projects";
+import { projectsData } from "@/lib/data/projects";
+import { ReelMedia } from "@/components/home/WorkReel";
+import SplitTitle from "@/components/motion/SplitTitle";
+import Marquee from "@/components/motion/Marquee";
+import ScrollReveal from "@/components/reactbits/ScrollReveal";
+import Magnet from "@/components/reactbits/Magnet";
+import Choreography from "@/components/motion/Choreography";
+import NextCase from "@/components/projects/NextCase";
+
+type Locale = "en" | "nl";
 
 export async function generateStaticParams() {
-    const locales = ["en", "nl"];
-    const params = [];
+    return (["en", "nl"] as const).flatMap((locale) =>
+        projectsData.map((project) => ({ locale, slug: project.id }))
+    );
+}
 
-    for (const locale of locales) {
-        for (const project of projectsData) {
-            params.push({
-                locale,
-                slug: project.id,
-            });
-        }
-    }
-
-    return params;
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: Locale; slug: string }>;
+}): Promise<Metadata> {
+    const { locale, slug } = await params;
+    const project = projectsData.find((p) => p.id === slug);
+    if (!project) return {};
+    const nl = locale === "nl";
+    const title = (nl && project.titleNl) || project.title;
+    const description = (nl && project.descriptionNl) || project.description;
+    return {
+        title,
+        description,
+        openGraph: { title, description, images: [{ url: project.image }] },
+        alternates: {
+            canonical: `/${locale}/projects/${slug}`,
+            languages: { "en-US": `/en/projects/${slug}`, "nl-NL": `/nl/projects/${slug}` },
+        },
+    };
 }
 
 export default async function Project({
     params,
 }: {
-    params: Promise<{ locale: "en" | "nl"; slug: string }>;
+    params: Promise<{ locale: Locale; slug: string }>;
 }) {
     const { locale, slug } = await params;
-
-    // Load messages for translation
     const messages = (await import(`@/messages/${locale}.json`)).default;
     const t = createTranslator({ locale, messages, namespace: "Projects" });
 
-    // Find the project by slug/id
-    const project = projectsData.find((p) => p.id === slug);
+    const index = projectsData.findIndex((p) => p.id === slug);
+    if (index === -1) notFound();
+    const project = projectsData[index];
+    const next = projectsData[(index + 1) % projectsData.length];
 
-    // If project not found, you might want to return a 404 page
-    if (!project) {
-        return (
-            <div className="min-h-screen bg-space flex items-center justify-center">
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold text-white mb-4">
-                        {t("projectNotFound")}
-                    </h1>
+    const nl = locale === "nl";
+    const pick = <T,>(en: T, nlValue?: T) => (nl && nlValue) || en;
+
+    const title = pick(project.title, project.titleNl);
+    const category = pick(project.category, project.categoryNl);
+    const results = pick(project.results ?? [], project.resultsNl);
+
+    const meta = [
+        project.client && { label: t("client"), value: pick(project.client, project.clientNl) },
+        project.duration && { label: t("duration"), value: project.duration },
+        { label: t("year"), value: project.completedDate.slice(0, 4) },
+        project.team?.length && { label: t("team"), value: project.team.join(", ") },
+    ].filter(Boolean) as { label: string; value: string }[];
+
+    const story = [
+        { label: t("theChallenge"), text: pick(project.challenge, project.challengeNl) },
+        { label: t("theSolution"), text: pick(project.solution, project.solutionNl) },
+    ].filter((s): s is { label: string; text: string } => Boolean(s.text));
+
+    return (
+        <Choreography>
+            <article>
+                {/* Hero */}
+                <header className="container pt-10 md:pt-16">
                     <Link
                         href={`/${locale}/projects`}
-                        className="text-primary hover:text-primary"
+                        className="text-sm text-haze transition-colors hover:text-frost"
                     >
                         {t("backToProjects")}
                     </Link>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="min-h-screen bg-space">
-            <div className="container py-16">
-                {/* Navigation */}
-                <Link
-                    href={`/${locale}/projects`}
-                    className="inline-flex items-center gap-2 text-primary hover:text-primary transition-colors mb-8"
-                >
-                    {t("backToProjects")}
-                </Link>
-
-                {/* Hero Section */}
-                <div className="mb-12">
-                    <h1 className="display mb-6 mt-6 text-[clamp(3rem,9vw,8rem)]">
-                        {locale === "nl" && project.titleNl
-                            ? project.titleNl
-                            : project.title}
-                    </h1>
-                    <p className="max-w-[48ch] text-xl leading-relaxed text-frost/80">
-                        {locale === "nl" && project.descriptionNl
-                            ? project.descriptionNl
-                            : project.description}
+                    <p className="mt-12 text-haze md:mt-20">
+                        {category}, {project.completedDate.slice(0, 4)}
                     </p>
-                </div>
-
-                {/* Main Content */}
-                <div className="grid lg:grid-cols-3 gap-12 mb-16">
-                    {/* Main Content Column */}
-                    <div className="lg:col-span-2 space-y-12">
-                        {/* Hero Media (Video or Image) */}
-                        <div className="overflow-hidden rounded-[1.25rem]">
-                            <div className="aspect-video relative overflow-hidden bg-deep">
-                                {project.video ? (
-                                    <video
-                                        src={project.video}
-                                        controls
-                                        className="w-full h-full object-cover"
-                                        poster={project.image}
-                                    >
-                                        Your browser does not support the video
-                                        tag.
-                                    </video>
-                                ) : (
-                                    <Image
-                                        src={project.image}
-                                        alt={project.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Challenge Section */}
-                        {(project.challenge ||
-                            (locale === "nl" && project.challengeNl)) && (
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-                                <h2 className="text-2xl font-bold text-white mb-4">
-                                    {t("theChallenge")}
-                                </h2>
-                                <p className="text-gray-300 leading-relaxed">
-                                    {locale === "nl" && project.challengeNl
-                                        ? project.challengeNl
-                                        : project.challenge}
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Solution Section */}
-                        {(project.solution ||
-                            (locale === "nl" && project.solutionNl)) && (
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-                                <h2 className="text-2xl font-bold text-white mb-4">
-                                    {t("theSolution")}
-                                </h2>
-                                <p className="text-gray-300 leading-relaxed">
-                                    {locale === "nl" && project.solutionNl
-                                        ? project.solutionNl
-                                        : project.solution}
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Additional Images */}
-                        {project.additionalImages &&
-                            project.additionalImages.length > 0 && (
-                                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                                    <h2 className="text-2xl font-bold text-white mb-6">
-                                        {t("projectGallery")}
-                                    </h2>
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        {project.additionalImages.map(
-                                            (image, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="aspect-[4/3] relative rounded-xl overflow-hidden bg-gray-800"
-                                                >
-                                                    <Image
-                                                        src={image}
-                                                        alt={`${
-                                                            project.title
-                                                        } - Image ${index + 1}`}
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            )
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-
-                        {/* Results Section */}
-                        {((project.results && project.results.length > 0) ||
-                            (locale === "nl" &&
-                                project.resultsNl &&
-                                project.resultsNl.length > 0)) && (
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-                                <h2 className="text-2xl font-bold text-white mb-6">
-                                    {t("resultsImpact")}
-                                </h2>
-                                <div className="grid md:grid-cols-1 gap-4">
-                                    {(locale === "nl" && project.resultsNl
-                                        ? project.resultsNl
-                                        : project.results || []
-                                    ).map((result, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-start gap-3"
-                                        >
-                                            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                                            <p className="text-gray-300">
-                                                {result}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Testimonial */}
-                        {project.testimonial && (
-                            <div className="rounded-2xl border border-line bg-deep p-8">
-                                <div className="text-primary text-6xl mb-4">
-                                    "
-                                </div>
-                                <blockquote className="text-lg text-gray-300 italic mb-6">
-                                    {project.testimonial.text}
-                                </blockquote>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-primary/15 rounded-full flex items-center justify-center">
-                                        <span className="text-primary font-bold">
-                                            {project.testimonial.author
-                                                .split(" ")
-                                                .map((n) => n[0])
-                                                .join("")}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <div className="font-semibold text-white">
-                                            {project.testimonial.author}
-                                        </div>
-                                        <div className="text-sm text-gray-400">
-                                            {project.testimonial.role}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className="space-y-6">
-                        {/* Project Details */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-lg font-semibold text-white mb-4">
-                                {t("projectDetails")}
-                            </h3>
-
-                            {project.client && (
-                                <div className="mb-4">
-                                    <div className="text-sm font-medium text-gray-400">
-                                        {t("client")}
-                                    </div>
-                                    <div className="text-white">
-                                        {locale === "nl" && project.clientNl
-                                            ? project.clientNl
-                                            : project.client}
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="mb-4">
-                                <div className="text-sm font-medium text-gray-400">
-                                    {t("category")}
-                                </div>
-                                <div className="text-white">
-                                    {locale === "nl" && project.categoryNl
-                                        ? project.categoryNl
-                                        : project.category}
-                                </div>
-                            </div>
-
-                            {project.duration && (
-                                <div className="mb-4">
-                                    <div className="text-sm font-medium text-gray-400">
-                                        {t("duration")}
-                                    </div>
-                                    <div className="text-white">
-                                        {project.duration}
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="mb-4">
-                                <div className="text-sm font-medium text-gray-400">
-                                    {t("completed")}
-                                </div>
-                                <div className="text-white">
-                                    {project.completedDate}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Technologies */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-lg font-semibold text-white mb-4">
-                                {t("technologiesUsed")}
-                            </h3>
-                            <div className="flex flex-wrap gap-2">
-                                {project.technologies.map((tech, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-3 py-1 bg-primary/15 text-primary text-sm rounded-full"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Team */}
-                        {project.team && project.team.length > 0 && (
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                                <h3 className="text-lg font-semibold text-white mb-4">
-                                    {t("team")}
-                                </h3>
-                                <div className="space-y-2">
-                                    {project.team.map((role, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center gap-2"
-                                        >
-                                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                                            <span className="text-gray-300">
-                                                {role}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Links */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-lg font-semibold text-white mb-4">
-                                {t("links")}
-                            </h3>
-                            <div className="space-y-3">
-                                {project.liveUrl && (
+                    <SplitTitle
+                        as="h1"
+                        trigger="load"
+                        text={title}
+                        className="display mt-4 text-[clamp(3.5rem,13vw,13rem)]"
+                    />
+                    <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-12 md:items-end">
+                        <p data-meta className="max-w-[44ch] text-xl leading-relaxed text-frost/80 md:col-span-7 md:text-2xl">
+                            <span className="block">{pick(project.description, project.descriptionNl)}</span>
+                        </p>
+                        {project.liveUrl && (
+                            <div className="md:col-span-5 md:justify-self-end">
+                                <Magnet padding={80} magnetStrength={3} maxOffset={20}>
                                     <a
                                         href={project.liveUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
+                                        className="btn btn-ghost h-14 px-8 text-base"
                                     >
-                                        <span>🌐</span> {t("viewLiveSite")}
+                                        {t("viewLiveSite")} ↗
                                     </a>
-                                )}
-                                {project.githubUrl && (
-                                    <a
-                                        href={project.githubUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
-                                    >
-                                        <span>💻</span> {t("viewCode")}
-                                    </a>
-                                )}
+                                </Magnet>
                             </div>
-                        </div>
+                        )}
+                    </div>
+                    <dl data-meta className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-24 md:grid-cols-4">
+                        {meta.map((m) => (
+                            <div key={m.label} className="relative pt-5">
+                                <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
+                                <dt className="text-sm text-haze">{m.label}</dt>
+                                <dd className="mt-2 text-lg">{m.value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </header>
+
+                {/* Key visual: opens up to full width as you scroll */}
+                <div
+                    data-case-media
+                    className="relative mt-20 aspect-[4/3] w-full overflow-hidden bg-deep md:mt-28 md:aspect-video md:max-h-[100svh]"
+                >
+                    <div data-case-media-inner className="absolute inset-0">
+                        <ReelMedia item={project} priority sizes="100vw" />
                     </div>
                 </div>
 
-                {/* CTA Section */}
-                {/* <div className="text-center">
-                    <div className="rounded-3xl border border-line bg-deep p-8 lg:p-10 max-w-3xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                            Ready to Start Your Project?
+                <Marquee
+                    items={project.technologies}
+                    className="display py-10 text-[clamp(3rem,9vw,8rem)] text-outline md:py-16"
+                />
+
+                {/* Challenge and solution: words sharpen as you read */}
+                {story.map((s, i) => (
+                    <section key={s.label} className="container grid gap-6 py-16 md:grid-cols-12 md:gap-10 md:py-28">
+                        <h2 className="self-start text-haze md:sticky md:top-28 md:col-span-3">
+                            <span className="tabular-nums text-primary">{String(i + 1).padStart(2, "0")}</span>{" "}
+                            {s.label}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed mb-8">
-                            Let's discuss how I can help bring your vision to
-                            life with the same attention to detail and quality.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link
-                                href={`/${locale}/contact`}
-                                className="px-6 py-3 bg-primary hover:bg-accent text-night rounded-full font-semibold transition-colors"
+                        <div className="md:col-span-9">
+                            <ScrollReveal
+                                as="p"
+                                baseOpacity={0.12}
+                                enableBlur
+                                blurStrength={6}
+                                baseRotation={0}
+                                textClassName="text-[clamp(1.75rem,3.6vw,3.25rem)] font-semibold leading-[1.15] tracking-[-0.025em]"
+                                wordAnimationEnd="bottom 60%"
                             >
-                                Start a Project
-                            </Link>
-                            <Link
-                                href={`/${locale}/projects`}
-                                className="px-6 py-3 border border-white/20 hover:border-white/40 text-white rounded-xl font-semibold transition-colors"
-                            >
-                                View More Projects
-                            </Link>
+                                {s.text}
+                            </ScrollReveal>
                         </div>
-                    </div>
-                </div> */}
-            </div>
-        </div>
+                    </section>
+                ))}
+
+                {/* Gallery: pinned and sliding sideways on desktop */}
+                {project.additionalImages && project.additionalImages.length > 0 && (
+                    <section
+                        data-hscroll
+                        aria-label={t("projectGallery")}
+                        className="h-reel relative overflow-hidden py-16 md:py-0"
+                    >
+                        <div className="h-reel-track flex flex-col gap-8 px-4 sm:px-6 md:gap-[4vw] md:px-[6vw]">
+                            <h2 className="display shrink-0 text-[clamp(2.75rem,6vw,6rem)] md:w-[26vw]">
+                                {t("projectGallery")}
+                            </h2>
+                            {project.additionalImages.map((src, i) => (
+                                <figure
+                                    key={src}
+                                    data-hscroll-item
+                                    className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-[1.25rem] bg-deep md:w-[min(56vw,calc((100svh_-_10rem)*1.333))]"
+                                >
+                                    <Image
+                                        src={src}
+                                        alt={`${title}, ${i + 1}`}
+                                        fill
+                                        sizes="(min-width: 768px) 56vw, 100vw"
+                                        className="object-cover"
+                                    />
+                                </figure>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Results */}
+                {results.length > 0 && (
+                    <section className="container py-16 md:py-28">
+                        <SplitTitle
+                            text={t("resultsImpact")}
+                            className="display text-[clamp(2.75rem,6vw,6rem)]"
+                        />
+                        <ol className="mt-12 md:mt-16">
+                            {results.map((r, i) => (
+                                <li
+                                    key={r}
+                                    data-row
+                                    className="relative grid grid-cols-[3.5rem_1fr] gap-4 py-8 md:grid-cols-12 md:gap-10 md:py-10"
+                                >
+                                    <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
+                                    <span className="overflow-hidden md:col-span-2">
+                                        <span data-row-text className="display block text-[clamp(2rem,4vw,3.5rem)] tabular-nums text-primary">
+                                            {String(i + 1).padStart(2, "0")}
+                                        </span>
+                                    </span>
+                                    <span className="overflow-hidden md:col-span-9">
+                                        <span data-row-text className="block text-[clamp(1.25rem,2.4vw,2rem)] leading-snug">
+                                            {r}
+                                        </span>
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
+                    </section>
+                )}
+
+                {/* Testimonial */}
+                {project.testimonial && (
+                    <section className="container py-16 md:py-28">
+                        <figure className="md:ml-[16.66%]">
+                            <span aria-hidden className="display block text-[clamp(6rem,12vw,10rem)] leading-[0.6] text-primary">
+                                “
+                            </span>
+                            <blockquote className="mt-6">
+                                <ScrollReveal
+                                    as="p"
+                                    baseOpacity={0.12}
+                                    enableBlur
+                                    blurStrength={6}
+                                    baseRotation={0}
+                                    textClassName="text-[clamp(1.75rem,3.6vw,3.25rem)] font-semibold leading-[1.15] tracking-[-0.025em]"
+                                    wordAnimationEnd="bottom 60%"
+                                >
+                                    {pick(project.testimonial.text, project.testimonial.textNl)}
+                                </ScrollReveal>
+                            </blockquote>
+                            <figcaption data-rise className="mt-10 text-lg">
+                                <span className="font-semibold">{project.testimonial.author}</span>
+                                <span className="text-haze">
+                                    , {pick(project.testimonial.role, project.testimonial.roleNl)}
+                                </span>
+                            </figcaption>
+                        </figure>
+                    </section>
+                )}
+
+                {next.id !== project.id && (
+                    <NextCase
+                        href={`/${locale}/projects/${next.id}`}
+                        label={t("nextCase")}
+                        title={pick(next.title, next.titleNl)}
+                        image={next.image}
+                    />
+                )}
+            </article>
+        </Choreography>
     );
 }

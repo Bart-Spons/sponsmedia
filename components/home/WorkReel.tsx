@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { duration, ease, stagger } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -23,6 +24,7 @@ export type ReelItem = {
 /**
  * The signature moment of the site: every project starts out of focus and
  * sharpens as you scroll it into view — "be more visible", literally.
+ * With reduced motion the veil is never shown.
  */
 export default function WorkReel({
     locale,
@@ -39,22 +41,19 @@ export default function WorkReel({
         () => {
             const mm = gsap.matchMedia();
             mm.add("(prefers-reduced-motion: no-preference)", () => {
+                // Only transform and opacity change while scrolling: the blurred
+                // copy is blurred once by CSS and simply fades away.
                 gsap.utils.toArray<HTMLElement>("[data-focus-media]").forEach((el) => {
+                    const scroll = { trigger: el, start: "top 95%", end: "center 60%", scrub: 0.6 };
                     gsap.fromTo(
                         el,
-                        { filter: "blur(22px) saturate(0.4)", scale: 0.88, opacity: 0.45 },
-                        {
-                            filter: "blur(0px) saturate(1)",
-                            scale: 1,
-                            opacity: 1,
-                            ease: "none",
-                            scrollTrigger: {
-                                trigger: el,
-                                start: "top 95%",
-                                end: "center 60%",
-                                scrub: 0.6,
-                            },
-                        }
+                        { scale: 0.88, opacity: 0.5 },
+                        { scale: 1, opacity: 1, ease: "none", scrollTrigger: scroll }
+                    );
+                    gsap.fromTo(
+                        el.querySelector("[data-focus-veil]"),
+                        { opacity: 1 },
+                        { opacity: 0, ease: "none", scrollTrigger: scroll }
                     );
                 });
 
@@ -62,9 +61,9 @@ export default function WorkReel({
                     gsap.from(el.children, {
                         autoAlpha: 0,
                         y: 24,
-                        stagger: 0.08,
-                        duration: 0.9,
-                        ease: "expo.out",
+                        stagger: stagger * 2,
+                        duration: duration.base,
+                        ease: ease.enter,
                         scrollTrigger: { trigger: el, start: "top 80%" },
                     });
                 });
@@ -87,9 +86,17 @@ export default function WorkReel({
                     >
                         <div
                             data-focus-media
-                            className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-deep will-change-[filter,transform]"
+                            className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-deep will-change-[opacity,transform]"
                         >
                             <ReelMedia item={p} priority={i === 0} />
+                            <Image
+                                data-focus-veil
+                                src={p.image}
+                                alt=""
+                                fill
+                                sizes="(min-width: 768px) 66vw, 100vw"
+                                className="pointer-events-none scale-110 object-cover opacity-0 blur-2xl saturate-50 will-change-[opacity] motion-safe:opacity-100"
+                            />
                         </div>
                     </Link>
 
@@ -135,7 +142,15 @@ export default function WorkReel({
 }
 
 /** Poster image, with the video only loaded and played while it's on screen. */
-function ReelMedia({ item, priority }: { item: ReelItem; priority: boolean }) {
+export function ReelMedia({
+    item,
+    priority,
+    sizes = "(min-width: 768px) 66vw, 100vw",
+}: {
+    item: Pick<ReelItem, "image" | "video">;
+    priority: boolean;
+    sizes?: string;
+}) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -162,7 +177,7 @@ function ReelMedia({ item, priority }: { item: ReelItem; priority: boolean }) {
                 alt=""
                 fill
                 priority={priority}
-                sizes="(min-width: 768px) 66vw, 100vw"
+                sizes={sizes}
                 className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
             />
             {item.video && (

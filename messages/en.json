@@ -67,7 +67,14 @@
         "readyTitle": "Ready to Start Your Project?",
         "readySubtitle": "Let's discuss how I can help bring your vision to life with the same attention to detail and quality.",
         "startProject": "Start a Project",
-        "viewMoreProjects": "View More Projects"
+        "viewMoreProjects": "View More Projects",
+        "index": "Index",
+        "showcase": "Selected work",
+        "yourProject": "Your project, next?",
+        "nextCase": "Next case",
+        "scrollHint": "Scroll",
+        "builtWith": "Built with",
+        "year": "Year"
     },
     "CTA": {
         "title": "Let's Build Something Amazing",

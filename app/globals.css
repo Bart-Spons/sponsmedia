@@ -156,3 +156,34 @@ select option {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ---------------------------------------------------------------
+   Motion helpers
+---------------------------------------------------------------- */
+
+/* SplitTitle: hidden until GSAP has split it; failsafe shows it after 2.5s */
+@media (prefers-reduced-motion: no-preference) {
+    .split-pending {
+        visibility: hidden;
+        animation: split-failsafe 0s linear 2.5s forwards;
+    }
+}
+@keyframes split-failsafe {
+    to {
+        visibility: visible;
+    }
+}
+
+/* Big outlined type for marquees */
+.text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(234, 240, 248, 0.45);
+}
+
+/* Horizontal reel: stacked by default, a pinned sideways track once GSAP enables it */
+.h-reel[data-horizontal] .h-reel-track {
+    flex-direction: row;
+    width: max-content;
+    height: 100svh;
+    align-items: center;
+}

@@ -67,7 +67,14 @@
         "readyTitle": "Klaar om Je Project te Starten?",
         "readySubtitle": "Laten we bespreken hoe ik je visie tot leven kan brengen met dezelfde aandacht voor detail en kwaliteit.",
         "startProject": "Start een Project",
-        "viewMoreProjects": "Bekijk Meer Projecten"
+        "viewMoreProjects": "Bekijk Meer Projecten",
+        "index": "Index",
+        "showcase": "Uitgelicht werk",
+        "yourProject": "Jouw project, als volgende?",
+        "nextCase": "Volgende case",
+        "scrollHint": "Scroll",
+        "builtWith": "Gemaakt met",
+        "year": "Jaar"
     },
     "CTA": {
         "title": "Laten We Iets Geweldigs Bouwen",

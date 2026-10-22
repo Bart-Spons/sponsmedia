@@ -1,7 +1,10 @@
 import { projectsData } from "@/lib/data/projects";
 import PageHeader from "@/components/PageHeader";
 import ClosingCta from "@/components/ClosingCta";
-import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
+import type { ReelItem } from "@/components/home/WorkReel";
+import ProjectIndex from "@/components/projects/ProjectIndex";
+import ProjectsReel from "@/components/projects/ProjectsReel";
+import Marquee from "@/components/motion/Marquee";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
 
@@ -70,9 +73,27 @@ export default async function ProjectsIndex({
     return (
         <>
             <PageHeader title={tProjects("title")} intro={tProjects("subtitle")} />
-            <section aria-label={tProjects("title")} className="container pb-28 md:pb-44">
-                <WorkReel locale={locale} items={items} viewCase={t("viewCase")} />
+
+            {/* Index: every project as one big row */}
+            <section aria-label={tProjects("index")} className="container pb-24 md:pb-36">
+                <ProjectIndex locale={locale} items={items} />
             </section>
+
+            {/* Showcase: pinned, slides sideways on desktop */}
+            <ProjectsReel
+                locale={locale}
+                items={items}
+                label={tProjects("showcase")}
+                viewCase={t("viewCase")}
+                nextTitle={tProjects("yourProject")}
+                nextButton={t("startProject")}
+            />
+
+            <Marquee
+                items={[...new Set(items.flatMap((p) => p.technologies))]}
+                className="display mt-24 py-6 text-[clamp(3rem,9vw,8rem)] text-outline md:mt-36"
+            />
+
             <ClosingCta
                 locale={locale}
                 title={t("ctaTitle")}

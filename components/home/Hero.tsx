@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import BlurText from "@/components/reactbits/BlurText";
 import TrueFocus from "@/components/reactbits/TrueFocus";
 import Magnet from "@/components/reactbits/Magnet";
+import { duration, ease, motionOK, stagger } from "@/lib/motion";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export type HeroCopy = {
     kicker: string;
@@ -30,23 +32,58 @@ export default function Hero({
     clients: { id: string; name: string }[];
 }) {
     const root = useRef<HTMLElement>(null);
+    const content = useRef<HTMLDivElement>(null);
+    const light = useRef<HTMLDivElement>(null);
 
-    // One orchestrated entrance: the headline comes into focus (BlurText),
-    // then everything around it settles in behind it.
     useGSAP(
         () => {
             const mm = gsap.matchMedia();
-            mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+            mm.add(motionOK, () => {
+                // Entrance: the headline comes into focus (BlurText), then
+                // everything around it settles in behind it. Transform and
+                // opacity only, so it stays smooth while the page hydrates.
                 gsap.from("[data-hero-after]", {
                     autoAlpha: 0,
-                    y: 18,
-                    filter: "blur(8px)",
-                    duration: 1.1,
-                    ease: "expo.out",
-                    stagger: 0.12,
+                    y: 16,
+                    duration: duration.base,
+                    ease: ease.enter,
+                    stagger: stagger * 3,
                     delay: 0.75,
-                    clearProps: "filter",
                 });
+                gsap.from(light.current, {
+                    autoAlpha: 0,
+                    scale: 0.7,
+                    duration: duration.long * 2,
+                    ease: ease.enter,
+                });
+
+                // Exit: as you scroll on, the hero sinks back and dims, so the
+                // next section feels like it slides over it.
+                gsap.to(content.current, {
+                    yPercent: -12,
+                    scale: 0.96,
+                    autoAlpha: 0.2,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: root.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true,
+                    },
+                });
+            });
+
+            // The light drifts a little towards the cursor, like it's watching.
+            mm.add(`(pointer: fine) and ${motionOK}`, () => {
+                const toX = gsap.quickTo(light.current, "x", { duration: 2.4, ease: "power3" });
+                const toY = gsap.quickTo(light.current, "y", { duration: 2.4, ease: "power3" });
+                const onMove = (e: PointerEvent) => {
+                    toX((e.clientX / window.innerWidth - 0.5) * 160);
+                    toY((e.clientY / window.innerHeight - 0.5) * 120);
+                };
+                window.addEventListener("pointermove", onMove, { passive: true });
+                return () => window.removeEventListener("pointermove", onMove);
             });
         },
         { scope: root }
@@ -59,15 +96,16 @@ export default function Hero({
         >
             {/* A single soft light, off to the side, like a lamp just out of frame */}
             <div
+                ref={light}
                 aria-hidden
-                className="pointer-events-none absolute -right-[20vw] -top-[30vh] h-[90vh] w-[70vw] rounded-full opacity-60"
+                className="pointer-events-none absolute -right-[20vw] -top-[30vh] h-[90vh] w-[70vw] rounded-full opacity-60 will-change-transform"
                 style={{
                     background:
                         "radial-gradient(closest-side, rgba(226,183,111,0.22), rgba(226,183,111,0.06) 55%, transparent)",
                 }}
             />
 
-            <div className="container relative pb-10 pt-16 md:pb-14">
+            <div ref={content} className="container relative origin-bottom pb-10 pt-16 md:pb-14">
                 <p data-hero-after className="mb-6 text-base text-haze md:text-lg">
                     {copy.kicker}
                 </p>
