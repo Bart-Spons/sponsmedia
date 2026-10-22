@@ -43,6 +43,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          # Hostinger geeft een IP-adres als FTP-server; het certificaat staat op een naam.
+          # Versleuteld blijft het, alleen de naam op het certificaat wordt niet streng gecontroleerd.
+          security: loose
           local-dir: ./out/
           # Map op de server waar je website staat. Bij Hostinger meestal public_html/.
           server-dir: ./public_html/
