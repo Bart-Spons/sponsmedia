@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Magnet from "@/components/reactbits/Magnet";
+import SplitTitle from "@/components/motion/SplitTitle";
 
 export default function ClosingCta({
     locale,
@@ -24,9 +25,7 @@ export default function ClosingCta({
                 }}
             />
             <div className="container relative py-28 md:py-44">
-                <h2 id="cta-title" className="display max-w-[13ch] text-[clamp(3rem,9vw,8.5rem)]">
-                    {title}
-                </h2>
+                <SplitTitle id="cta-title" text={title} className="display max-w-[13ch] text-[clamp(3rem,9vw,8.5rem)]" />
                 <div className="mt-12 grid gap-8 md:grid-cols-12 md:items-center">
                     <p className="max-w-[40ch] text-lg leading-relaxed text-frost/80 md:col-span-5">
                         {sub}

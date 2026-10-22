@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
 import CTASection from "@/components/CTASection";
 import ContactFAQ from "@/components/ContactFAQ";
+import PageHeader from "@/components/PageHeader";
+import Choreography from "@/components/motion/Choreography";
 
 export async function generateStaticParams() {
     return [{ locale: "en" }, { locale: "nl" }];
@@ -49,22 +51,12 @@ export default async function ContactPage({
     const t = createTranslator({ locale, messages, namespace: "Contact" });
 
     return (
-        <div className="relative min-h-screen bg-space">
-            <div className="container relative z-10 py-16">
-                {/* Header */}
-                <header className="mb-16 grid gap-8 pt-8 md:mb-20 md:grid-cols-12 md:items-end md:pt-16">
-                    <h1 className="display text-[clamp(3rem,8vw,7rem)] md:col-span-7">{t("title")}</h1>
-                    <p className="max-w-[44ch] text-lg leading-relaxed text-frost/75 md:col-span-5 md:pb-3 md:text-xl">
-                        {t("subtitle")}
-                    </p>
-                </header>
-
-                {/* CTA – compact (zelfde component als op de homepage) */}
-                <CTASection locale={locale} hideHero variant="compact" />
-
-                {/* FAQ onderaan contact */}
+        <Choreography>
+            <PageHeader title={t("title")} intro={t("subtitle")} />
+            <CTASection locale={locale} hideHero variant="compact" />
+            <div className="container pb-28 md:pb-44">
                 <ContactFAQ locale={locale} />
             </div>
-        </div>
+        </Choreography>
     );
 }

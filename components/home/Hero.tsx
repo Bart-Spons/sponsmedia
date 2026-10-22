@@ -5,9 +5,8 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import BlurText from "@/components/reactbits/BlurText";
-import TrueFocus from "@/components/reactbits/TrueFocus";
 import Magnet from "@/components/reactbits/Magnet";
+import FocusTitle from "@/components/motion/FocusTitle";
 import { duration, ease, motionOK, stagger } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -22,6 +21,12 @@ export type HeroCopy = {
     recentFor: string;
 };
 
+/**
+ * "Be more visible", as an autofocus: the headline is a FocusTitle (blurred,
+ * with a focus ring showing what is sharp). Around it, the rest of the hero
+ * settles in, and as you scroll on it sinks back so the next section slides
+ * over it.
+ */
 export default function Hero({
     locale,
     copy,
@@ -35,42 +40,31 @@ export default function Hero({
     const content = useRef<HTMLDivElement>(null);
     const light = useRef<HTMLDivElement>(null);
 
+    const focusWords = copy.focusWords.split("|");
+
     useGSAP(
         () => {
             const mm = gsap.matchMedia();
 
             mm.add(motionOK, () => {
-                // Entrance: the headline comes into focus (BlurText), then
-                // everything around it settles in behind it. Transform and
-                // opacity only, so it stays smooth while the page hydrates.
+                // Everything around the headline settles in once the lens has opened.
                 gsap.from("[data-hero-after]", {
                     autoAlpha: 0,
                     y: 16,
                     duration: duration.base,
                     ease: ease.enter,
                     stagger: stagger * 3,
-                    delay: 0.75,
+                    delay: 1.1,
                 });
-                gsap.from(light.current, {
-                    autoAlpha: 0,
-                    scale: 0.7,
-                    duration: duration.long * 2,
-                    ease: ease.enter,
-                });
+                gsap.from(light.current, { autoAlpha: 0, scale: 0.7, duration: duration.long * 2, ease: ease.enter });
 
-                // Exit: as you scroll on, the hero sinks back and dims, so the
-                // next section feels like it slides over it.
+                // As you scroll on, the hero sinks back and dims.
                 gsap.to(content.current, {
                     yPercent: -12,
                     scale: 0.96,
                     autoAlpha: 0.2,
                     ease: "none",
-                    scrollTrigger: {
-                        trigger: root.current,
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true,
-                    },
+                    scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
                 });
             });
 
@@ -89,6 +83,8 @@ export default function Hero({
         { scope: root }
     );
 
+    const headlineClass = "display text-[clamp(3.6rem,13.5vw,14rem)] leading-[0.88]";
+
     return (
         <section
             ref={root}
@@ -106,38 +102,27 @@ export default function Hero({
             />
 
             <div ref={content} className="container relative origin-bottom pb-10 pt-16 md:pb-14">
-                <p data-hero-after className="mb-6 text-base text-haze md:text-lg">
+                <p data-hero-after className="mb-6 flex items-center gap-3 text-base text-haze md:mb-10 md:text-lg">
+                    <span aria-hidden className="relative flex h-2.5 w-2.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                    </span>
                     {copy.kicker}
                 </p>
 
-                <BlurText
-                    as="h1"
-                    text={copy.headline}
-                    trigger="load"
-                    animateBy="words"
-                    effect="focus"
-                    delay={110}
-                    blur={18}
-                    className="display max-w-[11ch] text-[clamp(3.4rem,11.5vw,11rem)]"
-                />
+                <FocusTitle text={copy.headline} className={headlineClass} />
 
-                <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
-                    <div data-hero-after className="md:col-span-6" aria-hidden>
-                        <TrueFocus
-                            sentence={copy.focusWords}
-                            separator="|"
-                            focusStyle="brackets"
-                            blurAmount={4}
-                            borderColor="#e2b76f"
-                            animationDuration={0.55}
-                            pauseBetweenAnimations={1.4}
-                            cornerSize={12}
-                            borderWidth={2}
-                            unfocusedOpacity={0.55}
-                            className="justify-start gap-x-[0.9em] gap-y-3"
-                            wordClassName="text-[clamp(1.25rem,2.4vw,2rem)] font-semibold tracking-[-0.02em]"
-                        />
-                    </div>
+                <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-12 md:items-end">
+                    <ul data-hero-after className="flex flex-wrap gap-2 md:col-span-6">
+                        {focusWords.map((w) => (
+                            <li
+                                key={w}
+                                className="rounded-full border border-line px-4 py-1.5 text-sm text-frost/80 md:text-base"
+                            >
+                                {w}
+                            </li>
+                        ))}
+                    </ul>
 
                     <div data-hero-after className="md:col-span-5 md:col-start-8">
                         <p className="max-w-[38ch] text-lg leading-relaxed text-frost/80 md:text-xl">

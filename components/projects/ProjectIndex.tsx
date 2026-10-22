@@ -63,8 +63,10 @@ export default function ProjectIndex({
         { scope: root }
     );
 
-    const show = (visible: boolean) => {
+    const show = (visible: boolean, e?: React.MouseEvent) => {
         if (!moveX.current) return;
+        // First appearance: start right under the cursor instead of flying in from a corner.
+        if (visible && e) gsap.set(preview.current, { x: e.clientX, y: e.clientY });
         gsap.to(preview.current, {
             autoAlpha: visible ? 1 : 0,
             scale: visible ? 1 : 0.6,
@@ -79,7 +81,7 @@ export default function ProjectIndex({
         <div
             ref={root}
             className="relative"
-            onMouseEnter={() => show(true)}
+            onMouseEnter={(e) => show(true, e)}
             onMouseLeave={() => show(false)}
             onMouseMove={(e) => {
                 moveX.current?.(e.clientX);

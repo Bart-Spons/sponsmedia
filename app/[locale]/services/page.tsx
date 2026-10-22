@@ -2,7 +2,10 @@
 import { servicesData } from "@/lib/data/services";
 import PageHeader from "@/components/PageHeader";
 import ClosingCta from "@/components/ClosingCta";
-import ServicesList, { type ServiceRow } from "@/components/home/ServicesList";
+import type { ServiceRow } from "@/components/home/ServicesList";
+import ServiceStack from "@/components/services/ServiceStack";
+import Marquee from "@/components/motion/Marquee";
+import Choreography from "@/components/motion/Choreography";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
 
@@ -83,20 +86,18 @@ export default async function ServicesPage({
     }));
 
     return (
-        <>
+        <Choreography>
             <PageHeader title={tServices("title")} intro={tServices("subtitle")} />
-            <section aria-label={tServices("title")} className="container pb-28 md:pb-44">
-                <ServicesList
+            <section aria-label={tServices("title")} className="container pb-24 md:pb-[20vh]">
+                <ServiceStack
                     items={services}
-                    defaultOpen={0}
-                    labels={{
-                        included: tServices("whatsIncluded"),
-                        tools: tServices("technologiesLabel"),
-                        show: t("showDetails"),
-                        hide: t("hideDetails"),
-                    }}
+                    labels={{ included: tServices("whatsIncluded"), tools: tServices("technologiesLabel") }}
                 />
             </section>
+            <Marquee
+                items={[...new Set(services.flatMap((s) => s.technologies))]}
+                className="display py-6 text-[clamp(3rem,9vw,8rem)] text-outline"
+            />
             <ClosingCta
                 locale={locale}
                 title={tServices("readyTitle")}
@@ -104,6 +105,6 @@ export default async function ServicesPage({
                 button={tServices("startProject")}
                 orMail={t("orMail")}
             />
-        </>
+        </Choreography>
     );
 }

@@ -8,11 +8,14 @@ export default function NextCase({
     label,
     title,
     image,
+    long = false,
 }: {
     href: string;
     label: string;
     title: string;
     image: string;
+    /** Long titles (articles) get smaller type and animate word by word. */
+    long?: boolean;
 }) {
     return (
         <section aria-label={label} className="border-t border-line">
@@ -33,7 +36,10 @@ export default function NextCase({
                     <p className="text-haze">{label} →</p>
                     <SplitTitle
                         text={title}
-                        className="display mt-4 text-[clamp(3.5rem,13vw,13rem)] transition-colors duration-500 group-hover:text-primary"
+                        by={long ? "words" : "chars"}
+                        className={`display mt-4 transition-colors duration-500 group-hover:text-primary ${
+                            long ? "max-w-[20ch] text-[clamp(2.5rem,6vw,6rem)]" : "text-[clamp(3.5rem,13vw,13rem)]"
+                        }`}
                     />
                 </div>
             </Link>

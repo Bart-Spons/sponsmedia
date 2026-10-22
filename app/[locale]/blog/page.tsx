@@ -1,9 +1,9 @@
 // app/[locale]/blog/page.tsx
-import Link from "next/link";
-import { Suspense } from "react";
 import Script from "next/script";
 import type { Metadata } from "next";
 import InteractiveBlogGrid from "@/components/InteractiveBlogGrid";
+import PageHeader from "@/components/PageHeader";
+import Choreography from "@/components/motion/Choreography";
 import { blogData } from "@/lib/data/blog";
 
 export async function generateStaticParams() {
@@ -75,42 +75,23 @@ export default async function BlogIndex({
     };
 
     return (
-        <div className="container py-16">
-            {/* JSON-LD */}
+        <Choreography>
             <Script id="blog-schema" type="application/ld+json">
                 {JSON.stringify(blogSchema)}
             </Script>
 
-            {/* Hero */}
-            <header className="mb-16 grid gap-8 pt-8 md:mb-24 md:grid-cols-12 md:items-end md:pt-16">
-                <h1 className="display text-[clamp(3rem,8vw,7rem)] md:col-span-7">Blog</h1>
-                <p className="max-w-[44ch] text-lg leading-relaxed text-frost/75 md:col-span-5 md:pb-3 md:text-xl">
-                    {isNL
+            <PageHeader
+                title="Blog"
+                intro={
+                    isNL
                         ? "Inzichten over webdevelopment, digitaal ontwerp en marketing. Praktische kennis om je online zichtbaarheid te laten groeien."
-                        : "Insights on web development, digital design and marketing. Practical knowledge to grow your visibility online."}
-                </p>
-            </header>
-
-            {/* Grid */}
-            <Suspense
-                fallback={
-                    <div className="flex items-center justify-center py-16">
-                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary" />
-                    </div>
+                        : "Insights on web development, digital design and marketing. Practical knowledge to grow your visibility online."
                 }
-            >
-                <InteractiveBlogGrid posts={blogData} locale={locale} />
-            </Suspense>
+            />
 
-            {/* CTA to RSS (optioneel) */}
-            {/* <div className="mt-10 text-center text-sm text-gray-400">
-        <Link
-          className="hover:text-primary transition-colors"
-          href={`/${locale}/blog/rss.xml`}
-        >
-          RSS feed
-        </Link>
-      </div> */}
-        </div>
+            <div className="container pb-28 md:pb-44">
+                <InteractiveBlogGrid posts={blogData} locale={locale} />
+            </div>
+        </Choreography>
     );
 }

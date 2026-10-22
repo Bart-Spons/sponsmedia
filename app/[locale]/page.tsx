@@ -6,7 +6,6 @@ import { projectsData, servicesData, blogData } from "@/lib/data";
 import Hero from "@/components/home/Hero";
 import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
 import ServicesList, { type ServiceRow } from "@/components/home/ServicesList";
-import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import ClosingCta from "@/components/ClosingCta";
 import Choreography from "@/components/motion/Choreography";
 import SplitTitle from "@/components/motion/SplitTitle";
@@ -106,22 +105,6 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                     name: p.client || p.title,
                 }))}
             />
-
-            {/* Statement: the words sharpen as you read down the page */}
-            <section className="container py-28 md:py-44">
-                <ScrollReveal
-                    as="p"
-                    baseOpacity={0.12}
-                    enableBlur
-                    blurStrength={6}
-                    baseRotation={0}
-                    containerClassName="max-w-[26ch]"
-                    textClassName="text-[clamp(2rem,4.6vw,4.25rem)] font-bold leading-[1.08] tracking-[-0.03em]"
-                    wordAnimationEnd="bottom 55%"
-                >
-                    {t("statement")}
-                </ScrollReveal>
-            </section>
 
             {/* Work */}
             <section aria-labelledby="work-title" className="container pb-28 md:pb-44">

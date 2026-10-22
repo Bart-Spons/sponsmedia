@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
+import Choreography from "@/components/motion/Choreography";
+import ReadingProgress from "@/components/motion/ReadingProgress";
 
 export async function generateStaticParams() {
     return [{ locale: "en" }, { locale: "nl" }];
@@ -41,44 +44,44 @@ export default async function PrivacyPolicyPage({
     const { locale } = await params;
 
     return (
-        <div className="min-h-screen bg-space">
-            <div className="container py-24 max-w-4xl mx-auto">
-                <h1 className="display mb-12 text-[clamp(2.75rem,7vw,5.5rem)]">
-                    {locale === "en" ? "Privacy Policy" : "Privacybeleid"}
-                </h1>
+        <Choreography>
+            <ReadingProgress />
+            <PageHeader title={locale === "en" ? "Privacy Policy" : "Privacybeleid"} />
+            <div className="container pb-28 md:pb-44">
+            <div className="mx-auto max-w-4xl">
 
                 <div className="prose prose-lg prose-invert max-w-none space-y-8">
-                    <p className="text-gray-300 text-lg">
+                    <p className="text-frost/75 text-lg">
                         {locale === "en"
                             ? "Last updated: August 20, 2025"
                             : "Laatst bijgewerkt: 20 augustus 2025"}
                     </p>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "1. Information We Collect"
                                 : "1. Informatie Die We Verzamelen"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-frost/75 leading-relaxed">
                             {locale === "en"
                                 ? "We collect information you provide directly to us, such as when you fill out a contact form, subscribe to our newsletter, or communicate with us. This may include your name, email address, phone number, and any message you send us."
                                 : "We verzamelen informatie die u direct aan ons verstrekt, zoals wanneer u een contactformulier invult, zich abonneert op onze nieuwsbrief, of met ons communiceert. Dit kan uw naam, e-mailadres, telefoonnummer en elk bericht dat u ons stuurt omvatten."}
                         </p>
                     </div>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "2. How We Use Your Information"
                                 : "2. Hoe We Uw Informatie Gebruiken"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed mb-4">
+                        <p className="text-frost/75 leading-relaxed mb-4">
                             {locale === "en"
                                 ? "We use the information we collect to:"
                                 : "We gebruiken de informatie die we verzamelen om:"}
                         </p>
-                        <ul className="list-disc list-inside text-gray-300 space-y-2">
+                        <ul className="list-disc list-inside text-frost/75 space-y-2">
                             <li>
                                 {locale === "en"
                                     ? "Respond to your inquiries and provide customer support"
@@ -102,44 +105,44 @@ export default async function PrivacyPolicyPage({
                         </ul>
                     </div>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "3. Information Sharing"
                                 : "3. Delen van Informatie"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-frost/75 leading-relaxed">
                             {locale === "en"
                                 ? "We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy. We may share your information with trusted service providers who assist us in operating our website and conducting our business."
                                 : "We verkopen, verhandelen of dragen uw persoonlijke informatie niet over aan derden zonder uw toestemming, behalve zoals beschreven in dit beleid. We kunnen uw informatie delen met vertrouwde serviceproviders die ons helpen bij het beheren van onze website en het uitvoeren van ons bedrijf."}
                         </p>
                     </div>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "4. Cookies and Tracking"
                                 : "4. Cookies en Tracking"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-frost/75 leading-relaxed">
                             {locale === "en"
                                 ? "We use cookies and similar tracking technologies to improve your browsing experience. You can control cookies through your browser settings. For more detailed information, please see our Cookie Policy."
                                 : "We gebruiken cookies en vergelijkbare tracking-technologieën om uw browse-ervaring te verbeteren. U kunt cookies beheren via uw browserinstellingen. Voor meer gedetailleerde informatie, zie ons Cookiebeleid."}
                         </p>
                     </div>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "5. Your Rights"
                                 : "5. Uw Rechten"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed mb-4">
+                        <p className="text-frost/75 leading-relaxed mb-4">
                             {locale === "en"
                                 ? "You have the right to:"
                                 : "U heeft het recht om:"}
                         </p>
-                        <ul className="list-disc list-inside text-gray-300 space-y-2">
+                        <ul className="list-disc list-inside text-frost/75 space-y-2">
                             <li>
                                 {locale === "en"
                                     ? "Access your personal data"
@@ -168,18 +171,18 @@ export default async function PrivacyPolicyPage({
                         </ul>
                     </div>
 
-                    <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold text-white mb-4">
+                    <div data-rise className="border-t border-line pt-8">
+                        <h2 className="mb-4 text-2xl font-bold text-frost">
                             {locale === "en"
                                 ? "6. Contact Us"
                                 : "6. Contact Opnemen"}
                         </h2>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-frost/75 leading-relaxed">
                             {locale === "en"
                                 ? "If you have any questions about this Privacy Policy or your personal data, please contact us at:"
                                 : "Als u vragen heeft over dit Privacybeleid of uw persoonlijke gegevens, neem dan contact met ons op via:"}
                         </p>
-                        <p className="text-white mt-2">
+                        <p className="mt-2 text-frost">
                             <a
                                 href="mailto:contact@sponsmedia.com"
                                 className="hover:text-primary transition-colors"
@@ -191,5 +194,6 @@ export default async function PrivacyPolicyPage({
                 </div>
             </div>
         </div>
+        </Choreography>
     );
 }

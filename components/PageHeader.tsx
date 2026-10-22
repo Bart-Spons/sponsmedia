@@ -1,6 +1,10 @@
-import BlurText from "@/components/reactbits/BlurText";
+import FocusTitle from "@/components/motion/FocusTitle";
 
-/** Shared top of every inner page: big title that comes into focus, short intro beside it. */
+/**
+ * Shared top of every inner page: a big title behind the autofocus lens,
+ * short intro beside it. The intro rises in when the page is wrapped in
+ * <Choreography> (data-meta).
+ */
 export default function PageHeader({
     title,
     intro,
@@ -12,17 +16,11 @@ export default function PageHeader({
 }) {
     return (
         <header className="container grid gap-8 pb-16 pt-16 md:grid-cols-12 md:items-end md:pb-24 md:pt-28">
-            <BlurText
-                as="h1"
-                text={title}
-                trigger="load"
-                effect="focus"
-                blur={16}
-                delay={90}
-                className="display text-[clamp(3.25rem,10vw,9rem)] md:col-span-7"
-            />
+            <div className="md:col-span-7">
+                <FocusTitle text={title} className="display text-[clamp(3.25rem,10vw,9rem)]" />
+            </div>
             {(intro || children) && (
-                <div className="md:col-span-5 md:pb-3">
+                <div data-meta className="md:col-span-5 md:pb-3">
                     {intro && (
                         <p className="max-w-[44ch] text-lg leading-relaxed text-frost/75 md:text-xl">
                             {intro}

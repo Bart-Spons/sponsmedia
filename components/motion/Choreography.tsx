@@ -17,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * - `data-case-media`  frame opens from an inset card to full bleed, `data-case-media-inner` zooms out
  * - `data-hscroll`     section pins and its `.h-reel-track` slides sideways (desktop)
  * - `data-row`         list rows: `data-line` draws, then `data-row-text` rises
+ * - `data-count`       a number that counts up from 0 on enter
  * - `data-rise`        generic fade-up on enter
  */
 export default function Choreography({ children }: { children: React.ReactNode }) {
@@ -97,6 +98,16 @@ export default function Choreography({ children }: { children: React.ReactNode }
                     once: true,
                     onEnter: revealRows,
                     onLeave: revealRows,
+                });
+
+                gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+                    gsap.from(el, {
+                        textContent: 0,
+                        snap: { textContent: 1 },
+                        duration: duration.long * 1.5,
+                        ease: "power3.out",
+                        scrollTrigger: { trigger: el, start: "top 90%" },
+                    });
                 });
 
                 gsap.utils.toArray<HTMLElement>("[data-rise]").forEach((el) => {

@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 type Tag = "h1" | "h2" | "h3" | "p" | "span";
 
 /**
- * Heading whose characters rise out of a mask, one after another.
+ * Heading whose characters (or words) rise out of a mask, one after another.
  * `trigger="load"` plays straight away, `"scroll"` when it enters the viewport.
  * The text stays hidden until it is split (see `.split-pending` in globals.css),
  * with a CSS failsafe that shows it anyway if the script never runs.
@@ -20,6 +20,7 @@ export default function SplitTitle({
     text,
     as: Tag = "h2",
     trigger = "scroll",
+    by = "chars",
     delay = 0,
     className = "",
     id,
@@ -27,6 +28,8 @@ export default function SplitTitle({
     text: string;
     as?: Tag;
     trigger?: "load" | "scroll";
+    /** Long titles (over ~8 words) read better word by word. */
+    by?: "chars" | "words";
     delay?: number;
     className?: string;
     id?: string;
@@ -46,12 +49,12 @@ export default function SplitTitle({
                     autoSplit: true,
                     onSplit(self) {
                         gsap.set(el, { visibility: "visible" });
-                        return gsap.from(self.chars, {
+                        return gsap.from(by === "chars" ? self.chars : self.words, {
                             yPercent: 115,
-                            rotate: 6,
+                            rotate: by === "chars" ? 6 : 3,
                             duration: 1.1,
                             ease: "expo.out",
-                            stagger: 0.022,
+                            stagger: by === "chars" ? 0.022 : 0.06,
                             delay,
                             scrollTrigger:
                                 trigger === "scroll"

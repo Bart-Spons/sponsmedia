@@ -204,7 +204,7 @@ ${values.message}`,
                         }`}
                     >
                         <h2
-                            className={`font-bold text-white ${
+                            className={`font-bold text-frost ${
                                 variant === "compact"
                                     ? "text-4xl"
                                     : "text-4xl md:text-5xl"
@@ -212,17 +212,17 @@ ${values.message}`,
                         >
                             {t.hero.title}
                         </h2>
-                        <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                        <p className="text-lg text-frost/75 max-w-2xl mx-auto">
                             {t.hero.subtitle}
                         </p>
                     </div>
                 )}
 
-                <div className="grid md:grid-cols-3 gap-8 items-start">
+                <div className="grid items-start gap-16 md:grid-cols-12 md:gap-10">
                     {/* Form */}
-                    <div className="md:col-span-2">
-                        <div className="rounded-2xl p-8 shadow-lg border border-white/10 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]">
-                            <h2 className="text-2xl font-bold text-white mb-8">
+                    <div className="md:col-span-7">
+                        <div>
+                            <h2 className="mb-10 text-haze">
                                 {t.form.title}
                             </h2>
 
@@ -239,7 +239,8 @@ ${values.message}`,
                             )}
 
                             <form
-                                className="space-y-6"
+                                data-meta
+                                className="space-y-10"
                                 onSubmit={handleSubmit(onSubmit)}
                                 noValidate
                             >
@@ -252,11 +253,11 @@ ${values.message}`,
                                     {...register("company_website")}
                                 />
 
-                                <div className="grid md:grid-cols-2 gap-6">
+                                <div className="grid gap-10 md:grid-cols-2 md:gap-8">
                                     <div>
                                         <label
                                             htmlFor="name"
-                                            className="block text-sm font-medium text-gray-300 mb-2"
+                                            className="block text-sm text-haze"
                                         >
                                             {t.form.name}
                                         </label>
@@ -265,7 +266,7 @@ ${values.message}`,
                                             {...register("name")}
                                             required
                                             autoComplete="name"
-                                            className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40"
+                                            className="w-full border-b border-line bg-transparent py-3 text-lg text-frost placeholder:text-haze/60 outline-none transition-colors duration-300 focus:border-primary"
                                             placeholder={
                                                 locale === "nl"
                                                     ? "Jan Jansen"
@@ -285,7 +286,7 @@ ${values.message}`,
                                     <div>
                                         <label
                                             htmlFor="email"
-                                            className="block text-sm font-medium text-gray-300 mb-2"
+                                            className="block text-sm text-haze"
                                         >
                                             {t.form.email}
                                         </label>
@@ -296,7 +297,7 @@ ${values.message}`,
                                             {...register("email")}
                                             required
                                             autoComplete="email"
-                                            className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40"
+                                            className="w-full border-b border-line bg-transparent py-3 text-lg text-frost placeholder:text-haze/60 outline-none transition-colors duration-300 focus:border-primary"
                                             placeholder={
                                                 locale === "nl"
                                                     ? "jan@bedrijf.nl"
@@ -317,14 +318,14 @@ ${values.message}`,
                                 <div>
                                     <label
                                         htmlFor="company"
-                                        className="block text-sm font-medium text-gray-300 mb-2"
+                                        className="block text-sm text-haze"
                                     >
                                         {t.form.company}
                                     </label>
                                     <input
                                         id="company"
                                         {...register("company")}
-                                        className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40"
+                                        className="w-full border-b border-line bg-transparent py-3 text-lg text-frost placeholder:text-haze/60 outline-none transition-colors duration-300 focus:border-primary"
                                         placeholder={
                                             locale === "nl"
                                                 ? "Jouw Bedrijf"
@@ -333,9 +334,9 @@ ${values.message}`,
                                     />
                                 </div>
 
-                                <div className="grid md:grid-cols-2 gap-6">
+                                <div className="grid gap-10 md:grid-cols-2 md:gap-8">
                                     <div className="w-full">
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm text-haze">
                                             {t.form.project}
                                         </label>
                                         <Controller
@@ -359,7 +360,7 @@ ${values.message}`,
                                     </div>
 
                                     <div className="w-full">
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label className="block text-sm text-haze">
                                             {t.form.timeline}
                                         </label>
                                         <Controller
@@ -388,7 +389,7 @@ ${values.message}`,
                                 <div>
                                     <label
                                         htmlFor="message"
-                                        className="block text-sm font-medium text-gray-300 mb-2"
+                                        className="block text-sm text-haze"
                                     >
                                         {t.form.message}
                                     </label>
@@ -399,7 +400,7 @@ ${values.message}`,
                                         required
                                         minLength={MIN_MSG}
                                         aria-describedby="message-hint message-count"
-                                        className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40 resize-none"
+                                        className="w-full border-b border-line bg-transparent py-3 text-lg text-frost placeholder:text-haze/60 outline-none transition-colors duration-300 focus:border-primary resize-none"
                                         placeholder={
                                             locale === "nl"
                                                 ? "Vertel over je project, doelgroep en specifieke wensen..."
@@ -417,7 +418,7 @@ ${values.message}`,
                                     <div className="mt-1 flex items-center justify-between">
                                         <p
                                             id="message-hint"
-                                            className="text-xs text-gray-400"
+                                            className="text-xs text-haze"
                                         >
                                             {locale === "nl"
                                                 ? `Minimaal ${MIN_MSG} tekens`
@@ -428,7 +429,7 @@ ${values.message}`,
                                             className={`text-xs ${
                                                 chars < MIN_MSG
                                                     ? "text-red-400"
-                                                    : "text-gray-400"
+                                                    : "text-haze"
                                             }`}
                                         >
                                             {chars}/{MIN_MSG}
@@ -439,13 +440,11 @@ ${values.message}`,
                                 <button
                                     type="submit"
                                     disabled={!isValid || isSubmitting}
-                                    className={`w-full px-6 py-4 rounded-xl font-semibold text-black
-                    bg-gradient-to-b from-[#e2b76f] to-[#d4a95f] transition-all duration-200
-                    ${
-                        isValid && !isSubmitting
-                            ? "hover:scale-[1.01] active:scale-[0.99] hover:shadow-[0_0_20px_rgba(226,183,111,0.35)] hover:ring-2 hover:ring-[#e2b76f]/40 hover:ring-offset-2 hover:ring-offset-black"
-                            : "opacity-80 cursor-not-allowed"
-                    }`}
+                                    className={`btn btn-primary h-16 w-full px-10 text-lg transition-[transform,opacity,background-color] duration-300 md:w-auto ${
+                                        isValid && !isSubmitting
+                                            ? "active:scale-[0.98]"
+                                            : "cursor-not-allowed opacity-50"
+                                    }`}
                                 >
                                     {isSubmitting
                                         ? locale === "nl"
@@ -458,12 +457,12 @@ ${values.message}`,
                     </div>
 
                     {/* Contact + Socials */}
-                    <div className="space-y-8 md:sticky md:top-8">
-                        <div className="rounded-2xl bg-black/60 p-6 shadow-lg border border-white/10 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]">
-                            <h3 className="text-lg font-semibold text-white mb-2">
+                    <div data-meta className="space-y-12 md:sticky md:top-28 md:col-span-4 md:col-start-9">
+                        <div className="border-t border-line pt-6">
+                            <h3 className="mb-2 text-xl font-bold">
                                 {t.contact.title}
                             </h3>
-                            <p className="text-gray-300 mb-4">
+                            <p className="text-frost/75 mb-4">
                                 {t.contact.subtitle}
                             </p>
 
@@ -475,14 +474,14 @@ ${values.message}`,
                                 >
                                     <span className="w-6 h-6 flex items-center justify-center">
                                         <svg
-                                            className="w-5 h-5 text-[#e2b76f] transition-transform group-hover:scale-110"
+                                            className="w-5 h-5 text-primary transition-transform group-hover:scale-110"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
                                             <path d="M3 5h18v14H3V5Zm9 7L4 7h16l-8 5Z" />
                                         </svg>
                                     </span>
-                                    <span className="text-gray-300 group-hover:text-white transition-colors">
+                                    <span className="text-frost/80 group-hover:text-frost transition-colors">
                                         {t.contact.email}
                                     </span>
                                 </a>
@@ -490,23 +489,23 @@ ${values.message}`,
                                 <div className="flex items-center gap-3">
                                     <span className="w-6 h-6 flex items-center justify-center">
                                         <svg
-                                            className="w-5 h-5 text-red-500"
+                                            className="w-5 h-5 text-primary"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
                                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM12 11.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
                                         </svg>
                                     </span>
-                                    <span className="text-gray-300">
+                                    <span className="text-frost/75">
                                         {t.contact.location}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="rounded-2xl bg-black/60 p-6 shadow-lg border border-white/10 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]">
-                            <h3 className="text-lg font-semibold text-white mb-4">
-                                Follow My Work
+                        <div className="border-t border-line pt-6">
+                            <h3 className="mb-4 text-xl font-bold">
+                                {locale === "nl" ? "Volg mijn werk" : "Follow my work"}
                             </h3>
 
                             <div className="space-y-3">
@@ -519,14 +518,14 @@ ${values.message}`,
                                 >
                                     <span className="w-6 h-6 flex items-center justify-center">
                                         <svg
-                                            className="w-5 h-5 text-pink-500 transition-transform group-hover:scale-110"
+                                            className="w-5 h-5 text-primary transition-transform group-hover:scale-110"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
                                             <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 0 7.75 3.5h-8.5Zm8.75 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
                                         </svg>
                                     </span>
-                                    <span className="text-gray-300 group-hover:text-white transition-colors">
+                                    <span className="text-frost/80 group-hover:text-frost transition-colors">
                                         Instagram
                                     </span>
                                 </a>
@@ -540,14 +539,14 @@ ${values.message}`,
                                 >
                                     <span className="w-6 h-6 flex items-center justify-center">
                                         <svg
-                                            className="w-5 h-5 text-[#0A66C2]"
+                                            className="w-5 h-5 text-primary"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
                                             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.063 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                                         </svg>
                                     </span>
-                                    <span className="text-gray-300 group-hover:text-white transition-colors">
+                                    <span className="text-frost/80 group-hover:text-frost transition-colors">
                                         LinkedIn
                                     </span>
                                 </a>

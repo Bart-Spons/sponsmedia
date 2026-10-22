@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import RdxSelect from "@/components/ui/RdxSelect";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { blogData as defaultPosts } from "@/lib/data/blog";
+import { duration, ease, motionOK, stagger } from "@/lib/motion";
+
+gsap.registerPlugin(useGSAP);
 
 type BlogPost = {
     id: string;
@@ -19,13 +23,13 @@ type BlogPost = {
     image: string;
 };
 
-type CardPost = BlogPost & {
-    title: string;
-    excerpt: string;
-    tags: string[];
-    date: Date;
-};
+type RowPost = BlogPost & { date: Date };
 
+/**
+ * Blog index in the same language as the projects index: one big row per
+ * article, a preview image that trails the cursor, search and category chips.
+ * Filtering re-plays a short, interruptible stagger on the rows.
+ */
 export default function InteractiveBlogGrid({
     posts,
     locale = "en",
@@ -35,214 +39,235 @@ export default function InteractiveBlogGrid({
 }) {
     const L = locale === "nl";
     const LABELS = {
-        search: L ? "Zoek artikelen..." : "Search articles...",
-        allCats: L ? "Alle categorieën" : "All Categories",
-        readMore: L ? "Lees meer" : "Read more",
+        search: L ? "Zoek artikelen" : "Search articles",
+        all: L ? "Alles" : "All",
         found: (n: number) =>
-            L
-                ? `${n} ${n === 1 ? "artikel" : "artikelen"} gevonden`
-                : `${n} article${n === 1 ? "" : "s"} found`,
+            L ? `${n} ${n === 1 ? "artikel" : "artikelen"}` : `${n} article${n === 1 ? "" : "s"}`,
+        empty: L
+            ? "Geen resultaten. Probeer een andere zoekterm of categorie."
+            : "No results. Try a different search or category.",
     };
 
-    // fallback naar blogData als posts niet meegegeven is
     const source = posts && posts.length ? posts : defaultPosts;
 
-    const normalized = useMemo<CardPost[]>(() => {
-        return source
-            .map((p) => {
-                const title = L && p.titleNl ? p.titleNl : p.title;
-                const excerpt = L && p.excerptNl ? p.excerptNl : p.excerpt;
-                const tags = (L && p.tagsNl ? p.tagsNl : p.tags) || [];
-                const date = new Date(p.publishDate);
-                return { ...p, title, excerpt, tags, date };
-            })
-            .sort((a, b) => b.date.getTime() - a.date.getTime());
-    }, [source, L]);
+    const normalized = useMemo<RowPost[]>(
+        () =>
+            source
+                .map((p) => ({
+                    ...p,
+                    title: (L && p.titleNl) || p.title,
+                    excerpt: (L && p.excerptNl) || p.excerpt,
+                    tags: ((L && p.tagsNl) || p.tags) ?? [],
+                    date: new Date(p.publishDate),
+                }))
+                .sort((a, b) => b.date.getTime() - a.date.getTime()),
+        [source, L]
+    );
 
-    const allCategories = useMemo(() => {
+    const categories = useMemo(() => {
         const set = new Set<string>();
-        normalized.forEach((p) => (p.tags || []).forEach((t) => set.add(t)));
-        return Array.from(set).sort((a, b) =>
-            a.localeCompare(b, L ? "nl" : "en")
-        );
+        normalized.forEach((p) => p.tags.forEach((t) => set.add(t)));
+        return Array.from(set).sort((a, b) => a.localeCompare(b, L ? "nl" : "en"));
     }, [normalized, L]);
 
     const [query, setQuery] = useState("");
-    const [category, setCategory] = useState<string>("__all__");
+    const [category, setCategory] = useState<string | null>(null);
+    const [active, setActive] = useState(0);
 
-    const filtered = useMemo<CardPost[]>(() => {
+    const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
         return normalized.filter((p) => {
-            const matchesQ =
-                !q ||
-                [p.title, p.excerpt, ...(p.tags || [])]
-                    .join(" • ")
-                    .toLowerCase()
-                    .includes(q);
-            const matchesCat =
-                category === "__all__" ||
-                (p.tags || []).some(
-                    (t) => t.toLowerCase() === category.toLowerCase()
-                );
+            const matchesQ = !q || [p.title, p.excerpt, ...p.tags].join(" ").toLowerCase().includes(q);
+            const matchesCat = !category || p.tags.some((t) => t.toLowerCase() === category.toLowerCase());
             return matchesQ && matchesCat;
         });
     }, [normalized, query, category]);
 
-    const categoryOptions = [
-        { value: "__all__", label: LABELS.allCats },
-        ...allCategories.map((c) => ({ value: c, label: c })),
-    ];
+    const dateFmt = new Intl.DateTimeFormat(L ? "nl-NL" : "en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+
+    const root = useRef<HTMLElement>(null);
+    const preview = useRef<HTMLDivElement>(null);
+    const moveX = useRef<((v: number) => void) | null>(null);
+    const moveY = useRef<((v: number) => void) | null>(null);
+
+    // Rows rise in on first load and again after every filter change.
+    useGSAP(
+        () => {
+            const mm = gsap.matchMedia();
+            mm.add(motionOK, () => {
+                gsap.fromTo(
+                    "[data-post-row]",
+                    { y: 24, autoAlpha: 0 },
+                    {
+                        y: 0,
+                        autoAlpha: 1,
+                        duration: duration.short,
+                        ease: ease.enter,
+                        stagger,
+                        overwrite: true,
+                        clearProps: "transform",
+                    }
+                );
+            });
+        },
+        { scope: root, dependencies: [query, category], revertOnUpdate: false }
+    );
+
+    useGSAP(
+        () => {
+            const mm = gsap.matchMedia();
+            mm.add(`(pointer: fine) and ${motionOK}`, () => {
+                gsap.set(preview.current, { xPercent: -50, yPercent: -50, scale: 0.6, autoAlpha: 0 });
+                moveX.current = gsap.quickTo(preview.current, "x", { duration: 0.7, ease: "power3" });
+                moveY.current = gsap.quickTo(preview.current, "y", { duration: 0.7, ease: "power3" });
+                return () => {
+                    moveX.current = null;
+                    moveY.current = null;
+                };
+            });
+        },
+        { scope: root }
+    );
+
+    const show = (visible: boolean, e?: React.MouseEvent) => {
+        if (!moveX.current) return;
+        // First appearance: start right under the cursor instead of flying in from a corner.
+        if (visible && e) gsap.set(preview.current, { x: e.clientX, y: e.clientY });
+        gsap.to(preview.current, {
+            autoAlpha: visible ? 1 : 0,
+            scale: visible ? 1 : 0.6,
+            rotate: visible ? 3 : 0,
+            duration: visible ? duration.short : duration.short * 0.6,
+            ease: visible ? ease.enter : ease.exit,
+            overwrite: "auto",
+        });
+    };
+
+    const chip = (label: string, value: string | null) => {
+        const on = category === value;
+        return (
+            <button
+                key={label}
+                type="button"
+                onClick={() => setCategory(value)}
+                aria-pressed={on}
+                className={`rounded-full border px-4 py-2 text-sm transition-colors duration-300 ${
+                    on
+                        ? "border-primary bg-primary text-night"
+                        : "border-line text-frost/80 hover:border-frost/40 hover:text-frost"
+                }`}
+            >
+                {label}
+            </button>
+        );
+    };
 
     return (
-        <section>
+        <section ref={root}>
             {/* Filters */}
-            <div className="mx-auto max-w-5xl mb-10">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-4">
-                    {/* Search */}
-                    <div className="relative">
-                        <input
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder={LABELS.search}
-                            className="w-full h-[48px] rounded-xl bg-black/30 border border-white/20 px-5 pr-11
-                         text-white placeholder:text-gray-400
-                         focus:outline-none focus:border-[#e2b76f] focus:ring-2 focus:ring-[#e2b76f]/40"
-                        />
-                        <svg
-                            className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            aria-hidden
-                        >
-                            <path
-                                d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            />
-                        </svg>
-                    </div>
-
-                    {/* Category */}
-                    <RdxSelect
-                        value={category}
-                        onValueChange={setCategory}
-                        placeholder={LABELS.allCats}
-                        options={categoryOptions}
+            <div data-meta className="mb-12 grid gap-6 md:mb-16 md:grid-cols-12 md:items-end">
+                <label className="relative block md:col-span-5">
+                    <span className="sr-only">{LABELS.search}</span>
+                    <input
+                        type="search"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder={LABELS.search}
+                        className="h-14 w-full border-b border-line bg-transparent pr-10 text-xl text-frost outline-none transition-colors placeholder:text-haze focus:border-primary"
                     />
+                    <svg
+                        className="pointer-events-none absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 text-haze"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden
+                    >
+                        <path
+                            d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                        />
+                    </svg>
+                </label>
+                <div className="flex flex-wrap gap-2 md:col-span-7 md:justify-end">
+                    {chip(LABELS.all, null)}
+                    {categories.map((c) => chip(c, c))}
                 </div>
-
-                {/* Count */}
-                <p className="text-center text-sm text-gray-500 mt-3">
-                    {LABELS.found(filtered.length)}
-                </p>
             </div>
 
-            {/* Grid */}
+            <p aria-live="polite" className="mb-4 text-sm text-haze">
+                {LABELS.found(filtered.length)}
+            </p>
+
             {filtered.length === 0 ? (
-                <div className="text-center py-20">
-                    <p className="text-gray-400">
-                        {L
-                            ? "Geen resultaten. Probeer een andere zoekterm of categorie."
-                            : "No results. Try a different query or category."}
-                    </p>
-                </div>
+                <p className="border-t border-line py-20 text-haze">{LABELS.empty}</p>
             ) : (
-                <div className="grid md:grid-cols-2 gap-10">
+                <ol
+                    className="border-b border-line"
+                    onMouseEnter={(e) => show(true, e)}
+                    onMouseLeave={() => show(false)}
+                    onMouseMove={(e) => {
+                        moveX.current?.(e.clientX);
+                        moveY.current?.(e.clientY);
+                    }}
+                >
                     {filtered.map((post) => (
-                        <article
-                            key={post.id}
-                            className="group rounded-2xl overflow-hidden border border-white/10
-                         bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#10141c]
-                         shadow-lg transition-transform duration-300 will-change-transform
-                         hover:-translate-y-1 hover:shadow-xl hover:ring-1 hover:ring-[#e2b76f]/40"
-                        >
-                            {/* Media link */}
+                        <li key={post.id} data-post-row className="border-t border-line">
                             <Link
                                 href={`/${locale}/blog/${post.id}`}
-                                className="block relative"
-                                aria-label={post.title}
+                                onMouseEnter={() => setActive(normalized.indexOf(post))}
+                                onFocus={() => setActive(normalized.indexOf(post))}
+                                className="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-3 py-8 md:grid-cols-12 md:items-baseline md:gap-x-10 md:py-10"
                             >
-                                <div className="relative aspect-[16/9] overflow-hidden">
-                                    <Image
-                                        src={post.image}
-                                        alt={post.title}
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                        className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-                                </div>
-                            </Link>
-
-                            <div className="p-6 md:p-7">
-                                {/* Tags */}
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {(post.tags || []).map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-gray-300 border border-white/10"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Title link */}
-                                <Link
-                                    href={`/${locale}/blog/${post.id}`}
-                                    className="inline-block group/title"
-                                    aria-label={post.title}
+                                {/* Small thumbnail on touch screens, where there is no cursor preview */}
+                                <span className="relative row-span-2 aspect-square overflow-hidden rounded-lg bg-deep md:hidden">
+                                    <Image src={post.image} alt="" fill sizes="88px" className="object-cover" />
+                                </span>
+                                <time
+                                    dateTime={String(post.publishDate)}
+                                    className="text-sm tabular-nums text-haze md:col-span-2"
                                 >
-                                    <h3 className="text-xl md:text-[1.35rem] font-semibold text-white leading-snug transition-colors group-hover/title:text-[#e2b76f]">
+                                    {dateFmt.format(post.date)}
+                                </time>
+                                <span className="md:col-span-7">
+                                    <span className="block text-[clamp(1.4rem,3vw,2.6rem)] font-bold leading-[1.1] tracking-[-0.03em] transition-[color,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-3 group-hover:text-primary">
                                         {post.title}
-                                    </h3>
-                                </Link>
-
-                                <p className="text-gray-400 mt-2 md:mt-3 leading-relaxed line-clamp-3">
-                                    {post.excerpt}
-                                </p>
-
-                                <div className="flex items-center justify-between text-[12px] text-gray-500 mt-5">
-                                    <span>{post.author}</span>
-                                    <time dateTime={String(post.publishDate)}>
-                                        {post.date.toLocaleDateString(
-                                            L ? "nl-NL" : "en-US",
-                                            {
-                                                day: "numeric",
-                                                month: "short",
-                                                year: "numeric",
-                                            }
-                                        )}
-                                    </time>
-                                </div>
-
-                                <div className="mt-6">
-                                    {/* Read more link (separate, geen nesting) */}
-                                    <Link
-                                        href={`/${locale}/blog/${post.id}`}
-                                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium
-                               bg-[#23272f] text-white hover:text-black hover:bg-[#e2b76f]
-                               transition-colors"
-                                        aria-label={LABELS.readMore}
-                                    >
-                                        {LABELS.readMore}
-                                        <svg
-                                            width="18"
-                                            height="18"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            aria-hidden
-                                        >
-                                            <path d="M5 9h8M11 5l4 4-4 4" />
-                                        </svg>
-                                    </Link>
-                                </div>
-                            </div>
-                        </article>
+                                    </span>
+                                    <span className="mt-3 hidden max-w-[60ch] leading-relaxed text-frost/70 md:line-clamp-2">
+                                        {post.excerpt}
+                                    </span>
+                                </span>
+                                <span className="col-start-2 text-sm text-haze md:col-span-3 md:col-start-auto md:text-right">
+                                    {post.tags.slice(0, 2).join(", ")}
+                                </span>
+                            </Link>
+                        </li>
                     ))}
-                </div>
+                </ol>
             )}
+
+            {/* Cursor preview */}
+            <div
+                ref={preview}
+                aria-hidden
+                className="pointer-events-none invisible fixed left-0 top-0 z-40 hidden aspect-[16/10] w-[clamp(16rem,24vw,26rem)] overflow-hidden rounded-xl bg-deep shadow-2xl md:block"
+            >
+                {normalized.map((p, i) => (
+                    <Image
+                        key={p.id}
+                        src={p.image}
+                        alt=""
+                        fill
+                        sizes="26rem"
+                        className={`object-cover transition-[opacity,transform] duration-500 ${
+                            i === active ? "scale-100 opacity-100" : "scale-110 opacity-0"
+                        }`}
+                    />
+                ))}
+            </div>
         </section>
     );
 }

@@ -5,6 +5,7 @@ import type { ReelItem } from "@/components/home/WorkReel";
 import ProjectIndex from "@/components/projects/ProjectIndex";
 import ProjectsReel from "@/components/projects/ProjectsReel";
 import Marquee from "@/components/motion/Marquee";
+import Choreography from "@/components/motion/Choreography";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
 
@@ -71,7 +72,7 @@ export default async function ProjectsIndex({
         }));
 
     return (
-        <>
+        <Choreography>
             <PageHeader title={tProjects("title")} intro={tProjects("subtitle")} />
 
             {/* Index: every project as one big row */}
@@ -101,6 +102,6 @@ export default async function ProjectsIndex({
                 button={t("startProject")}
                 orMail={t("orMail")}
             />
-        </>
+        </Choreography>
     );
 }
