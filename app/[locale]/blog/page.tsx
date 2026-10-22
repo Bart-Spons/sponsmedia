@@ -82,18 +82,12 @@ export default async function BlogIndex({
             </Script>
 
             {/* Hero */}
-            <header className="mb-14 text-center">
-                <span className="text-ms font-semibold tracking-wider text-[#e2b76f]">
-                    {isNL ? "INZICHTEN & EXPERTISE" : "INSIGHTS & EXPERTISE"}
-                </span>
-                <h1 className="text-3xl md:text-6xl font-extrabold mt-3 mb-5 text-white">
-                    Blog
-                </h1>
-                <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
-                <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            <header className="mb-16 grid gap-8 pt-8 md:mb-24 md:grid-cols-12 md:items-end md:pt-16">
+                <h1 className="display text-[clamp(3rem,8vw,7rem)] md:col-span-7">Blog</h1>
+                <p className="max-w-[44ch] text-lg leading-relaxed text-frost/75 md:col-span-5 md:pb-3 md:text-xl">
                     {isNL
-                        ? "Blijf voorop met de laatste inzichten in web development, digitaal ontwerp en marketing strategieën. Expert kennis om je online aanwezigheid te laten groeien."
-                        : "Stay ahead with the latest insights in web development, digital design, and marketing strategies. Expert knowledge to grow your online presence."}
+                        ? "Inzichten over webdevelopment, digitaal ontwerp en marketing. Praktische kennis om je online zichtbaarheid te laten groeien."
+                        : "Insights on web development, digital design and marketing. Practical knowledge to grow your visibility online."}
                 </p>
             </header>
 
@@ -101,7 +95,7 @@ export default async function BlogIndex({
             <Suspense
                 fallback={
                     <div className="flex items-center justify-center py-16">
-                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#e2b76f]" />
+                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary" />
                     </div>
                 }
             >

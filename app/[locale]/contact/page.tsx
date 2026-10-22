@@ -50,23 +50,11 @@ export default async function ContactPage({
 
     return (
         <div className="relative min-h-screen bg-space">
-            {/* Subtiele gouden achtergrondaccenten */}
-            <div aria-hidden className="pointer-events-none absolute inset-0">
-                <div className="absolute -top-32 -left-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(226,183,111,0.18),transparent)] blur-2xl" />
-                <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(255,200,97,0.14),transparent)] blur-2xl" />
-            </div>
-
             <div className="container relative z-10 py-16">
                 {/* Header */}
-                <header className="mb-10 text-center">
-                    <p className="text-ms font-semibold tracking-widest text-primary">
-                        {t("eyebrow")}
-                    </p>
-                    <h1 className="mt-2 text-3xl md:text-5xl font-extrabold">
-                        {t("title")}
-                    </h1>
-                    <div className="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
-                    <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                <header className="mb-16 grid gap-8 pt-8 md:mb-20 md:grid-cols-12 md:items-end md:pt-16">
+                    <h1 className="display text-[clamp(3rem,8vw,7rem)] md:col-span-7">{t("title")}</h1>
+                    <p className="max-w-[44ch] text-lg leading-relaxed text-frost/75 md:col-span-5 md:pb-3 md:text-xl">
                         {t("subtitle")}
                     </p>
                 </header>

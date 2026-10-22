@@ -1,205 +1,244 @@
-// components/Nav.tsx
 "use client";
 
 import Link from "next/link";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 
-export default function Nav({ locale }: { locale: "en" | "nl" }) {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+gsap.registerPlugin(useGSAP);
 
-    const L =
-        locale === "nl"
-            ? {
-                  brandAria: "SponsMedia - Home",
-                  mainNav: "Hoofdnavigatie",
-                  mobileNav: "Mobiele navigatie",
-                  openMenu: "Menu openen",
-                  closeMenu: "Menu sluiten",
-                  projects: "Projecten",
-                  services: "Diensten",
-                  about: "Over",
-                  blog: "Blog",
-                  contact: "Contact",
-                  cta: "Start een project",
-                  ctaAria: "Start een nieuw project met ons",
-              }
-            : {
-                  brandAria: "SponsMedia - Home",
-                  mainNav: "Main navigation",
-                  mobileNav: "Mobile navigation",
-                  openMenu: "Open menu",
-                  closeMenu: "Close menu",
-                  projects: "Projects",
-                  services: "Services",
-                  about: "About",
-                  blog: "Blog",
-                  contact: "Contact",
-                  cta: "Start a project",
-                  ctaAria: "Start a new project with us",
-              };
+type Locale = "en" | "nl";
 
-    const toggleMenu = () => setIsMenuOpen((v) => !v);
-    const closeMenu = () => setIsMenuOpen(false);
+const LABELS = {
+    en: {
+        home: "SponsMedia, home",
+        main: "Main navigation",
+        open: "Open menu",
+        close: "Close menu",
+        menu: "Menu",
+        links: [
+            ["projects", "Projects"],
+            ["services", "Services"],
+            ["about", "About"],
+            ["blog", "Blog"],
+        ],
+        cta: "Start a project",
+        lang: "Language",
+    },
+    nl: {
+        home: "SponsMedia, home",
+        main: "Hoofdnavigatie",
+        open: "Menu openen",
+        close: "Menu sluiten",
+        menu: "Menu",
+        links: [
+            ["projects", "Projecten"],
+            ["services", "Diensten"],
+            ["about", "Over"],
+            ["blog", "Blog"],
+        ],
+        cta: "Start een project",
+        lang: "Taal",
+    },
+} as const;
+
+function swapLocale(pathname: string, target: Locale) {
+    const parts = pathname.split("/");
+    if (parts[1] === "en" || parts[1] === "nl") parts[1] = target;
+    else parts.splice(1, 0, target);
+    return parts.join("/") || `/${target}`;
+}
+
+export default function Nav({ locale }: { locale: Locale }) {
+    const L = LABELS[locale];
+    const pathname = usePathname() || `/${locale}`;
+    const [open, setOpen] = useState(false);
+    const [hidden, setHidden] = useState(false);
+    const [solid, setSolid] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    // Hide the bar while scrolling down, bring it back on the way up.
+    useEffect(() => {
+        let last = window.scrollY;
+        const onScroll = () => {
+            const y = window.scrollY;
+            setSolid(y > 24);
+            setHidden(y > 240 && y > last);
+            last = y;
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
+    useEffect(() => setOpen(false), [pathname]);
+
+    useEffect(() => {
+        document.documentElement.classList.toggle("lenis-stopped", open);
+        const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [open]);
+
+    // Menu opening is the one place the nav itself moves: links rise in order.
+    useGSAP(
+        () => {
+            if (!open || !panelRef.current) return;
+            gsap.fromTo(
+                panelRef.current.querySelectorAll("[data-menu-item]"),
+                { yPercent: 110 },
+                {
+                    yPercent: 0,
+                    duration: 0.7,
+                    ease: "expo.out",
+                    stagger: 0.06,
+                }
+            );
+        },
+        { dependencies: [open] }
+    );
+
+    const isActive = (slug: string) =>
+        pathname.startsWith(`/${locale}/${slug}`);
 
     return (
         <header
-            className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/30 border-b border-white/10"
-            role="banner"
+            className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-500 ease-[cubic-bezier(.22,1,.36,1)] border-b ${
+                hidden && !open ? "-translate-y-full" : "translate-y-0"
+            } ${
+                solid || open
+                    ? "bg-night/85 backdrop-blur-md border-line"
+                    : "bg-transparent border-transparent"
+            }`}
         >
-            <div className="mx-auto max-w-7xl px-3 sm:px-4 py-3 flex items-center justify-between">
+            <div className="container flex h-16 items-center justify-between gap-6 md:h-20">
                 <Link
                     href={`/${locale}`}
-                    className="font-black text-lg sm:text-xl tracking-tight flex-shrink-0"
-                    aria-label={L.brandAria}
-                    onClick={closeMenu}
+                    aria-label={L.home}
+                    className="text-lg font-extrabold tracking-[-0.03em] md:text-xl"
                 >
-                    Spons<span className="text-primary">Media</span>
+                    SponsMedia
                 </Link>
 
-                {/* Desktop Navigation */}
-                <nav
-                    className="hidden md:flex gap-6 text-sm"
-                    role="navigation"
-                    aria-label={L.mainNav}
-                >
-                    <Link
-                        href={`/${locale}/projects`}
-                        className="hover:text-primary transition-colors"
-                    >
-                        {L.projects}
-                    </Link>
-                    <Link
-                        href={`/${locale}/services`}
-                        className="hover:text-primary transition-colors"
-                    >
-                        {L.services}
-                    </Link>
-                    <Link
-                        href={`/${locale}/about`}
-                        className="hover:text-primary transition-colors"
-                    >
-                        {L.about}
-                    </Link>
-                    <Link
-                        href={`/${locale}/blog`}
-                        className="hover:text-primary transition-colors"
-                    >
-                        {L.blog}
-                    </Link>
-                    <Link
-                        href={`/${locale}/contact`}
-                        className="hover:text-primary transition-colors"
-                    >
-                        {L.contact}
-                    </Link>
+                <nav aria-label={L.main} className="hidden md:block">
+                    <ul className="flex items-center gap-8 text-[0.95rem]">
+                        {L.links.map(([slug, label]) => (
+                            <li key={slug}>
+                                <Link
+                                    href={`/${locale}/${slug}`}
+                                    aria-current={isActive(slug) ? "page" : undefined}
+                                    className={`relative py-2 transition-colors hover:text-frost ${
+                                        isActive(slug) ? "text-frost" : "text-haze"
+                                    } after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-primary after:transition-transform after:duration-500 ${
+                                        isActive(slug)
+                                            ? "after:scale-x-100"
+                                            : "after:scale-x-0 hover:after:scale-x-100"
+                                    }`}
+                                >
+                                    {label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
                 </nav>
 
-                {/* Desktop Actions */}
-                <div className="hidden md:flex items-center gap-2">
-                    <LanguageSwitcher locale={locale} />
-                    <Link
-                        href={`/${locale}/contact`}
-                        className="btn btn-primary"
-                        aria-label={L.ctaAria}
-                    >
+                <div className="hidden items-center gap-5 md:flex">
+                    <LangSwitch locale={locale} pathname={pathname} label={L.lang} />
+                    <Link href={`/${locale}/contact`} className="btn btn-primary">
                         {L.cta}
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
-                    onClick={toggleMenu}
-                    aria-expanded={isMenuOpen}
+                    type="button"
+                    className="-mr-2 flex h-11 items-center gap-3 px-2 text-sm font-semibold md:hidden"
+                    aria-expanded={open}
                     aria-controls="mobile-menu"
-                    aria-label={isMenuOpen ? L.closeMenu : L.openMenu}
+                    aria-label={open ? L.close : L.open}
+                    onClick={() => setOpen((v) => !v)}
                 >
-                    <svg
-                        className="w-5 h-5 sm:w-6 sm:h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
-                        {isMenuOpen ? (
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        ) : (
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        )}
-                    </svg>
+                    <span aria-hidden>{L.menu}</span>
+                    <span aria-hidden className="relative block h-3 w-6">
+                        <span
+                            className={`absolute left-0 h-[2px] w-6 bg-frost transition-transform duration-300 ${
+                                open ? "top-[5px] rotate-45" : "top-0"
+                            }`}
+                        />
+                        <span
+                            className={`absolute left-0 h-[2px] w-6 bg-frost transition-transform duration-300 ${
+                                open ? "top-[5px] -rotate-45" : "top-[10px]"
+                            }`}
+                        />
+                    </span>
                 </button>
             </div>
 
-            {/* Mobile Menu */}
-            {isMenuOpen && (
+            {open && (
                 <div
                     id="mobile-menu"
-                    className="md:hidden border-t border-white/10 bg-black/90 backdrop-blur"
-                    role="navigation"
-                    aria-label={L.mobileNav}
+                    ref={panelRef}
+                    data-lenis-prevent
+                    className="h-[calc(100svh-4rem)] overflow-y-auto border-t border-line bg-night md:hidden"
                 >
-                    <div className="mx-auto max-w-7xl px-3 sm:px-4 py-4 space-y-3">
-                        <Link
-                            href={`/${locale}/projects`}
-                            className="block py-2 text-base hover:text-primary transition-colors"
-                            onClick={closeMenu}
-                        >
-                            {L.projects}
-                        </Link>
-                        <Link
-                            href={`/${locale}/services`}
-                            className="block py-2 text-base hover:text-primary transition-colors"
-                            onClick={closeMenu}
-                        >
-                            {L.services}
-                        </Link>
-                        <Link
-                            href={`/${locale}/about`}
-                            className="block py-2 text-base hover:text-primary transition-colors"
-                            onClick={closeMenu}
-                        >
-                            {L.about}
-                        </Link>
-                        <Link
-                            href={`/${locale}/blog`}
-                            className="block py-2 text-base hover:text-primary transition-colors"
-                            onClick={closeMenu}
-                        >
-                            {L.blog}
-                        </Link>
-                        <Link
-                            href={`/${locale}/contact`}
-                            className="block py-2 text-base hover:text-primary transition-colors"
-                            onClick={closeMenu}
-                        >
-                            {L.contact}
-                        </Link>
-
-                        <div className="pt-3 border-t border-white/10 flex flex-col gap-3">
-                            <LanguageSwitcher locale={locale} />
-                            <Link
-                                href={`/${locale}/contact`}
-                                className="btn btn-primary w-full text-center text-sm"
-                                onClick={closeMenu}
-                                aria-label={L.ctaAria}
-                            >
+                    <nav aria-label={L.main} className="container flex h-full flex-col pb-10 pt-8">
+                        <ul className="space-y-1">
+                            {[...L.links, ["contact", "Contact"] as const].map(
+                                ([slug, label]) => (
+                                    <li key={slug} className="overflow-hidden">
+                                        <Link
+                                            data-menu-item
+                                            href={`/${locale}/${slug}`}
+                                            className={`display block py-1 text-[2.75rem] ${
+                                                isActive(slug) ? "text-primary" : "text-frost"
+                                            }`}
+                                        >
+                                            {label}
+                                        </Link>
+                                    </li>
+                                )
+                            )}
+                        </ul>
+                        <div className="mt-auto flex items-center justify-between gap-4 pt-10">
+                            <LangSwitch locale={locale} pathname={pathname} label={L.lang} />
+                            <Link href={`/${locale}/contact`} className="btn btn-primary">
                                 {L.cta}
                             </Link>
                         </div>
-                    </div>
+                    </nav>
                 </div>
             )}
         </header>
+    );
+}
+
+function LangSwitch({
+    locale,
+    pathname,
+    label,
+}: {
+    locale: Locale;
+    pathname: string;
+    label: string;
+}) {
+    return (
+        <div role="group" aria-label={label} className="flex items-center gap-1 text-sm">
+            {(["en", "nl"] as const).map((l) => (
+                <Link
+                    key={l}
+                    href={swapLocale(pathname, l)}
+                    hrefLang={l}
+                    lang={l}
+                    aria-current={l === locale ? "true" : undefined}
+                    className={`rounded-full px-2.5 py-1 uppercase transition-colors ${
+                        l === locale
+                            ? "bg-frost/10 text-frost"
+                            : "text-haze hover:text-frost"
+                    }`}
+                >
+                    {l}
+                </Link>
+            ))}
+        </div>
     );
 }

@@ -247,14 +247,6 @@ export default async function AboutPage({
     return (
         <div className="min-h-screen bg-space">
             <section className="container py-16 relative">
-                {/* soft background accents */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0"
-                >
-                    <div className="absolute -top-32 -left-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(226,183,111,0.18),transparent)] blur-2xl" />
-                    <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(255,200,97,0.14),transparent)] blur-2xl" />
-                </div>
 
                 {/* JSON-LD */}
                 <script
@@ -271,14 +263,8 @@ export default async function AboutPage({
                 />
 
                 {/* HERO */}
-                <div className="text-center max-w-4xl mx-auto mb-10 relative z-10">
-                    <p className="text-ms font-semibold tracking-[0.2em] text-primary">
-                        {t.eyebrow}
-                    </p>
-                    <h1 className="text-5xl md:text-6xl font-extrabold mt-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                        {t.h1}
-                    </h1>
-                    <div className="mx-auto mt-5 h-1.5 w-24 rounded-full bg-primary/80 shadow-[0_0_28px] shadow-primary/50" />
+                <div className="relative z-10 mb-14 pt-8 md:mb-20 md:pt-16">
+                    <h1 className="display text-[clamp(3rem,8vw,7rem)]">{t.h1}</h1>
                 </div>
 
                 {/* STORY + PHOTO */}
@@ -330,7 +316,7 @@ export default async function AboutPage({
                                         href="https://www.linkedin.com/in/bartspons/"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                         aria-label={`${t.socials.linkedin} (opens in new tab)`}
                                     >
                                         <svg
@@ -348,7 +334,7 @@ export default async function AboutPage({
                                         href="https://bartspons.com"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                         aria-label={`${t.socials.site} (opens in new tab)`}
                                     >
                                         <svg

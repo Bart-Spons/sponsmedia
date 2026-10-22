@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Viewport } from "next";
 import Script from "next/script";
 
-export const viewport: Viewport = { themeColor: "#000000" };
+export const viewport: Viewport = { themeColor: "#0c1424" };
 
 export default function RootLayout({
     children,
@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className="bg-space text-white antialiased">
+            <body className="bg-night text-frost antialiased">
                 {children}
 
                 {/* Sitelinks Search Box */}

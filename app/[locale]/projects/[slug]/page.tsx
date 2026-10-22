@@ -43,7 +43,7 @@ export default async function Project({
                     </h1>
                     <Link
                         href={`/${locale}/projects`}
-                        className="text-emerald-400 hover:text-emerald-300"
+                        className="text-primary hover:text-primary"
                     >
                         {t("backToProjects")}
                     </Link>
@@ -58,19 +58,19 @@ export default async function Project({
                 {/* Navigation */}
                 <Link
                     href={`/${locale}/projects`}
-                    className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors mb-8"
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary transition-colors mb-8"
                 >
                     {t("backToProjects")}
                 </Link>
 
                 {/* Hero Section */}
                 <div className="mb-12">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                    <h1 className="display mb-6 mt-6 text-[clamp(3rem,9vw,8rem)]">
                         {locale === "nl" && project.titleNl
                             ? project.titleNl
                             : project.title}
                     </h1>
-                    <p className="text-xl text-gray-300 max-w-3xl">
+                    <p className="max-w-[48ch] text-xl leading-relaxed text-frost/80">
                         {locale === "nl" && project.descriptionNl
                             ? project.descriptionNl
                             : project.description}
@@ -82,8 +82,8 @@ export default async function Project({
                     {/* Main Content Column */}
                     <div className="lg:col-span-2 space-y-12">
                         {/* Hero Media (Video or Image) */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <div className="aspect-video relative rounded-xl overflow-hidden bg-gray-800">
+                        <div className="overflow-hidden rounded-[1.25rem]">
+                            <div className="aspect-video relative overflow-hidden bg-deep">
                                 {project.video ? (
                                     <video
                                         src={project.video}
@@ -182,7 +182,7 @@ export default async function Project({
                                             key={index}
                                             className="flex items-start gap-3"
                                         >
-                                            <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                                            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                                             <p className="text-gray-300">
                                                 {result}
                                             </p>
@@ -194,16 +194,16 @@ export default async function Project({
 
                         {/* Testimonial */}
                         {project.testimonial && (
-                            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-900/10 p-8">
-                                <div className="text-emerald-400 text-6xl mb-4">
+                            <div className="rounded-2xl border border-line bg-deep p-8">
+                                <div className="text-primary text-6xl mb-4">
                                     "
                                 </div>
                                 <blockquote className="text-lg text-gray-300 italic mb-6">
                                     {project.testimonial.text}
                                 </blockquote>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center">
-                                        <span className="text-emerald-400 font-bold">
+                                    <div className="w-12 h-12 bg-primary/15 rounded-full flex items-center justify-center">
+                                        <span className="text-primary font-bold">
                                             {project.testimonial.author
                                                 .split(" ")
                                                 .map((n) => n[0])
@@ -285,7 +285,7 @@ export default async function Project({
                                 {project.technologies.map((tech, index) => (
                                     <span
                                         key={index}
-                                        className="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-sm rounded-full"
+                                        className="px-3 py-1 bg-primary/15 text-primary text-sm rounded-full"
                                     >
                                         {tech}
                                     </span>
@@ -326,7 +326,7 @@ export default async function Project({
                                         href={project.liveUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                     >
                                         <span>🌐</span> {t("viewLiveSite")}
                                     </a>
@@ -336,7 +336,7 @@ export default async function Project({
                                         href={project.githubUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
                                     >
                                         <span>💻</span> {t("viewCode")}
                                     </a>
@@ -348,7 +348,7 @@ export default async function Project({
 
                 {/* CTA Section */}
                 {/* <div className="text-center">
-                    <div className="rounded-3xl border border-emerald-500/20 bg-emerald-900/10 p-8 lg:p-10 max-w-3xl mx-auto">
+                    <div className="rounded-3xl border border-line bg-deep p-8 lg:p-10 max-w-3xl mx-auto">
                         <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
                             Ready to Start Your Project?
                         </h2>
@@ -359,7 +359,7 @@ export default async function Project({
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link
                                 href={`/${locale}/contact`}
-                                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold transition-colors"
+                                className="px-6 py-3 bg-primary hover:bg-accent text-night rounded-full font-semibold transition-colors"
                             >
                                 Start a Project
                             </Link>

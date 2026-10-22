@@ -43,7 +43,7 @@ export default async function TermsPage({
     return (
         <div className="min-h-screen bg-space">
             <div className="container py-24 max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-5xl font-bold mb-8 text-white">
+                <h1 className="display mb-12 text-[clamp(2.75rem,7vw,5.5rem)]">
                     {locale === "en"
                         ? "Terms of Service"
                         : "Algemene Voorwaarden"}
@@ -190,7 +190,7 @@ export default async function TermsPage({
                         <p className="text-white mt-2">
                             <a
                                 href="mailto:contact@sponsmedia.com"
-                                className="hover:text-blue-400 transition-colors"
+                                className="hover:text-primary transition-colors"
                             >
                                 contact@sponsmedia.com
                             </a>

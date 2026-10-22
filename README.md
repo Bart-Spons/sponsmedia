@@ -17,3 +17,10 @@ npm run dev
 ## Customize
 - Update copy in `messages/*.json` and page files
 - Replace images in `public/placeholders/`
+
+## Redesign (v2)
+- Smooth scrolling met **Lenis** (`components/motion/SmoothScroll.tsx`), gekoppeld aan GSAP's ticker zodat ScrollTrigger synchroon loopt
+- Animaties met **GSAP** + ScrollTrigger (`@gsap/react` → `useGSAP`)
+- Componenten uit **React Bits** (TS + Tailwind) in `components/reactbits/`: BlurText, TrueFocus, ScrollReveal, Magnet
+- Kleuren en lettertype: `app/globals.css` en `tailwind.config.ts` (night, deep, frost, haze, gold; Schibsted Grotesk)
+- Alle animaties respecteren `prefers-reduced-motion`

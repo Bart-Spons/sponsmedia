@@ -212,7 +212,7 @@ export default async function BlogPost({
                         </div>
                     )}
 
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+                    <h1 className="display mb-6 text-[clamp(2.5rem,6vw,5rem)]">
                         {post.title}
                     </h1>
 
@@ -292,7 +292,7 @@ export default async function BlogPost({
                                     )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm font-medium"
+                                    className="px-4 py-2 border border-line hover:bg-frost/5 text-primary rounded-lg transition-colors text-sm font-medium"
                                 >
                                     Share on X
                                 </a>
@@ -302,7 +302,7 @@ export default async function BlogPost({
                                     )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-blue-700/20 hover:bg-blue-700/30 text-blue-300 rounded-lg transition-colors text-sm font-medium"
+                                    className="px-4 py-2 border border-line hover:bg-frost/5 text-primary rounded-lg transition-colors text-sm font-medium"
                                 >
                                     Share on LinkedIn
                                 </a>

@@ -64,7 +64,7 @@ export default function NotFound() {
     };
 
     return (
-        <main className="relative min-h-screen bg-space text-white">
+        <div className="relative min-h-screen bg-space text-white">
             {/* zachte glows */}
             <div aria-hidden className="pointer-events-none absolute inset-0">
                 <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-[radial-gradient(closest-side,rgba(226,183,111,0.16),transparent)] blur-2xl" />
@@ -167,6 +167,6 @@ export default function NotFound() {
                     </ul>
                 </div>
             </section>
-        </main>
+        </div>
     );
 }

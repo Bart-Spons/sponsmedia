@@ -1,6 +1,7 @@
 // app/[locale]/layout.tsx
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/motion/SmoothScroll";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
@@ -11,7 +12,7 @@ export function generateStaticParams() {
     return [{ locale: "en" }, { locale: "nl" }];
 }
 
-export const viewport: Viewport = { themeColor: "#000000" };
+export const viewport: Viewport = { themeColor: "#0c1424" };
 
 export async function generateMetadata({
     params,
@@ -76,7 +77,14 @@ export default function LocaleLayout({
 }) {
     return (
         <html lang={params.locale}>
-            <body className="bg-space text-white">
+            <body className="bg-night text-frost">
+                <SmoothScroll />
+                <a
+                    href="#content"
+                    className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-night"
+                >
+                    {params.locale === "nl" ? "Naar de inhoud" : "Skip to content"}
+                </a>
                 <Nav locale={params.locale} />
 
                 {/* Organization schema */}
@@ -102,11 +110,11 @@ export default function LocaleLayout({
                     })}
                 </Script>
 
-                {children}
+                <main id="content" className="pt-16 md:pt-20">
+                    {children}
+                </main>
 
-                <footer>
-                    <Footer locale={params.locale} />
-                </footer>
+                <Footer locale={params.locale} />
             </body>
         </html>
     );
