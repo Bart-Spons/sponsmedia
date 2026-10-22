@@ -64,6 +64,8 @@ export default function NotFound() {
     };
 
     return (
+        <html lang={currentLocale}>
+        <body className="bg-night text-frost antialiased">
         <main className="relative min-h-screen bg-space text-white">
             {/* zachte glows */}
             <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -168,5 +170,7 @@ export default function NotFound() {
                 </div>
             </section>
         </main>
+        </body>
+        </html>
     );
 }

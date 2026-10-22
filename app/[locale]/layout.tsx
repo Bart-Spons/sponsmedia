@@ -76,8 +76,8 @@ export default function LocaleLayout({
     params: { locale: Locale };
 }) {
     return (
-        <html lang={params.locale}>
-            <body className="bg-night text-frost">
+        <html lang={params.locale} suppressHydrationWarning>
+            <body className="bg-night text-frost antialiased">
                 <SmoothScroll />
                 <a
                     href="#content"
@@ -107,6 +107,20 @@ export default function LocaleLayout({
                                 availableLanguage: ["nl", "en"],
                             },
                         ],
+                    })}
+                </Script>
+
+                {/* Sitelinks Search Box */}
+                <Script id="sitelinks-schema" type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        url: "https://sponsmedia.com",
+                        potentialAction: {
+                            "@type": "SearchAction",
+                            target: "https://sponsmedia.com/en/search?q={search_term_string}",
+                            "query-input": "required name=search_term_string",
+                        },
                     })}
                 </Script>
 
