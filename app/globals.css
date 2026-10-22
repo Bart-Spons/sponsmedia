@@ -174,11 +174,6 @@ select option {
     }
 }
 
-/* Big outlined type for marquees */
-.text-outline {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(234, 240, 248, 0.45);
-}
 
 /* Horizontal reel: stacked by default, a pinned sideways track once GSAP enables it */
 .h-reel[data-horizontal] .h-reel-track {
@@ -199,8 +194,16 @@ select option {
     filter: blur(14px);
 }
 .focus-lens[data-lens] .focus-sharp {
-    -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 70%, transparent 100%);
-    mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle var(--m, var(--r)) at var(--x) var(--y), #000 70%, transparent 100%);
+    mask-image: radial-gradient(circle var(--m, var(--r)) at var(--x) var(--y), #000 70%, transparent 100%);
+}
+/* Parked: the title is plain and sharp, only the ring stays */
+.focus-lens[data-lens="parked"] .focus-sharp {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+.focus-lens[data-lens="parked"] .focus-ghost {
+    visibility: hidden;
 }
 .focus-lens[data-lens] .focus-ring {
     display: block;

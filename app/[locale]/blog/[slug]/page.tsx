@@ -21,6 +21,7 @@ function getLocalePost(post: any, locale: "en" | "nl") {
         tags: (L && post.tagsNl ? post.tagsNl : post.tags) || [],
         author: post.author,
         image: post.image,
+        cover: post.cover as string | undefined,
         publishDate: post.publishDate,
     };
 }
@@ -223,28 +224,27 @@ export default async function BlogPost({
                     />
                 </header>
 
-                {/* Key visual: opens up to full width as you scroll */}
-                {post.image && (
-                    <div
-                        data-case-media
-                        className="relative mt-14 aspect-[16/9] w-full overflow-hidden bg-deep md:mt-20 md:max-h-[85svh]"
-                    >
-                        <div data-case-media-inner className="absolute inset-0">
+                {/* Cover: a modest illustration in the reading column */}
+                {(post.cover ?? post.image) && (
+                    <div className="container mt-12 md:mt-16">
+                        <div
+                            data-rise
+                            className="relative mx-auto aspect-[16/10] max-w-[68ch] overflow-hidden rounded-[1.25rem] bg-deep md:max-w-[min(68ch,60rem)]"
+                        >
                             <Image
-                                src={post.image}
-                                alt={post.title}
+                                src={post.cover ?? post.image}
+                                alt=""
                                 fill
                                 priority
-                                sizes="100vw"
-                                // Banners often contain text, so show them whole rather than cropped.
-                                className="object-contain object-center"
+                                sizes="(min-width: 768px) 60rem, 100vw"
+                                className="object-cover"
                             />
                         </div>
                     </div>
                 )}
 
                 {/* Body */}
-                <div className="container py-16 md:py-24">
+                <div className="container py-12 md:py-20">
                     <div
                         data-rise
                         className="
@@ -293,7 +293,7 @@ export default async function BlogPost({
                         href={`/${locale}/blog/${following.id}`}
                         label={next ? (isNL ? "Volgend artikel" : "Next article") : isNL ? "Vorig artikel" : "Previous article"}
                         title={(isNL && following.titleNl) || following.title}
-                        image={following.image}
+                        image={following.cover ?? following.image}
                         long
                     />
                 )}

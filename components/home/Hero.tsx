@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Magnet from "@/components/reactbits/Magnet";
 import FocusTitle from "@/components/motion/FocusTitle";
+import Bulb3D from "@/components/home/Bulb3D";
 import { duration, ease, motionOK, stagger } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -23,9 +24,10 @@ export type HeroCopy = {
 
 /**
  * "Be more visible", as an autofocus: the headline is a FocusTitle (blurred,
- * with a focus ring showing what is sharp). Around it, the rest of the hero
- * settles in, and as you scroll on it sinks back so the next section slides
- * over it.
+ * with a focus ring showing what is sharp). After a one-second search the ring
+ * parks beside the headline and the 3D SponsMedia bulb inside it switches on.
+ * Around it, the rest of the hero settles in, and as you scroll on it sinks
+ * back so the next section slides over it.
  */
 export default function Hero({
     locale,
@@ -39,10 +41,11 @@ export default function Hero({
     const root = useRef<HTMLElement>(null);
     const content = useRef<HTMLDivElement>(null);
     const light = useRef<HTMLDivElement>(null);
+    const [lit, setLit] = useState(false);
 
     const focusWords = copy.focusWords.split("|");
 
-    useGSAP(
+    const { contextSafe } = useGSAP(
         () => {
             const mm = gsap.matchMedia();
 
@@ -54,7 +57,7 @@ export default function Hero({
                     duration: duration.base,
                     ease: ease.enter,
                     stagger: stagger * 3,
-                    delay: 1.1,
+                    delay: 0.6,
                 });
                 gsap.from(light.current, { autoAlpha: 0, scale: 0.7, duration: duration.long * 2, ease: ease.enter });
 
@@ -83,7 +86,19 @@ export default function Hero({
         { scope: root }
     );
 
-    const headlineClass = "display text-[clamp(3.6rem,13.5vw,14rem)] leading-[0.88]";
+    // The lens found the idea: the 3D bulb inside it switches on, the ring
+    // starts to glow and the room lights up.
+    const onPark = contextSafe(() => {
+        setLit(true);
+        gsap.timeline()
+            .to("[data-ring-glow]", { opacity: 1, duration: duration.long, ease: ease.enter }, 0.3)
+            .add(() => {
+                gsap.to("[data-ring-glow]", { opacity: 0.55, duration: 2.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+            });
+        gsap.to(light.current, { opacity: 1, scale: 1.15, duration: duration.long * 1.5, ease: ease.enter });
+    });
+
+    const headlineClass = "display text-[clamp(3.2rem,10.5vw,8.75rem)] leading-[0.9] md:max-w-[64%]";
 
     return (
         <section
@@ -110,7 +125,15 @@ export default function Hero({
                     {copy.kicker}
                 </p>
 
-                <FocusTitle text={copy.headline} className={headlineClass} />
+                <FocusTitle
+                    text={copy.headline}
+                    className={headlineClass}
+                    quick
+                    revealAfter={1}
+                    park={{ x: 0.84, y: 0.5 }}
+                    onPark={onPark}
+                    parkSlot={<Bulb3D on={lit} />}
+                />
 
                 <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-12 md:items-end">
                     <ul data-hero-after className="flex flex-wrap gap-2 md:col-span-6">

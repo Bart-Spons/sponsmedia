@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import BlogCard from "@/components/BlogCard";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { blogData as defaultPosts } from "@/lib/data/blog";
@@ -21,14 +20,14 @@ type BlogPost = {
     author: string;
     publishDate: string | Date;
     image: string;
+    cover?: string;
 };
 
 type RowPost = BlogPost & { date: Date };
 
 /**
- * Blog index in the same language as the projects index: one big row per
- * article, a preview image that trails the cursor, search and category chips.
- * Filtering re-plays a short, interruptible stagger on the rows.
+ * Blog index: the same cards as on the homepage, with search and category
+ * chips. Filtering re-plays a short, interruptible stagger on the cards.
  */
 export default function InteractiveBlogGrid({
     posts,
@@ -72,7 +71,6 @@ export default function InteractiveBlogGrid({
 
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState<string | null>(null);
-    const [active, setActive] = useState(0);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -90,17 +88,13 @@ export default function InteractiveBlogGrid({
     });
 
     const root = useRef<HTMLElement>(null);
-    const preview = useRef<HTMLDivElement>(null);
-    const moveX = useRef<((v: number) => void) | null>(null);
-    const moveY = useRef<((v: number) => void) | null>(null);
-
-    // Rows rise in on first load and again after every filter change.
+    // Cards rise in on first load and again after every filter change.
     useGSAP(
         () => {
             const mm = gsap.matchMedia();
             mm.add(motionOK, () => {
                 gsap.fromTo(
-                    "[data-post-row]",
+                    "[data-post-card]",
                     { y: 24, autoAlpha: 0 },
                     {
                         y: 0,
@@ -116,36 +110,6 @@ export default function InteractiveBlogGrid({
         },
         { scope: root, dependencies: [query, category], revertOnUpdate: false }
     );
-
-    useGSAP(
-        () => {
-            const mm = gsap.matchMedia();
-            mm.add(`(pointer: fine) and ${motionOK}`, () => {
-                gsap.set(preview.current, { xPercent: -50, yPercent: -50, scale: 0.6, autoAlpha: 0 });
-                moveX.current = gsap.quickTo(preview.current, "x", { duration: 0.7, ease: "power3" });
-                moveY.current = gsap.quickTo(preview.current, "y", { duration: 0.7, ease: "power3" });
-                return () => {
-                    moveX.current = null;
-                    moveY.current = null;
-                };
-            });
-        },
-        { scope: root }
-    );
-
-    const show = (visible: boolean, e?: React.MouseEvent) => {
-        if (!moveX.current) return;
-        // First appearance: start right under the cursor instead of flying in from a corner.
-        if (visible && e) gsap.set(preview.current, { x: e.clientX, y: e.clientY });
-        gsap.to(preview.current, {
-            autoAlpha: visible ? 1 : 0,
-            scale: visible ? 1 : 0.6,
-            rotate: visible ? 3 : 0,
-            duration: visible ? duration.short : duration.short * 0.6,
-            ease: visible ? ease.enter : ease.exit,
-            overwrite: "auto",
-        });
-    };
 
     const chip = (label: string, value: string | null) => {
         const on = category === value;
@@ -205,69 +169,21 @@ export default function InteractiveBlogGrid({
             {filtered.length === 0 ? (
                 <p className="border-t border-line py-20 text-haze">{LABELS.empty}</p>
             ) : (
-                <ol
-                    className="border-b border-line"
-                    onMouseEnter={(e) => show(true, e)}
-                    onMouseLeave={() => show(false)}
-                    onMouseMove={(e) => {
-                        moveX.current?.(e.clientX);
-                        moveY.current?.(e.clientY);
-                    }}
-                >
+                <ul className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
                     {filtered.map((post) => (
-                        <li key={post.id} data-post-row className="border-t border-line">
-                            <Link
+                        <li key={post.id} data-post-card>
+                            <BlogCard
                                 href={`/${locale}/blog/${post.id}`}
-                                onMouseEnter={() => setActive(normalized.indexOf(post))}
-                                onFocus={() => setActive(normalized.indexOf(post))}
-                                className="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-3 py-8 md:grid-cols-12 md:items-baseline md:gap-x-10 md:py-10"
-                            >
-                                {/* Small thumbnail on touch screens, where there is no cursor preview */}
-                                <span className="relative row-span-2 aspect-square overflow-hidden rounded-lg bg-deep md:hidden">
-                                    <Image src={post.image} alt="" fill sizes="88px" className="object-cover" />
-                                </span>
-                                <time
-                                    dateTime={String(post.publishDate)}
-                                    className="text-sm tabular-nums text-haze md:col-span-2"
-                                >
-                                    {dateFmt.format(post.date)}
-                                </time>
-                                <span className="md:col-span-7">
-                                    <span className="block text-[clamp(1.4rem,3vw,2.6rem)] font-bold leading-[1.1] tracking-[-0.03em] transition-[color,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-3 group-hover:text-primary">
-                                        {post.title}
-                                    </span>
-                                    <span className="mt-3 hidden max-w-[60ch] leading-relaxed text-frost/70 md:line-clamp-2">
-                                        {post.excerpt}
-                                    </span>
-                                </span>
-                                <span className="col-start-2 text-sm text-haze md:col-span-3 md:col-start-auto md:text-right">
-                                    {post.tags.slice(0, 2).join(", ")}
-                                </span>
-                            </Link>
+                                image={post.cover ?? post.image}
+                                title={post.title}
+                                date={String(post.publishDate)}
+                                dateLabel={dateFmt.format(post.date)}
+                                tags={post.tags}
+                            />
                         </li>
                     ))}
-                </ol>
+                </ul>
             )}
-
-            {/* Cursor preview */}
-            <div
-                ref={preview}
-                aria-hidden
-                className="pointer-events-none invisible fixed left-0 top-0 z-40 hidden aspect-[16/10] w-[clamp(16rem,24vw,26rem)] overflow-hidden rounded-xl bg-deep shadow-2xl md:block"
-            >
-                {normalized.map((p, i) => (
-                    <Image
-                        key={p.id}
-                        src={p.image}
-                        alt=""
-                        fill
-                        sizes="26rem"
-                        className={`object-cover transition-[opacity,transform] duration-500 ${
-                            i === active ? "scale-100 opacity-100" : "scale-110 opacity-0"
-                        }`}
-                    />
-                ))}
-            </div>
         </section>
     );
 }

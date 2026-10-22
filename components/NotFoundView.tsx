@@ -78,6 +78,7 @@ export default function NotFoundView() {
                 <FocusTitle
                     as="p"
                     text={t.code}
+                    revealAfter={false}
                     className="display text-[clamp(8rem,34vw,30rem)] leading-[0.8] tabular-nums"
                 />
 

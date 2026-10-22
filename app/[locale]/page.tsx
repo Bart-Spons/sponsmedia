@@ -5,8 +5,10 @@ import { createTranslator } from "next-intl";
 import { projectsData, servicesData, blogData } from "@/lib/data";
 import Hero from "@/components/home/Hero";
 import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
-import ServicesList, { type ServiceRow } from "@/components/home/ServicesList";
+import type { ServiceRow } from "@/components/home/ServicesList";
+import ServiceCards from "@/components/home/ServiceCards";
 import ClosingCta from "@/components/ClosingCta";
+import BlogCard from "@/components/BlogCard";
 import Choreography from "@/components/motion/Choreography";
 import SplitTitle from "@/components/motion/SplitTitle";
 
@@ -132,15 +134,7 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                         {t("servicesIntro")}
                     </p>
                 </header>
-                <ServicesList
-                    items={services}
-                    labels={{
-                        included: t("included"),
-                        tools: t("tools"),
-                        show: t("showDetails"),
-                        hide: t("hideDetails"),
-                    }}
-                />
+                <ServiceCards locale={locale} items={services} more={nl ? "Bekijk dienst" : "View service"} />
             </section>
 
             {/* Blog */}
@@ -154,30 +148,17 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                         {t("allPosts")}
                     </Link>
                 </header>
-                <ul className="border-b border-line">
+                <ul data-stagger className="grid gap-x-6 gap-y-12 md:grid-cols-3">
                     {posts.map((post) => (
-                        <li key={post.id} data-row className="relative">
-                            <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
-                            <Link
+                        <li key={post.id}>
+                            <BlogCard
                                 href={`/${locale}/blog/${post.id}`}
-                                className="group grid gap-3 py-8 md:grid-cols-12 md:items-baseline md:gap-10"
-                            >
-                                <span className="overflow-hidden md:col-span-3">
-                                    <time data-row-text dateTime={post.publishDate} className="block text-sm text-haze">
-                                        {dateFmt.format(new Date(post.publishDate))}
-                                    </time>
-                                </span>
-                                <span className="overflow-hidden pb-1 md:col-span-7">
-                                    <span data-row-text className="block text-[clamp(1.4rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.025em] transition-[color,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2 group-hover:text-primary">
-                                        {(nl && post.titleNl) || post.title}
-                                    </span>
-                                </span>
-                                <span className="overflow-hidden md:col-span-2">
-                                    <span data-row-text className="block text-sm text-haze md:text-right">
-                                        {((nl && post.tagsNl) || post.tags).slice(0, 2).join(", ")}
-                                    </span>
-                                </span>
-                            </Link>
+                                image={post.cover ?? post.image}
+                                title={(nl && post.titleNl) || post.title}
+                                date={post.publishDate}
+                                dateLabel={dateFmt.format(new Date(post.publishDate))}
+                                tags={(nl && post.tagsNl) || post.tags}
+                            />
                         </li>
                     ))}
                 </ul>

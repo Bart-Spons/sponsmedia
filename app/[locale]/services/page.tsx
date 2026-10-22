@@ -3,8 +3,7 @@ import { servicesData } from "@/lib/data/services";
 import PageHeader from "@/components/PageHeader";
 import ClosingCta from "@/components/ClosingCta";
 import type { ServiceRow } from "@/components/home/ServicesList";
-import ServiceStack from "@/components/services/ServiceStack";
-import Marquee from "@/components/motion/Marquee";
+import ServiceScroll from "@/components/services/ServiceScroll";
 import Choreography from "@/components/motion/Choreography";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
@@ -87,17 +86,13 @@ export default async function ServicesPage({
 
     return (
         <Choreography>
-            <PageHeader title={tServices("title")} intro={tServices("subtitle")} />
-            <section aria-label={tServices("title")} className="container pb-24 md:pb-[20vh]">
-                <ServiceStack
+            <PageHeader title={tServices("title")} intro={tServices("subtitle")} lens={false} />
+            <section aria-label={tServices("title")} className="container pb-24 md:pb-36">
+                <ServiceScroll
                     items={services}
                     labels={{ included: tServices("whatsIncluded"), tools: tServices("technologiesLabel") }}
                 />
             </section>
-            <Marquee
-                items={[...new Set(services.flatMap((s) => s.technologies))]}
-                className="display py-6 text-[clamp(3rem,9vw,8rem)] text-outline"
-            />
             <ClosingCta
                 locale={locale}
                 title={tServices("readyTitle")}

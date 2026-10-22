@@ -10,6 +10,8 @@ export interface BlogPost {
     tags: string[];
     tagsNl?: string[];
     image: string;
+    /** Illustrated cover for cards and lists (the image above is the article banner). */
+    cover?: string;
     content: string;
     contentNl?: string;
 }
@@ -28,10 +30,10 @@ export const blogData: BlogPost[] = [
         tags: ["SEO", "Google", "Ranking", "Digital Marketing"],
         tagsNl: ["SEO", "Google", "Ranking", "Digitale Marketing"],
         image: "/images/blog/seo-landscape-banner.png",
+        cover: "/images/blog/covers/seo-guide.svg",
         content: `
 <h2>SEO in 2025: The Complete Guide to Ranking Higher</h2>
 <p>Master modern SEO with proven strategies that actually work. From technical optimization to content marketing, here's everything you need to dominate search results in 2025.</p>
-<img src="/images/blog/seo-analytics.webp" alt="SEO Strategy Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <p><strong>Personal Story Time:</strong> In 2024, I was working in a Japanese marketing agency in Tokyo, Japan. I helped them from the second page to the first page on Google for "marketing agency Japan." The secret? It wasn't some black-hat trick or expensive tool. It was understanding how SEO has fundamentally changed in 2024.</p>
 <p>If you're still using 2022 SEO tactics, you're probably wondering why your rankings are stuck. Here's the reality: <strong>Google's AI revolution has rewritten the rules.</strong></p>
 <h3>What Actually Works in 2025</h3>
@@ -50,7 +52,6 @@ export const blogData: BlogPost[] = [
   <li><strong>Visual Stability:</strong> No surprise layout shifts that annoy users</li>
 </ul>
 <p>Use Google's PageSpeed Insights tool RIGHT NOW. If your score is below 90, you're losing rankings (and customers) every single day.</p>
-<img src="/images/blog/web-core-vitals.png" alt="Web Core Vitals Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h3>Mobile-First = Mobile-ONLY</h3>
 <p>70% of searches happen on mobile. If your site sucks on phones, Google treats it as broken everywhere.</p>
 <p><strong>The 10-Second Test:</strong> Open your website on your phone. Can you easily read text, click buttons, and fill forms? If not, fix this before anything else.</p>
@@ -62,13 +63,11 @@ export const blogData: BlogPost[] = [
   <li><strong>Cluster Content:</strong> 5-7 supporting articles that link back to your pillar</li>
 </ul>
 <p>Pick ONE broad topic in your industry. Create the ultimate guide, then support it with smaller, focused articles. This strategy doubled my client's organic traffic in 6 months.</p>
-<img src="/images/blog/seo-content.webp" alt="Content Strategy Planning" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h3>The "So What?" Test</h3>
 <p>Every paragraph should pass this test: If a reader says "so what?" you should have a clear, valuable answer.</p>
 <p>❌ <strong>Bad:</strong> "Email marketing is important for businesses."</p>
 <p>✅ <strong>Good:</strong> "Email marketing generates $42 for every $1 spent, making it the highest ROI channel for small businesses."</p>
 <h3>Link Building That Actually Works</h3>
-<img src="/images/blog/seo-link.webp" alt="Link Building Strategy" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <p>Forget buying links. Here's how you can land high-authority backlinks in 6 months:</p>
 <ul>
   <li><strong>The Broken Link Goldmine:</strong> Find broken links on popular sites, create better replacement content, then offer it as a solution.</li>
@@ -83,7 +82,6 @@ export const blogData: BlogPost[] = [
   <li><strong>The Skyscraper Technique 2.0:</strong> Find outdated content that's ranking well. Create something 10x better.</li>
 </ul>
 <h3>Local SEO: Your Competitive Advantage</h3>
-<img src="/images/blog/local-seo.webp" alt="Local SEO Strategy" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h4>Google Business Profile Optimization</h4>
 <p>This is the fastest way to improve local rankings:</p>
 <ul>
@@ -99,7 +97,6 @@ export const blogData: BlogPost[] = [
 </ul>
 <p>Ask customers to leave reviews with specific keywords. Instead of "please leave a review," try "if you loved our pasta, we'd appreciate a review mentioning your favorite dish."</p>
 <h3>Measuring What Matters</h3>
-<img src="/images/blog/seo-analytics.webp" alt="SEO Analytics Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h4>The Only 5 Metrics You Need to Track</h4>
 <ol>
   <li><strong>Organic Traffic Growth:</strong> Month-over-month increases</li>
@@ -160,7 +157,6 @@ export const blogData: BlogPost[] = [
         contentNl: `
 <h2>SEO in 2025: De Complete Gids voor Hogere Rankings</h2>
 <p>Beheers moderne SEO met bewezen strategieën die écht werken. Van technische optimalisatie tot contentmarketing: alles wat je nodig hebt om in 2025 hoger te scoren in Google.</p>
-<img src="/images/blog/seo-landscape-banner.png" alt="SEO Strategie Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <p><strong>Persoonlijk verhaal:</strong> In 2024 werkte ik bij een Japans marketingbureau in Tokyo. Ik hielp ze van pagina 2 naar pagina 1 op Google voor "marketingbureau Japan". Het geheim? Geen trucjes of dure tools, maar begrijpen hoe SEO fundamenteel is veranderd.</p>
 <p>Gebruik je nog SEO-tactieken uit 2022? Dan vraag je je waarschijnlijk af waarom je ranking stagneert. <strong>Google’s AI-revolutie heeft de regels herschreven.</strong></p>
 <h3>Wat werkt écht in 2025?</h3>
@@ -177,7 +173,6 @@ export const blogData: BlogPost[] = [
   <li><strong>Visuele stabiliteit:</strong> Geen onverwachte verschuivingen</li>
 </ul>
 <p>Check je score met Google PageSpeed Insights. Onder de 90? Dan verlies je elke dag ranking en klanten.</p>
-<img src="/images/blog/web-core-vitals.png" alt="Web Core Vitals Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h3>Mobile-First = Mobile-ONLY</h3>
 <p>70% van de zoekopdrachten gebeurt mobiel. Als je site niet goed werkt op mobiel, ziet Google hem overal als ‘kapot’.</p>
 <p><strong>10-seconden test:</strong> Open je site op je telefoon. Kun je alles makkelijk lezen en gebruiken? Zo niet, fix dit eerst.</p>
@@ -188,13 +183,11 @@ export const blogData: BlogPost[] = [
   <li><strong>Cluster content:</strong> 5-7 ondersteunende artikelen die naar je pillar linken</li>
 </ul>
 <p>Kies één breed onderwerp en maak de ultieme gids. Ondersteun met korte, gerichte artikelen. Dit verdubbelde het organisch verkeer van mijn klant in 6 maanden.</p>
-<img src="/images/blog/seo-content.webp" alt="Contentstrategie Planning" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h3>De "So What?"-test</h3>
 <p>Elke alinea moet waarde bieden. Vraag jezelf: “So what?”</p>
 <p>❌ <strong>Slecht:</strong> "E-mailmarketing is belangrijk voor bedrijven."</p>
 <p>✅ <strong>Goed:</strong> "E-mailmarketing levert €42 op voor elke €1 investering – het hoogste rendement voor mkb."</p>
 <h3>Linkbuilding die werkt</h3>
-<img src="/images/blog/seo-link.webp" alt="Linkbuilding Strategie" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <ul>
   <li><strong>Broken Link Goldmine:</strong> Zoek gebroken links op populaire sites, maak betere content en bied die aan als vervanging.</li>
   <li><strong>Mijn 4-stappenplan:</strong>
@@ -208,7 +201,6 @@ export const blogData: BlogPost[] = [
   <li><strong>Skyscraper-techniek 2.0:</strong> Vind verouderde content die goed scoort en maak iets dat 10x beter is.</li>
 </ul>
 <h3>Lokale SEO: Jouw voorsprong</h3>
-<img src="/images/blog/local-seo.webp" alt="Lokale SEO Strategie" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h4>Google Bedrijfsprofiel optimaliseren</h4>
 <ul>
   <li>Plaats 2-3 updates (foto’s, evenementen, aanbiedingen)</li>
@@ -223,7 +215,6 @@ export const blogData: BlogPost[] = [
 </ul>
 <p>Vraag klanten om reviews met specifieke keywords. Bijvoorbeeld: “Vond je onze pasta lekker? Noem je favoriete gerecht in je review!”</p>
 <h3>Meten wat telt</h3>
-<img src="/images/blog/seo-analytics.webp" alt="SEO Analytics Dashboard" class="mx-auto w-full md:max-w-[55%] rounded-xl shadow-xl ring-1 ring-white/10 my-6" loading="lazy" />
 <h4>De 5 belangrijkste metrics</h4>
 <ol>
   <li><strong>Organisch verkeer:</strong> Groei per maand</li>
@@ -295,6 +286,7 @@ export const blogData: BlogPost[] = [
         tags: ["Social Media", "Strategy", "Engagement", "Content"],
         tagsNl: ["Social Media", "Strategie", "Betrokkenheid", "Content"],
         image: "/images/blog/social-first.webp",
+        cover: "/images/blog/covers/social-first.svg",
 
         // --- EN ---
         content: `
@@ -486,6 +478,7 @@ export const blogData: BlogPost[] = [
         tags: ["Marketing", "Trends", "Brand", "AI", "Content"],
         tagsNl: ["Marketing", "Trends", "Merk", "AI", "Content"],
         image: "/images/blog/marketing-banner.png",
+        cover: "/images/blog/covers/marketing-trends-2026.svg",
 
         // --- EN ---
         content: `

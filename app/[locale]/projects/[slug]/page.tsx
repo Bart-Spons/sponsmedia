@@ -6,7 +6,6 @@ import { createTranslator } from "next-intl";
 import { projectsData } from "@/lib/data/projects";
 import { ReelMedia } from "@/components/home/WorkReel";
 import SplitTitle from "@/components/motion/SplitTitle";
-import Marquee from "@/components/motion/Marquee";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import Magnet from "@/components/reactbits/Magnet";
 import Choreography from "@/components/motion/Choreography";
@@ -135,10 +134,6 @@ export default async function Project({
                     </div>
                 </div>
 
-                <Marquee
-                    items={project.technologies}
-                    className="display py-10 text-[clamp(3rem,9vw,8rem)] text-outline md:py-16"
-                />
 
                 {/* Challenge and solution: words sharpen as you read */}
                 {story.map((s, i) => (

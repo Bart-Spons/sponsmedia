@@ -17,6 +17,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * - `data-case-media`  frame opens from an inset card to full bleed, `data-case-media-inner` zooms out
  * - `data-hscroll`     section pins and its `.h-reel-track` slides sideways (desktop)
  * - `data-row`         list rows: `data-line` draws, then `data-row-text` rises
+ * - `data-draw`        SVG line icon whose strokes draw in as you scroll
+ * - `data-stagger`     children rise in one after another on enter
  * - `data-count`       a number that counts up from 0 on enter
  * - `data-rise`        generic fade-up on enter
  */
@@ -98,6 +100,32 @@ export default function Choreography({ children }: { children: React.ReactNode }
                     once: true,
                     onEnter: revealRows,
                     onLeave: revealRows,
+                });
+
+                // Line icons draw themselves stroke by stroke as they scroll into view.
+                gsap.utils.toArray<SVGSVGElement>("[data-draw]").forEach((svg) => {
+                    gsap.fromTo(
+                        svg.children,
+                        { strokeDashoffset: 1 },
+                        {
+                            strokeDashoffset: 0,
+                            ease: "none",
+                            stagger: 0.08,
+                            scrollTrigger: { trigger: svg, start: "top 90%", end: "top 40%", scrub: 0.6 },
+                        }
+                    );
+                });
+
+                gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((group) => {
+                    gsap.from(group.children, {
+                        y: 40,
+                        autoAlpha: 0,
+                        duration: duration.base,
+                        ease: ease.enter,
+                        stagger: stagger * 3,
+                        clearProps: "transform",
+                        scrollTrigger: { trigger: group, start: "top 85%" },
+                    });
                 });
 
                 gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {

@@ -4,7 +4,6 @@ import ClosingCta from "@/components/ClosingCta";
 import type { ReelItem } from "@/components/home/WorkReel";
 import ProjectIndex from "@/components/projects/ProjectIndex";
 import ProjectsReel from "@/components/projects/ProjectsReel";
-import Marquee from "@/components/motion/Marquee";
 import Choreography from "@/components/motion/Choreography";
 import { createTranslator } from "next-intl";
 import type { Metadata } from "next";
@@ -73,7 +72,7 @@ export default async function ProjectsIndex({
 
     return (
         <Choreography>
-            <PageHeader title={tProjects("title")} intro={tProjects("subtitle")} />
+            <PageHeader title={tProjects("title")} intro={tProjects("subtitle")} lens={false} />
 
             {/* Index: every project as one big row */}
             <section aria-label={tProjects("index")} className="container pb-24 md:pb-36">
@@ -90,10 +89,6 @@ export default async function ProjectsIndex({
                 nextButton={t("startProject")}
             />
 
-            <Marquee
-                items={[...new Set(items.flatMap((p) => p.technologies))]}
-                className="display mt-24 py-6 text-[clamp(3rem,9vw,8rem)] text-outline md:mt-36"
-            />
 
             <ClosingCta
                 locale={locale}

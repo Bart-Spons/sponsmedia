@@ -82,6 +82,7 @@ export default async function BlogIndex({
 
             <PageHeader
                 title="Blog"
+                lens={false}
                 intro={
                     isNL
                         ? "Inzichten over webdevelopment, digitaal ontwerp en marketing. Praktische kennis om je online zichtbaarheid te laten groeien."
