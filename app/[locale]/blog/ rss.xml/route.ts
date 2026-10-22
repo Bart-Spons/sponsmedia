@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { blogData } from "@/lib/data/blog";
 
-export const dynamic = "force-static"; // statisch bouwen
-export const revalidate = 3600; // cache 1 uur
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+    return [{ locale: "en" }, { locale: "nl" }];
+}
 
 function escapeXml(s: string) {
     return s
@@ -15,24 +19,26 @@ function escapeXml(s: string) {
 
 export async function GET(
     _req: Request,
-    ctx: { params: { locale: "en" | "nl" } }
+    ctx: { params: { locale: "en" | "nl" } },
 ) {
     const { locale } = ctx.params;
     const isNL = locale === "nl";
 
     const site = "https://sponsmedia.com";
     const channelTitle = isNL ? "SponsMedia Blog (NL)" : "SponsMedia Blog (EN)";
+
     const channelDesc = isNL
         ? "Laatste inzichten over web development, design en digital marketing."
         : "Latest insights on web development, design and digital marketing.";
 
-    // sorteer nieuwste eerst (optioneel limiet, bv. 50)
     const items = blogData
         .slice()
         .sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate))
         .map((post) => {
             const title = isNL && post.titleNl ? post.titleNl : post.title;
+
             const desc = isNL && post.excerptNl ? post.excerptNl : post.excerpt;
+
             const url = `${site}/${locale}/blog/${post.id}`;
             const pubDate = new Date(post.publishDate).toUTCString();
 
@@ -61,7 +67,6 @@ export async function GET(
     return new NextResponse(rss, {
         headers: {
             "Content-Type": "application/rss+xml; charset=utf-8",
-            // Feeds wil je meestal niet indexeren als aparte pagina:
             "X-Robots-Tag": "noindex",
         },
     });

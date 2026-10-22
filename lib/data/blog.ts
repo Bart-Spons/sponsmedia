@@ -472,4 +472,218 @@ export const blogData: BlogPost[] = [
 <p><a href="/nl/contact">📞 Neem contact op</a></p>
 `,
     },
+    {
+        id: "online-marketing-trends-2026",
+        title: "Online Marketing Trends in 2026",
+        titleNl:
+            "Online marketing trends in 2026: Zichtbaar blijven zonder harder te schreeuwen",
+        excerpt:
+            "In 2026, marketing gets more human: less noise, more meaning. Learn the 3 trends that matter most (meaningful storytelling, sharper audience focus, and AI-driven discovery) + practical quick wins to apply this week.",
+        excerptNl:
+            "In 2026 wordt marketing menselijker: minder ruis, meer betekenis. Ontdek de 3 trends die er écht toe doen (betekenisvol verhaal, scherpere doelgroepfocus en AI-gedreven vindbaarheid) + quick wins die je deze week al kunt toepassen.",
+        author: "Bart Spons",
+        publishDate: "2026-01-09",
+        tags: ["Marketing", "Trends", "Brand", "AI", "Content"],
+        tagsNl: ["Marketing", "Trends", "Merk", "AI", "Content"],
+        image: "/images/blog/marketing-banner.png",
+
+        // --- EN ---
+        content: `
+<h2>Online Marketing Trends in 2026: How to Stay Visible Without Shouting</h2>
+<p>2026 isn’t about posting more. It’s about posting <strong>with purpose</strong>.</p>
+<p>The brands that win this year won’t be the loudest. They’ll be the clearest: a stronger story, a sharper audience, and content that AI (and humans) can actually understand and trust.</p>
+
+<blockquote>
+  <p><strong>Reality check:</strong> If your marketing strategy is “be everywhere” and “post more”, you’ll feel busy… but not necessarily grow.</p>
+</blockquote>
+
+<p><strong>Personal story time:</strong> I’ve worked with teams where the content calendar was packed, but results were flat. Once we removed 50% of the noise and doubled down on <em>one clear message</em> for <em>one clear audience</em>, engagement (and leads) finally started to move.</p>
+
+<h3>The 3 trends that matter most in 2026</h3>
+<p>Let’s cut through the hype. Here are the trends that actually change what you should do next.</p>
+
+<h3>1) From visibility to meaning (story > noise)</h3>
+<p>In the past few years, online marketing often meant: more reach, more content, more “look at me.” In 2026 the shift is obvious: <strong>people want brands that stand for something</strong>.</p>
+<p>That doesn’t mean every post needs to go viral. It means every post should fit your brand, your values, and the experience you want people to remember.</p>
+
+<ul>
+  <li><strong>❌ Old approach:</strong> “How do we get more views?”</li>
+  <li><strong>✅ 2026 approach:</strong> “What do we want to mean to the right people?”</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Add a 1-sentence “Why this matters” to every page and post. If you can’t explain the “why”, don’t publish it yet.</p>
+</blockquote>
+
+<h4>The 10-minute brand clarity exercise</h4>
+<p>Answer these questions (honestly):</p>
+<ol>
+  <li>What problem do we solve better than others?</li>
+  <li>What do we want to be known for in 12 months?</li>
+  <li>What do we refuse to do (even if it gets clicks)?</li>
+</ol>
+<p>If your team gives 5 different answers, your marketing will feel inconsistent — and your audience will feel it too.</p>
+
+<h3>2) Focus on a specific audience (relevance > reach)</h3>
+<p>Trying to speak to everyone creates content that feels like it’s for no one. In 2026, growth comes from choosing: <strong>a smaller, specific audience</strong> and serving them extremely well.</p>
+
+<p>It’s not about how often you’re seen. It’s about <strong>by who</strong>.</p>
+
+<h4>Stop targeting “everyone”</h4>
+<p>Instead of “small businesses”, go deeper:</p>
+<ul>
+  <li>“Local service businesses in Amsterdam who rely on inbound leads”</li>
+  <li>“Creative studios that need a fast portfolio site that converts”</li>
+  <li>“Founders launching a new brand and need traction in 90 days”</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Rewrite your homepage hero text so it clearly says <em>who</em> you help + <em>what outcome</em> you deliver. If it could fit any business, it’s too vague.</p>
+</blockquote>
+
+<h3>3) AI-driven discovery (structure + authority wins)</h3>
+<p>AI isn’t “a tool you might try”. It’s changing how people discover information.</p>
+<p>More people ask questions directly in ChatGPT, or get answers inside Google’s AI experiences. The algorithms are a black box, but the pattern is clear: <strong>authority, relevance, context, and structure</strong> decide whether you show up.</p>
+
+<h4>What AI-friendly content actually looks like</h4>
+<ul>
+  <li><strong>Clear structure:</strong> headings that match real questions</li>
+  <li><strong>Direct answers:</strong> don’t bury the point in paragraph 7</li>
+  <li><strong>Context:</strong> who is this for, and when does it apply?</li>
+  <li><strong>Proof:</strong> examples, steps, results, and concrete guidance</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Add a short FAQ section to your key pages (Services + Blog posts). Make each question a real query your client would ask.</p>
+</blockquote>
+
+<h3>Your 2026 action plan (simple, but powerful)</h3>
+<p>If you do nothing else this month, do this:</p>
+<ol>
+  <li><strong>Clarify your meaning:</strong> 1 message you want to own</li>
+  <li><strong>Choose your audience:</strong> 1 specific group you serve best</li>
+  <li><strong>Build structured content:</strong> 3 pages/posts that answer real questions clearly</li>
+</ol>
+
+<h3>The bottom line</h3>
+<p>Marketing in 2026 becomes more human: less shouting, more listening. Less chasing clicks, more building trust. Less random content, more deliberate choices.</p>
+<p><strong>Be more visible online</strong> by being more relevant — not louder.</p>
+
+<h3>Want help applying this to your website and content?</h3>
+<p>If you want a clear plan (and a site that communicates it fast), I can help you translate these trends into a strategy you can actually execute.</p>
+<p><a href="/en/contact" class="btn btn-primary">📞 Connect with SponsMedia</a></p>
+
+<div class="mt-16 p-6 bg-gradient-to-r from-white/5 to-white/10 rounded-xl border border-white/10 backdrop-blur-sm">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="text-sm text-gray-300">
+      <p class="font-semibold mb-1">Enjoyed this article?</p>
+      <p>Share it with your network!</p>
+    </div>
+    <div class="flex gap-3">
+      <a href="https://twitter.com/intent/tweet?text=Online%20Marketing%20Trends%20in%202026%3A%20How%20to%20Stay%20Visible%20Without%20Shouting&amp;url=https%3A%2F%2Fsponsmedia.com%2Fen%2Fblog%2Fonline-marketing-trends-2026" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm font-medium">Share on X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsponsmedia.com%2Fen%2Fblog%2Fonline-marketing-trends-2026" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-blue-700/20 hover:bg-blue-700/30 text-blue-300 rounded-lg transition-colors text-sm font-medium">Share on LinkedIn</a>
+    </div>
+  </div>
+</div>
+`,
+
+        // --- NL ---
+        contentNl: `
+<h2>Online marketing trends in 2026: Zichtbaar blijven zonder harder te schreeuwen</h2>
+<p>2026 draait niet om méér posten. Het draait om posten <strong>met intentie</strong>.</p>
+<p>De merken die dit jaar winnen, zijn niet per se het luidst. Ze zijn het duidelijkst: een sterker verhaal, een scherpere doelgroep en content die AI (én mensen) echt snappen en vertrouwen.</p>
+
+<blockquote>
+  <p><strong>Reality check:</strong> Als je strategie “overal zijn” en “meer content” is, ben je druk… maar groei je niet automatisch.</p>
+</blockquote>
+
+<p><strong>Persoonlijk verhaal:</strong> Ik heb in teams gezeten waar de contentkalender bomvol stond, maar de resultaten vlak bleven. Toen we 50% van de ruis schrapten en kozen voor <em>één duidelijke boodschap</em> voor <em>één duidelijke doelgroep</em>, kwamen engagement en leads eindelijk in beweging.</p>
+
+<h3>De 3 trends die er écht toe doen in 2026</h3>
+<p>Geen hype. Gewoon de dingen die je aanpak veranderen — en je resultaten kunnen verbeteren.</p>
+
+<h3>1) Van zichtbaarheid naar betekenis (verhaal > ruis)</h3>
+<p>De afgelopen jaren betekende online marketing vaak: meer bereik, meer content, meer “kijk mij”. In 2026 zie je een duidelijke verschuiving: <strong>mensen willen merken die ergens voor staan</strong>.</p>
+<p>Dat betekent niet dat elke post moet scoren. Wel dat elke post past bij je merk, je visie en de ervaring die je wilt achterlaten.</p>
+
+<ul>
+  <li><strong>❌ Oud:</strong> “Hoe krijgen we meer views?”</li>
+  <li><strong>✅ 2026:</strong> “Wat willen we betekenen voor de juiste mensen?”</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Voeg aan elke pagina/post één zin toe: “Waarom dit belangrijk is.” Kun je dat niet uitleggen? Dan is het nog niet klaar om te publiceren.</p>
+</blockquote>
+
+<h4>De 10-minuten merk-oefening</h4>
+<p>Beantwoord dit eerlijk:</p>
+<ol>
+  <li>Welk probleem lossen wij beter op dan anderen?</li>
+  <li>Waar willen we over 12 maanden om bekendstaan?</li>
+  <li>Wat doen we bewust níet (ook al levert het clicks op)?</li>
+</ol>
+<p>Als je team 5 verschillende antwoorden geeft, voelt je marketing inconsistent — en je doelgroep merkt dat.</p>
+
+<h3>2) Focus op een specifieke doelgroep (relevantie > bereik)</h3>
+<p>Als je iedereen probeert aan te spreken, maak je content die voelt alsof het voor niemand is. In 2026 zit groei in durven kiezen: <strong>een kleinere, specifieke doelgroep</strong> die je extreem goed bedient.</p>
+<p>Het gaat niet om hoe vaak je wordt gezien. Het gaat om <strong>door wie</strong>.</p>
+
+<h4>Stop met targeten op “iedereen”</h4>
+<p>Ga dieper dan “mkb” of “ondernemers”:</p>
+<ul>
+  <li>“Lokale dienstverleners in Amsterdam die inbound leads nodig hebben”</li>
+  <li>“Creatieve studios die een razendsnelle portfolio-site willen die converteert”</li>
+  <li>“Founders die in 90 dagen traction willen opbouwen”</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Herschrijf je hero-tekst op je homepage: <em>wie</em> help je + <em>welke uitkomst</em> lever je. Als het op elk bedrijf past, is het te vaag.</p>
+</blockquote>
+
+<h3>3) AI-gedreven vindbaarheid (structuur + autoriteit wint)</h3>
+<p>AI is geen “tool die je misschien eens probeert”. Het verandert hoe mensen informatie vinden.</p>
+<p>Steeds vaker stellen mensen vragen direct in ChatGPT, of krijgen ze antwoorden binnen Google’s AI-ervaringen. Hoe het precies werkt is deels een black box, maar de richting is duidelijk: <strong>autoriteit, relevantie, context en structuur</strong> bepalen of je zichtbaar bent.</p>
+
+<h4>Hoe AI-vriendelijke content er écht uitziet</h4>
+<ul>
+  <li><strong>Heldere structuur:</strong> headings die echte vragen beantwoorden</li>
+  <li><strong>Directe antwoorden:</strong> niet pas in alinea 7 to-the-point</li>
+  <li><strong>Context:</strong> voor wie is dit, en wanneer geldt het?</li>
+  <li><strong>Bewijs:</strong> voorbeelden, stappen, resultaten en concrete guidance</li>
+</ul>
+
+<blockquote>
+  <p><strong>Quick Win:</strong> Voeg een korte FAQ toe aan je belangrijkste pagina’s (Diensten + blogs). Maak elke vraag een realistische zoekvraag van je klant.</p>
+</blockquote>
+
+<h3>Jouw 2026 actieplan (simpel, maar sterk)</h3>
+<p>Als je deze maand maar drie dingen doet, doe dan dit:</p>
+<ol>
+  <li><strong>Maak je betekenis scherp:</strong> 1 boodschap die je wilt ownen</li>
+  <li><strong>Kies je doelgroep:</strong> 1 specifieke groep die je het beste helpt</li>
+  <li><strong>Bouw gestructureerde content:</strong> 3 pagina’s/posts die echte vragen helder beantwoorden</li>
+</ol>
+
+<h3>Conclusie</h3>
+<p>Marketing in 2026 wordt menselijker: minder schreeuwen, meer luisteren. Minder click-chasing, meer vertrouwen bouwen. Minder random content, meer bewuste keuzes.</p>
+<p><strong>Be more visible online</strong> door relevanter te zijn — niet luider.</p>
+
+<h3>Hulp nodig om dit te vertalen naar je website en content?</h3>
+<p>Als je een duidelijk plan wilt (en een site die dat snel communiceert), help ik je deze trends om te zetten in een strategie die je echt kunt uitvoeren.</p>
+<p><a href="/nl/contact" class="btn btn-primary">📞 Neem contact op met SponsMedia</a></p>
+
+<div class="mt-16 p-6 bg-gradient-to-r from-white/5 to-white/10 rounded-xl border border-white/10 backdrop-blur-sm">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="text-sm text-gray-300">
+      <p class="font-semibold mb-1">Vond je dit artikel handig?</p>
+      <p>Deel het met je netwerk!</p>
+    </div>
+    <div class="flex gap-3">
+      <a href="https://twitter.com/intent/tweet?text=Online%20marketing%20trends%20in%202026%3A%20Zichtbaar%20blijven%20zonder%20harder%20te%20schreeuwen&amp;url=https%3A%2F%2Fsponsmedia.com%2Fnl%2Fblog%2Fonline-marketing-trends-2026" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm font-medium">Deel op X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsponsmedia.com%2Fnl%2Fblog%2Fonline-marketing-trends-2026" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-blue-700/20 hover:bg-blue-700/30 text-blue-300 rounded-lg transition-colors text-sm font-medium">Deel op LinkedIn</a>
+    </div>
+  </div>
+</div>
+`,
+    },
 ];

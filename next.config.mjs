@@ -1,21 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,                 // prima om aan te hebben
-    trailingSlash: false,                  // geen / achter elke URL (consistent met Vercel)
+    // Alleen bij `next build` statisch exporteren; in dev botst export met middleware
+    output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
+    trailingSlash: true,
+
+    reactStrictMode: true,
+
     transpilePackages: ['d3-geo'],
+
     experimental: {
-        esmExternals: false,                 // houdt je huidige bundling stabiel
+        esmExternals: false,
     },
+
     images: {
-        // Laat optimalisatie aan.
-        // Gebruik je externe images? Voeg dan je domeinen toe:
-        // domains: ['images.unsplash.com', 'your-cdn.com'],
+        unoptimized: true,
     },
-    // Alleen een dev-optimalisatie; mag je ook weglaten.
+
     webpack: (config, { dev, isServer }) => {
         if (dev && !isServer) {
             config.cache = false;
         }
+
         return config;
     },
 };

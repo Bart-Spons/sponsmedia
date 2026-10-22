@@ -4,7 +4,6 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactInput } from "@/lib/validators/contact";
-import { sendContact } from "@/app/actions/sendContact";
 import RdxSelect from "@/components/ui/RdxSelect";
 
 type Locale = "en" | "nl";
@@ -115,7 +114,7 @@ export default function CTASection({
                 },
             },
         }),
-        []
+        [],
     );
 
     const t = content[locale];
@@ -161,22 +160,22 @@ export default function CTASection({
     }, [isSubmitSuccessful, reset, t.form.projectTypes, t.form.timelines]);
 
     const onSubmit: SubmitHandler<ContactInput> = async (values) => {
-        setServerMsg(null);
-
-        const fd = new FormData();
-        Object.entries(values).forEach(([k, v]) =>
-            fd.append(k, String(v ?? ""))
+        const subject = encodeURIComponent(
+            `Contact SponsMedia - ${values.projectType}`,
         );
 
-        // ➕ startedAt alleen hier toevoegen (simpel, zonder Zod/RHF)
-        fd.append("startedAt", String(startedAtRef.current));
+        const body = encodeURIComponent(
+            `Name: ${values.name}
+Email: ${values.email}
+Company: ${values.company || "-"}
+Project Type: ${values.projectType}
+Timeline: ${values.timeline}
 
-        const res = await sendContact(fd);
+Message:
+${values.message}`,
+        );
 
-        if (res.ok) setServerMsg({ type: "ok", text: t.alerts.success });
-        else if (res.code === "too_fast")
-            setServerMsg({ type: "err", text: t.alerts.fast });
-        else setServerMsg({ type: "err", text: t.alerts.fail });
+        window.location.href = `mailto:contact@sponsmedia.com?subject=${subject}&body=${body}`;
     };
 
     const projectOptions = t.form.projectTypes.map((label) => ({
