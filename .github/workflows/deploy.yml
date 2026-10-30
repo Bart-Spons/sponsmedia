@@ -47,5 +47,5 @@ jobs:
           # Versleuteld blijft het, alleen de naam op het certificaat wordt niet streng gecontroleerd.
           security: loose
           local-dir: ./out/
-          # Map op de server waar je website staat. Bij Hostinger meestal public_html/.
-          server-dir: ./public_html/
+          # Het FTP-account van Hostinger opent al in public_html, dus uploaden naar de hoofdmap.
+          server-dir: ./
