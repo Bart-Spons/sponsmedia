@@ -36,16 +36,29 @@ jobs:
       - name: Statische site bouwen
         run: npm run build
 
+      - name: lftp installeren
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      # lftp in plaats van een upload-action: Hostinger verbreekt de FTP-verbinding geregeld,
+      # en lftp maakt dan zelf opnieuw verbinding en gaat verder.
+      # Er wordt niets verwijderd op de server; bestanden worden alleen toegevoegd of overschreven.
       - name: Uploaden naar Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          # Hostinger geeft een IP-adres als FTP-server; het certificaat staat op een naam.
-          # Versleuteld blijft het, alleen de naam op het certificaat wordt niet streng gecontroleerd.
-          security: loose
-          local-dir: ./out/
-          # Het FTP-account van Hostinger opent al in public_html, dus uploaden naar de hoofdmap.
-          server-dir: ./
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -e "
+            set cmd:fail-exit yes;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set ssl:verify-certificate no;
+            set net:timeout 30;
+            set net:max-retries 8;
+            set net:reconnect-interval-base 5;
+            set net:reconnect-interval-max 30;
+            set mirror:parallel-transfer-count 3;
+            open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_SERVER\";
+            mirror --reverse --verbose=1 --no-perms ./out/ ./;
+            bye
+          "
