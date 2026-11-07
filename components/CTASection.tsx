@@ -5,6 +5,7 @@ import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactInput } from "@/lib/validators/contact";
 import { sendContact } from "@/lib/sendContact";
+import { trackEvent } from "@/lib/analytics";
 import RdxSelect from "@/components/ui/RdxSelect";
 
 type Locale = "en" | "nl";
@@ -170,7 +171,10 @@ export default function CTASection({
 
         const res = await sendContact(fd);
 
-        if (res.ok) setServerMsg({ type: "ok", text: t.alerts.success });
+        if (res.ok) {
+            setServerMsg({ type: "ok", text: t.alerts.success });
+            trackEvent("generate_lead", { form: "contact", project_type: values.projectType ?? "" });
+        }
         else if (res.code === "too_fast") setServerMsg({ type: "err", text: t.alerts.fast });
         else setServerMsg({ type: "err", text: t.alerts.fail });
     };

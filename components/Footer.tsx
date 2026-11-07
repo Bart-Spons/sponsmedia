@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsButton from "@/components/CookieSettingsButton";
 
 type Locale = "en" | "nl";
 
@@ -115,6 +116,12 @@ export default function Footer({ locale }: { locale: Locale }) {
                                 </Link>
                             </li>
                         ))}
+                        <li>
+                            <CookieSettingsButton
+                                label={locale === "nl" ? "Cookie-instellingen" : "Cookie settings"}
+                                className={linkCls}
+                            />
+                        </li>
                     </ul>
                 </nav>
             </div>

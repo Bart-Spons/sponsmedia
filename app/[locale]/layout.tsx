@@ -2,6 +2,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/motion/SmoothScroll";
+import Analytics from "@/components/Analytics";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
@@ -129,6 +130,7 @@ export default function LocaleLayout({
                 </main>
 
                 <Footer locale={params.locale} />
+                <Analytics locale={params.locale} />
             </body>
         </html>
     );
