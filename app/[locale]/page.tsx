@@ -1,5 +1,6 @@
 // app/[locale]/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
 import { projectsData, servicesData, blogData } from "@/lib/data";
@@ -177,23 +178,27 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
 
             {/* Partners */}
             <section aria-labelledby="partners-title" className="container pb-28 md:pb-44">
-                <header className="mb-10 grid gap-6 md:mb-14 md:grid-cols-12 md:items-end">
-                    <SplitTitle id="partners-title" text={t("partnersTitle")} className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5" />
-                    <p data-rise className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
-                        {t("partnersIntro")}
-                    </p>
-                </header>
-                <ul data-stagger className="border-t border-line">
+                <SplitTitle
+                    id="partners-title"
+                    text={t("partnersTitle")}
+                    className="display mb-10 text-[clamp(1.75rem,3vw,2.5rem)] md:mb-14"
+                />
+                <ul data-stagger className="grid gap-6 md:grid-cols-2">
                     {[
-                        { name: "b00", role: t("partnerB00Role") },
-                        { name: "ReInspire", role: t("partnerReinspireRole") },
+                        { name: "B00", logo: "/images/partners/b00.png", w: 507, h: 244, role: t("partnerB00Role") },
+                        { name: "Reinspire studio", logo: "/images/partners/reinspire.png", w: 1219, h: 372, role: t("partnerReinspireRole") },
                     ].map((p) => (
-                        <li
-                            key={p.name}
-                            className="grid gap-2 border-b border-line py-8 md:grid-cols-12 md:items-baseline md:py-10"
-                        >
-                            <span className="display text-[clamp(2.5rem,6vw,5rem)] leading-none md:col-span-7">{p.name}</span>
-                            <span className="text-lg font-medium text-primary md:col-span-5 md:text-right md:text-xl">{p.role}</span>
+                        <li key={p.name} className="flex flex-col gap-8 rounded-[1.5rem] border border-line p-8 md:p-10">
+                            <div className="flex h-36 items-center justify-center rounded-2xl bg-frost/[0.03] px-8 md:h-44">
+                                <Image
+                                    src={p.logo}
+                                    alt={p.name}
+                                    width={p.w}
+                                    height={p.h}
+                                    className="h-auto max-h-24 w-auto max-w-full object-contain md:max-h-28"
+                                />
+                            </div>
+                            <p className="text-lg font-medium text-primary md:text-xl">{p.role}</p>
                         </li>
                     ))}
                 </ul>
