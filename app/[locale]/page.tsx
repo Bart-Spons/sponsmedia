@@ -1,5 +1,6 @@
 // app/[locale]/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
 import { projectsData, servicesData, blogData } from "@/lib/data";
@@ -170,6 +171,45 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                                 dateLabel={dateFmt.format(new Date(post.publishDate))}
                                 tags={(nl && post.tagsNl) || post.tags}
                             />
+                        </li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Partners */}
+            <section aria-labelledby="partners-title" className="container pb-28 md:pb-44">
+                <SplitTitle
+                    id="partners-title"
+                    text={t("partnersTitle")}
+                    className="display mb-10 text-[clamp(1.75rem,3vw,2.5rem)] md:mb-14"
+                />
+                <ul data-stagger className="grid gap-6 md:grid-cols-2">
+                    {[
+                        { name: "B00", href: "https://b00.com/", logo: "/images/partners/b00.png", w: 507, h: 244, role: t("partnerB00Role") },
+                        { name: "Reinspire studio", href: "https://www.reinspire.nl/", logo: "/images/partners/reinspire.png", w: 1219, h: 372, role: t("partnerReinspireRole") },
+                    ].map((p) => (
+                        <li key={p.name}>
+                            <a
+                                href={p.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${p.name} (${nl ? "opent in een nieuw tabblad" : "opens in a new tab"})`}
+                                className="group flex h-full flex-col gap-8 rounded-[1.5rem] border border-line p-8 transition-colors hover:border-primary/60 md:p-10"
+                            >
+                            <div className="flex h-36 items-center justify-center rounded-2xl bg-frost/[0.03] px-8 md:h-44">
+                                <Image
+                                    src={p.logo}
+                                    alt={p.name}
+                                    width={p.w}
+                                    height={p.h}
+                                    className="h-auto max-h-24 w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105 md:max-h-28"
+                                />
+                            </div>
+                            <p className="flex items-center justify-between gap-4 text-lg font-medium text-primary md:text-xl">
+                                {p.role}
+                                <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
+                            </p>
+                            </a>
                         </li>
                     ))}
                 </ul>
