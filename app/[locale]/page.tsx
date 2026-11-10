@@ -185,20 +185,31 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                 />
                 <ul data-stagger className="grid gap-6 md:grid-cols-2">
                     {[
-                        { name: "B00", logo: "/images/partners/b00.png", w: 507, h: 244, role: t("partnerB00Role") },
-                        { name: "Reinspire studio", logo: "/images/partners/reinspire.png", w: 1219, h: 372, role: t("partnerReinspireRole") },
+                        { name: "B00", href: "https://b00.com/", logo: "/images/partners/b00.png", w: 507, h: 244, role: t("partnerB00Role") },
+                        { name: "Reinspire studio", href: "https://www.reinspire.nl/", logo: "/images/partners/reinspire.png", w: 1219, h: 372, role: t("partnerReinspireRole") },
                     ].map((p) => (
-                        <li key={p.name} className="flex flex-col gap-8 rounded-[1.5rem] border border-line p-8 md:p-10">
+                        <li key={p.name}>
+                            <a
+                                href={p.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${p.name} (${nl ? "opent in een nieuw tabblad" : "opens in a new tab"})`}
+                                className="group flex h-full flex-col gap-8 rounded-[1.5rem] border border-line p-8 transition-colors hover:border-primary/60 md:p-10"
+                            >
                             <div className="flex h-36 items-center justify-center rounded-2xl bg-frost/[0.03] px-8 md:h-44">
                                 <Image
                                     src={p.logo}
                                     alt={p.name}
                                     width={p.w}
                                     height={p.h}
-                                    className="h-auto max-h-24 w-auto max-w-full object-contain md:max-h-28"
+                                    className="h-auto max-h-24 w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105 md:max-h-28"
                                 />
                             </div>
-                            <p className="text-lg font-medium text-primary md:text-xl">{p.role}</p>
+                            <p className="flex items-center justify-between gap-4 text-lg font-medium text-primary md:text-xl">
+                                {p.role}
+                                <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
+                            </p>
+                            </a>
                         </li>
                     ))}
                 </ul>
