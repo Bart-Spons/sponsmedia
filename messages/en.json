@@ -33,7 +33,7 @@
     },
     "Services": {
         "title": "Services",
-        "subtitle": "We help brands become more visible online through strategic web development, thoughtful design, and authentic social media presence.",
+        "subtitle": "We help brands become more visible online through strategic web development, thoughtful design, video and authentic social media presence.",
         "technologiesLabel": "Technologies & Tools",
         "whatsIncluded": "What's Included",
         "readyTitle": "Ready to get started?",
@@ -133,20 +133,20 @@
         "subtitle": "Share your goals and challenges. I'll reply with next steps and a clear plan."
     },
     "Home": {
-        "kicker": "Web development, digital design and social media",
+        "kicker": "Web development, design, video and social media",
         "headline": "Be more visible online.",
-        "focusWords": "Websites|Design|Social",
+        "focusWords": "Websites|Design|Video|Social",
         "sub": "Get more visitors to your website and more followers on your social media.",
         "seeWork": "See our work",
         "startProject": "Start a project",
         "recentFor": "Recent work for",
-        "statement": "Good work deserves to be found. We build fast websites, design things people remember and make content for the feed, so more of the right people see you.",
+        "statement": "Good work deserves to be found. We build fast websites, design things people remember and make videos and content for the feed, so more of the right people see you.",
         "workTitle": "Selected work",
         "workIntro": "A few projects we're proud of. Each one started with the same question: who needs to find this, and how do we get it in front of them?",
         "viewCase": "Read the case",
         "allProjects": "All projects",
         "servicesTitle": "What we do",
-        "servicesIntro": "Three disciplines, one goal. Pick one or combine them.",
+        "servicesIntro": "Four disciplines, one goal. Pick one or combine them.",
         "included": "What's included",
         "tools": "Tools",
         "showDetails": "Show details",
@@ -156,6 +156,10 @@
         "allPosts": "All posts",
         "ctaTitle": "Got a project in mind?",
         "ctaSub": "Tell us what you want to achieve and we'll reply with clear next steps.",
-        "orMail": "Or email us directly"
+        "orMail": "Or email us directly",
+        "meetKicker": "Nice to meet you",
+        "meetTitle": "Hi, I'm Bart.",
+        "meetText": "I'm the person behind SponsMedia. From Amsterdam I build websites, design brands and make videos and social content, so the right people find you.",
+        "meetLink": "More about me"
     }
 }

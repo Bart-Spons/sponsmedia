@@ -8,6 +8,7 @@ import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
 import type { ServiceRow } from "@/components/home/ServicesList";
 import ServiceCards from "@/components/home/ServiceCards";
 import ClosingCta from "@/components/ClosingCta";
+import MeetBart from "@/components/home/MeetBart";
 import BlogCard from "@/components/BlogCard";
 import Choreography from "@/components/motion/Choreography";
 import SplitTitle from "@/components/motion/SplitTitle";
@@ -106,6 +107,16 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                     id: p.id,
                     name: p.client || p.title,
                 }))}
+            />
+
+            <MeetBart
+                locale={locale}
+                copy={{
+                    kicker: t("meetKicker"),
+                    title: t("meetTitle"),
+                    text: t("meetText"),
+                    link: t("meetLink"),
+                }}
             />
 
             {/* Work */}

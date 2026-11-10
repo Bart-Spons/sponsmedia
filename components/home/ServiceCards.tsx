@@ -11,7 +11,7 @@ import { motionOK } from "@/lib/motion";
 gsap.registerPlugin(useGSAP);
 
 /**
- * Homepage overview of the services: three cards that respond to the mouse.
+ * Homepage overview of the services: one card per service that respond to the mouse.
  * The card tilts towards the cursor and a gold spotlight follows it; the
  * service icon draws itself on scroll and a big outlined number sits behind
  * the content. Inside <Choreography> the cards rise in one after another
@@ -67,7 +67,7 @@ export default function ServiceCards({
     };
 
     return (
-        <ul ref={root} data-stagger className="grid gap-5 md:grid-cols-3 md:gap-6">
+        <ul ref={root} data-stagger className="grid gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
             {items.map((s, i) => (
                 <li key={s.slug}>
                     <Link
