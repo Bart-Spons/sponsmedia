@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import ProofTrust from "@/components/ui/ProofTrust";
+import Showreel from "@/components/ui/Showreel";
 
 type Locale = "en" | "nl";
 
@@ -49,6 +50,11 @@ const copy = {
             "15+ projects",
         ],
 
+        // Showreel
+        showreelKicker: "Showreel",
+        showreelTitle: "Behind the screen",
+        showreelPlay: "Play video",
+
 
         // CTA
         ctaMidTitle: "Ready to talk?",
@@ -94,6 +100,11 @@ const copy = {
             "5+ jaar ervaring",
             "15+ projecten",
         ],
+
+        // Showreel
+        showreelKicker: "Showreel",
+        showreelTitle: "Achter de schermen",
+        showreelPlay: "Video afspelen",
 
 
         // CTA
@@ -333,6 +344,14 @@ export default async function AboutPage({
                     kvk="97944475"
                     years={5}
                     projects={15}
+                />
+
+                {/* SHOWREEL */}
+                <Showreel
+                    videoId="mhYNq_s-GYU"
+                    kicker={t.showreelKicker}
+                    title={t.showreelTitle}
+                    playLabel={t.showreelPlay}
                 />
 
                 {/* CTA */}
