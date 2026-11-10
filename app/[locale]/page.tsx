@@ -175,6 +175,30 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                 </ul>
             </section>
 
+            {/* Partners */}
+            <section aria-labelledby="partners-title" className="container pb-28 md:pb-44">
+                <header className="mb-10 grid gap-6 md:mb-14 md:grid-cols-12 md:items-end">
+                    <SplitTitle id="partners-title" text={t("partnersTitle")} className="display text-[clamp(1.75rem,3vw,2.5rem)] md:col-span-5" />
+                    <p data-rise className="max-w-[46ch] text-lg leading-relaxed text-haze md:col-span-5 md:col-start-8">
+                        {t("partnersIntro")}
+                    </p>
+                </header>
+                <ul data-stagger className="border-t border-line">
+                    {[
+                        { name: "b00", role: t("partnerB00Role") },
+                        { name: "ReInspire", role: t("partnerReinspireRole") },
+                    ].map((p) => (
+                        <li
+                            key={p.name}
+                            className="grid gap-2 border-b border-line py-8 md:grid-cols-12 md:items-baseline md:py-10"
+                        >
+                            <span className="display text-[clamp(2.5rem,6vw,5rem)] leading-none md:col-span-7">{p.name}</span>
+                            <span className="text-lg font-medium text-primary md:col-span-5 md:text-right md:text-xl">{p.role}</span>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+
             <ClosingCta
                 locale={locale}
                 title={t("ctaTitle")}
