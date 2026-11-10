@@ -1,5 +1,5 @@
 /**
- * Line icons for the three services, drawn in the brand gold. Every stroke
+ * Line icons for the services, drawn in the brand gold. Every stroke
  * has pathLength 1, so <Choreography> can draw them on scroll (data-draw);
  * without that they simply show fully drawn.
  */
@@ -27,6 +27,16 @@ const icons: Record<string, React.ReactNode> = {
             <circle pathLength={1} cx="22" cy="40" r="2" />
             <path pathLength={1} d="M30 8 L42 20 L34 34 L22 22 Z" />
             <line pathLength={1} x1="32" y1="21" x2="34" y2="34" />
+        </>
+    ),
+    // A film camera with a play button on its screen
+    "video-production": (
+        <>
+            <rect pathLength={1} x="5" y="20" width="40" height="30" rx="5" />
+            <path pathLength={1} d="M45 30 L59 22 V48 L45 40 Z" />
+            <circle pathLength={1} cx="15" cy="12" r="6" />
+            <circle pathLength={1} cx="32" cy="12" r="6" />
+            <path pathLength={1} d="M21 29 L32 35 L21 41 Z" />
         </>
     ),
     // A speech bubble with a heart, and a notification dot

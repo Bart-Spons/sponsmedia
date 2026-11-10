@@ -17,13 +17,13 @@ const copy = {
     en: {
         metaTitle: "About - SponsMedia | Web Development & Digital Strategy",
         metaDesc:
-            "Meet Bart — a 25-year-old Creative Developer in Amsterdam. I build fast websites and social-first strategies that actually perform.",
+            "Meet Bart — a 26-year-old Creative Developer in Amsterdam. I build fast websites and social-first strategies that actually perform.",
         eyebrow: "ABOUT",
         h1: "Hey, I’m Bart 👋",
 
         // Who I Am
         whoTitle: "Who I Am",
-        whoIntro: "Bart, 25-year-old Creative Developer living in Amsterdam.",
+        whoIntro: "Bart, 26-year-old Creative Developer living in Amsterdam.",
         whoP1: "I started coding as a teenager, and the moment I shipped my first project to the web, there was no going back.",
         whoP2: "I moved from the south of the Netherlands to Amsterdam for university and recently graduated. During my degree I spent a year studying in the United States and later worked for a year in Japan at an international branding and marketing agency. That path gave me a front-row view of how digital behaviour and marketing differ across cultures.",
         whoP3: "Over the last few years I’ve noticed a pattern: many websites look great but load slowly or break on mobile. And many social accounts publish good content but still don’t grow.",
@@ -63,13 +63,13 @@ const copy = {
     nl: {
         metaTitle: "Over - SponsMedia | Webontwikkeling & Digitale Strategie",
         metaDesc:
-            "Maak kennis met Bart — 25 jaar, Creative Developer in Amsterdam. Ik bouw snelle websites en social-first strategieën die écht presteren.",
+            "Maak kennis met Bart — 26 jaar, Creative Developer in Amsterdam. Ik bouw snelle websites en social-first strategieën die écht presteren.",
         eyebrow: "OVER",
         h1: "Hey, ik ben Bart 👋",
 
         // Wie ik ben
         whoTitle: "Wie ik ben",
-        whoIntro: "Bart, 25 jaar, Creative Developer in Amsterdam.",
+        whoIntro: "Bart, 26 jaar, Creative Developer in Amsterdam.",
         whoP1: "Als tiener begon ik met programmeren en vanaf het moment dat ik mijn eerste project online zette, was er geen weg meer terug.",
         whoP2: "Ik verhuisde vanuit het zuiden van Nederland naar Amsterdam voor mijn studie die ik recent heb afgerond. Tijdens mijn studie heb ik een jaar in de Verenigde Staten gestudeerd en later een jaar in Japan gewerkt bij een internationaal branding- en marketingbureau. Deze ervaringen gaven me een uniek inkijkje in hoe digitaal gedrag en marketing per cultuur verschillen.",
         whoP3: "De afgelopen jaren viel me iets op: veel websites zien er goed uit, maar laden traag of werken slecht op mobiel. En veel social-accounts plaatsen goede content, maar groeien tóch niet.",
@@ -230,11 +230,11 @@ export default async function AboutPage({
                             {/* Image */}
                             <div className="relative h-full min-h-[320px] lg:min-h-[520px] rounded-3xl overflow-hidden border border-white/15 shadow-xl">
                                 <Image
-                                    src="/placeholders/jp-1800.webp"
-                                    alt="Bart Spons — Web Developer"
+                                    src="/images/bart-sofa.webp"
+                                    alt="Bart Spons on a sofa with his laptop"
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 480px"
-                                    className="object-cover"
+                                    className="object-cover object-[50%_35%]"
                                 />
                                 <div
                                     className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/0 to-transparent"
