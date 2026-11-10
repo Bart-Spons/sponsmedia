@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Magnet from "@/components/reactbits/Magnet";
-import Bulb3D from "@/components/home/Bulb3D";
+import HeroBulb from "@/components/home/HeroBulb";
 import { duration, ease, motionOK, stagger } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -113,20 +113,15 @@ export default function Hero({
                 });
             });
 
-            // Mouse: a soft light follows the cursor, the room light drifts
-            // after it and the lens leans towards it.
+            // Mouse: a soft light follows the cursor and the room light drifts
+            // after it. The lens and the bulb stay still.
             mm.add(`(pointer: fine) and ${motionOK}`, () => {
                 const toX = gsap.quickTo(light.current, "x", { duration: 2.4, ease: "power3" });
                 const toY = gsap.quickTo(light.current, "y", { duration: 2.4, ease: "power3" });
-                const leanX = gsap.quickTo("[data-lens-ring]", "x", { duration: 1, ease: "power3" });
-                const leanY = gsap.quickTo("[data-lens-ring]", "y", { duration: 1, ease: "power3" });
-                const spin = gsap.to("[data-ticks]", { rotate: 360, duration: 30, ease: "none", repeat: -1 });
                 gsap.to("[data-beam]", { opacity: 1, duration: 0.6, delay: 0.8 });
                 const onMove = (e: PointerEvent) => {
                     toX((e.clientX / window.innerWidth - 0.5) * 160);
                     toY((e.clientY / window.innerHeight - 0.5) * 120);
-                    leanX((e.clientX / window.innerWidth - 0.5) * 24);
-                    leanY((e.clientY / window.innerHeight - 0.5) * 24);
                     const b = root.current!.getBoundingClientRect();
                     gsap.to(root.current, {
                         "--mx": `${e.clientX - b.left}px`,
@@ -137,10 +132,7 @@ export default function Hero({
                     });
                 };
                 window.addEventListener("pointermove", onMove, { passive: true });
-                return () => {
-                    spin.kill();
-                    window.removeEventListener("pointermove", onMove);
-                };
+                return () => window.removeEventListener("pointermove", onMove);
             });
 
             // No motion: everything is simply there, with the light on.
@@ -253,14 +245,11 @@ export default function Hero({
                                 }}
                             />
                             <div className="absolute inset-[9%] overflow-hidden rounded-full">
-                                <Bulb3D on={lit} />
+                                <HeroBulb on={lit} />
                             </div>
                             <span className="absolute inset-0 rounded-full border border-primary/70" />
                             <span data-ticks className="absolute inset-0">
                                 <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-primary" />
-                                <span className="absolute bottom-0 left-1/2 h-3 w-px -translate-x-1/2 bg-primary" />
-                                <span className="absolute left-0 top-1/2 h-px w-3 -translate-y-1/2 bg-primary" />
-                                <span className="absolute right-0 top-1/2 h-px w-3 -translate-y-1/2 bg-primary" />
                             </span>
                         </div>
                     </div>
