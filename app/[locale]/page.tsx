@@ -33,7 +33,7 @@ export async function generateMetadata({
     const { locale } = params;
     const messages = await getMessages(locale);
     const t = createTranslator({ locale, messages, namespace: "Home" });
-    const title = `SponsMedia — ${t("headline")}`;
+    const title = `SponsMedia — ${t("headline").replace(/\*/g, "")}`;
     const description = t("sub");
 
     return {
