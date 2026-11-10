@@ -10,9 +10,9 @@ import Bulb from "@/components/home/Bulb";
  * glow. It turns slowly and leans towards the mouse. `on` switches it on with
  * a flicker, after which the light keeps breathing.
  *
- * three.js is only loaded on desktop with motion allowed (the only place the
- * hero shows the bulb), only renders while the bulb is on screen, and falls
- * back to the flat SVG bulb when WebGL is not available.
+ * The flat SVG bulb is always underneath and lights up instantly; three.js is
+ * only loaded on desktop with motion allowed, fades in over it once ready,
+ * only renders while the bulb is on screen, and is skipped without WebGL.
  */
 export default function Bulb3D({ on }: { on: boolean }) {
     const host = useRef<HTMLDivElement>(null);
@@ -45,6 +45,8 @@ export default function Bulb3D({ on }: { on: boolean }) {
                 renderer.toneMapping = THREE.ACESFilmicToneMapping;
                 renderer.toneMappingExposure = 0.8;
                 renderer.domElement.className = "absolute inset-0 h-full w-full";
+                // Hidden until it switches on, so the lit flat bulb underneath shows meanwhile.
+                renderer.domElement.style.opacity = "0";
                 el.appendChild(renderer.domElement);
 
                 const scene = new THREE.Scene();
@@ -175,6 +177,7 @@ export default function Bulb3D({ on }: { on: boolean }) {
                     bloom.strength = p.bloom;
                 };
                 switchOn.current = () => {
+                    gsap.to(renderer.domElement, { opacity: 1, duration: 0.6, ease: "power2.out" });
                     gsap.timeline({ onUpdate: apply })
                         .to(p, { fil: 3, duration: 0.05 })
                         .to(p, { fil: 0.6, duration: 0.08 })
@@ -253,19 +256,21 @@ export default function Bulb3D({ on }: { on: boolean }) {
 
     useEffect(() => {
         if (!on) return;
-        if (failed) {
-            // Flat fallback: just show the lit drawing.
-            const q = gsap.utils.selector(fallback.current);
-            gsap.to(q("[data-glass], [data-halo], [data-rays], [data-filament]"), { opacity: 1, duration: 0.8 });
-            gsap.to(q("[data-core]"), { opacity: 0.9, duration: 0.8 });
-            return;
-        }
-        switchOn.current?.();
+        // The flat drawing lights up at once (with a flicker); the 3D bulb
+        // fades in over it as soon as three.js has loaded.
+        const q = gsap.utils.selector(fallback.current);
+        gsap.timeline()
+            .to(q("[data-glass], [data-filament]"), { opacity: 1, duration: 0.04 })
+            .to(q("[data-glass], [data-filament]"), { opacity: 0.3, duration: 0.05 })
+            .to(q("[data-glass], [data-filament]"), { opacity: 1, duration: 0.05 })
+            .to(q("[data-halo], [data-rays]"), { opacity: 1, duration: 0.4, ease: "power2.out" })
+            .to(q("[data-core]"), { opacity: 0.9, duration: 0.4, ease: "power2.out" }, "<");
+        if (!failed) switchOn.current?.();
     }, [on, failed]);
 
     return (
         <div ref={host} className="relative h-full w-full bg-[#0a0f1a]">
-            {failed && <Bulb ref={fallback} />}
+            <Bulb ref={fallback} />
         </div>
     );
 }
