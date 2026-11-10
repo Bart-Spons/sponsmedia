@@ -1,5 +1,6 @@
 // app/[locale]/about/page.tsx
 import type { Metadata } from "next";
+import { ogImage } from "@/lib/og";
 import Link from "next/link";
 import Image from "next/image";
 import ProofTrust from "@/components/ui/ProofTrust";
@@ -125,9 +126,7 @@ export async function generateMetadata({
             title: t.metaTitle,
             description: t.metaDesc,
             url: `/${locale}/about`,
-            images: [
-                { url: "/og.jpg", width: 1200, height: 630, alt: "SponsMedia" },
-            ],
+            images: [ogImage(locale)],
             type: "website",
             locale: locale === "nl" ? "nl_NL" : "en_US",
         },

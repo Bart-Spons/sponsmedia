@@ -1,5 +1,6 @@
 // app/[locale]/contact/page.tsx
 import type { Metadata } from "next";
+import { ogImage } from "@/lib/og";
 import { createTranslator } from "next-intl";
 import CTASection from "@/components/CTASection";
 import ContactFAQ from "@/components/ContactFAQ";
@@ -26,6 +27,7 @@ export async function generateMetadata({
         title,
         description,
         openGraph: {
+            images: [ogImage(locale)],
             title,
             description,
             locale: locale === "en" ? "en_US" : "nl_NL",

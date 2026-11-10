@@ -1,5 +1,6 @@
 // app/[locale]/services/page.tsx
 import { servicesData } from "@/lib/data/services";
+import { ogImage } from "@/lib/og";
 import PageHeader from "@/components/PageHeader";
 import ClosingCta from "@/components/ClosingCta";
 import type { ServiceRow } from "@/components/home/ServicesList";
@@ -48,6 +49,7 @@ export async function generateMetadata({
             "Figma",
         ],
         openGraph: {
+            images: [ogImage(locale)],
             title,
             description,
             locale: locale === "en" ? "en_US" : "nl_NL",

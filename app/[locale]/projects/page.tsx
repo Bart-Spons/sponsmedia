@@ -1,5 +1,6 @@
 import { projectsData } from "@/lib/data/projects";
 import PageHeader from "@/components/PageHeader";
+import { ogImage } from "@/lib/og";
 import ClosingCta from "@/components/ClosingCta";
 import type { ReelItem } from "@/components/home/WorkReel";
 import ProjectIndex from "@/components/projects/ProjectIndex";
@@ -35,6 +36,7 @@ export async function generateMetadata({
         title,
         description,
         openGraph: {
+            images: [ogImage(locale)],
             title,
             description,
             locale: locale === "en" ? "en_US" : "nl_NL",

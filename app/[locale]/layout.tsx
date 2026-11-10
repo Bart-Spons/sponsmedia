@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { ogImage } from "@/lib/og";
 
 type Locale = "en" | "nl";
 
@@ -44,16 +45,14 @@ export async function generateMetadata({
             siteName: "SponsMedia",
             title: "SponsMedia — Be more visible online",
             description,
-            images: [
-                { url: "/og.jpg", width: 1200, height: 630, alt: "SponsMedia" },
-            ],
+            images: [ogImage(isNL ? "nl" : "en")],
             locale: isNL ? "nl_NL" : "en_US",
         },
         twitter: {
             card: "summary_large_image",
             title: "SponsMedia — Be more visible online",
             description,
-            images: ["/og.jpg"],
+            images: [ogImage(isNL ? "nl" : "en").url],
         },
         icons: {
             icon: [
