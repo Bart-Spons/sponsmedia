@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Img from "@/components/Img";
 import Link from "next/link";
 
 /** One blog post as a card: cover, date and tags, title. Used on the homepage and the blog index. */
@@ -20,7 +20,7 @@ export default function BlogCard({
     return (
         <Link href={href} className="group block">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-deep">
-                <Image
+                <Img
                     src={image}
                     alt={title}
                     fill

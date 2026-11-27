@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Img from "@/components/Img";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -89,7 +89,7 @@ export default function WorkReel({
                             className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-deep will-change-[opacity,transform]"
                         >
                             <ReelMedia item={p} priority={i === 0} />
-                            <Image
+                            <Img
                                 data-focus-veil
                                 src={p.image}
                                 alt=""
@@ -172,7 +172,7 @@ export function ReelMedia({
 
     return (
         <>
-            <Image
+            <Img
                 src={item.image}
                 alt={item.title}
                 fill

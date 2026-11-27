@@ -19,12 +19,6 @@ AddCharset utf-8 .md .txt .html .xml
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
-    # Remember the page's Markdown address, for the Link header below
-    RewriteRule ^$ - [E=MDLINK:/index.md]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteCond %{REQUEST_FILENAME}/index.md -f
-    RewriteRule ^(.+?)/?$ - [E=MDLINK:/$1/index.md]
-
     # Markdown for AI agents: a request with "Accept: text/markdown" gets the
     # page's Markdown version (built next to each index.html) instead of HTML.
     RewriteCond %{HTTP:Accept} text/markdown [NC]
@@ -52,8 +46,7 @@ AddCharset utf-8 .md .txt .html .xml
     # Point agents to the site index for language models
     Header append Link "</llms.txt>; rel=\"describedby\"; type=\"text/plain\""
     Header append Link "</sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\""
-    # Each page points to its own Markdown version
-    Header append Link "<%{MDLINK}e>; rel=\"alternate\"; type=\"text/markdown\"" env=MDLINK
+    # (Each page folder's own .htaccess adds a Link header to its Markdown twin.)
 
     <FilesMatch "\.md$">
         Header set Content-Type "text/markdown; charset=utf-8"

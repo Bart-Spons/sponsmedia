@@ -143,9 +143,19 @@ for (const file of await walk(OUT)) {
     let body = htmlToMarkdown(info.main, SITE + info.urlPath);
     if (!/^# /m.test(body) && info.title) body = `# ${info.title}\n\n${body}`;
     const md = frontmatter(info) + body + "\n";
-    await fs.writeFile(path.join(path.dirname(file), "index.md"), md);
+    const dir = path.dirname(file);
+    // Two addresses for the same Markdown: /en/about/index.md and the
+    // "twin" /en/about.md next to the page, which agents look for first.
+    await fs.writeFile(path.join(dir, "index.md"), md);
+    await fs.writeFile(`${dir}.md`, md);
 
-    const mdUrl = `${info.urlPath}index.md`;
+    const mdUrl = `${info.urlPath.replace(/\/$/, "")}.md`;
+    // Each page folder gets a tiny .htaccess that adds the Link header to its
+    // Markdown twin (the site-wide rewrite rules in the root .htaccess still apply).
+    await fs.writeFile(
+        path.join(dir, ".htaccess"),
+        `<IfModule mod_headers.c>\nHeader append Link "<${mdUrl}>; rel=\\"alternate\\"; type=\\"text/markdown\\""\n</IfModule>\n`
+    );
     if (!html.includes('type="text/markdown"')) {
         html = html.replace(/<\/head>/i, `<link rel="alternate" type="text/markdown" href="${mdUrl}"/></head>`);
         await fs.writeFile(file, html);
@@ -197,7 +207,7 @@ const llms = `# SponsMedia
 
 > SponsMedia is the studio of Bart Spons, a creative developer from Amsterdam. SponsMedia helps brands get seen online with websites, design, video and social media. The site is in English (/en/) and Dutch (/nl/).
 
-Every page is also available as Markdown: add \`index.md\` to its address, or request it with the header \`Accept: text/markdown\`. The full text of the site is in [llms-full.txt](${SITE}/llms-full.txt).
+Every page is also available as Markdown: add \`.md\` to its address (for example /en/about.md), or request it with the header \`Accept: text/markdown\`. The full text of the site is in [llms-full.txt](${SITE}/llms-full.txt).
 
 Contact: contact@sponsmedia.com · Instagram: https://www.instagram.com/sponsmedia_/
 

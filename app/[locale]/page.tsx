@@ -1,7 +1,7 @@
 // app/[locale]/page.tsx
 import Link from "next/link";
 import { ogImage } from "@/lib/og";
-import Image from "next/image";
+import Img from "@/components/Img";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
 import { projectsData, servicesData, blogData } from "@/lib/data";
@@ -10,6 +10,7 @@ import WorkReel, { type ReelItem } from "@/components/home/WorkReel";
 import type { ServiceRow } from "@/components/home/ServicesList";
 import ServiceCards from "@/components/home/ServiceCards";
 import ClosingCta from "@/components/ClosingCta";
+import JsonLd from "@/components/JsonLd";
 import MeetBart from "@/components/home/MeetBart";
 import BlogCard from "@/components/BlogCard";
 import Choreography from "@/components/motion/Choreography";
@@ -93,8 +94,59 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
         year: "numeric",
     });
 
+    // What this page is about, for search engines and AI agents: the page,
+    // the services offered and the person behind SponsMedia.
+    const site = "https://sponsmedia.com";
+    const pageUrl = `${site}/${locale}/`;
+    const pageLd = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                "@id": `${pageUrl}#webpage`,
+                url: pageUrl,
+                name: `SponsMedia — ${t("headline").replace(/\*/g, "")}`,
+                description: t("sub"),
+                inLanguage: nl ? "nl-NL" : "en-US",
+                isPartOf: { "@id": `${site}/#website` },
+                about: { "@id": `${site}/#organization` },
+                primaryImageOfPage: { "@type": "ImageObject", url: `${site}${nl ? "/og-nl.jpg" : "/og.jpg"}` },
+            },
+            {
+                "@type": "OfferCatalog",
+                "@id": `${pageUrl}#services`,
+                name: nl ? "Diensten van SponsMedia" : "SponsMedia services",
+                itemListElement: services.map((s, i) => ({
+                    "@type": "Offer",
+                    position: i + 1,
+                    itemOffered: {
+                        "@type": "Service",
+                        name: s.title,
+                        description: s.desc,
+                        serviceType: s.title,
+                        url: `${site}/${locale}/services/#${s.slug}`,
+                        provider: { "@id": `${site}/#organization` },
+                        areaServed: { "@type": "Country", name: "Netherlands" },
+                    },
+                })),
+            },
+            {
+                "@type": "Person",
+                "@id": `${site}/#bart`,
+                name: "Bart Spons",
+                jobTitle: "Creative Developer",
+                image: `${site}/images/bart-sofa.webp`,
+                url: `${site}/${locale}/about/`,
+                worksFor: { "@id": `${site}/#organization` },
+                knowsAbout: ["Web development", "Design", "Video", "Social media"],
+                sameAs: ["https://www.linkedin.com/in/bartspons", "https://www.instagram.com/sponsmedia_/"],
+            },
+        ],
+    };
+
     return (
         <Choreography>
+            <JsonLd data={pageLd} />
             <Hero
                 locale={locale}
                 copy={{
@@ -199,7 +251,7 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
                                 className="group flex h-full flex-col gap-8 rounded-[1.5rem] border border-line p-8 transition-colors hover:border-primary/60 md:p-10"
                             >
                             <div className="flex h-36 items-center justify-center rounded-2xl bg-frost/[0.03] px-8 md:h-44">
-                                <Image
+                                <Img
                                     src={p.logo}
                                     alt={p.name}
                                     width={p.w}
