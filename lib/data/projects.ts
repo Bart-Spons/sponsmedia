@@ -58,7 +58,7 @@ export const projectsData: Project[] = [
         challenge:
             "G Adventures wanted to show their Buenos Aires to Rio de Janeiro trip, through Argentina, Uruguay and Brazil, to a young audience. Not as another highlights reel of landmarks, but in a way that feels personal.",
         solution:
-            "I turned the trip into a video notebook. Along the way I asked the people we met to write one piece of life advice in my notebook: in La Boca in Buenos Aires, at Christ the Redeemer and in a favela in Rio, and on top of Pico do Papagaio on Ilha Grande. Every page became a scene, edited into a 40-second vertical video.",
+            "I turned the trip into a video notebook. Along the way I asked the people we met to write one piece of life advice in my notebook. Every shot was filmed at a stop on the trip, like La Boca in Buenos Aires, Christ the Redeemer and a favela in Rio, and the top of Pico do Papagaio on Ilha Grande. Every page became a scene, edited into a 40-second vertical video.",
         results: [
             "Published on the Instagram of G Adventures 18-to-Thirtysomethings",
             "Shared by Oak Travel",
@@ -72,7 +72,7 @@ export const projectsData: Project[] = [
         challengeNl:
             "G Adventures wilde hun reis van Buenos Aires naar Rio de Janeiro, door Argentinië, Uruguay en Brazilië, laten zien aan een jong publiek. Niet als zoveelste highlightvideo van bezienswaardigheden, maar op een manier die persoonlijk voelt.",
         solutionNl:
-            "Ik maakte van de reis een video-notitieboek. Onderweg vroeg ik de mensen die we ontmoetten om één levensles in mijn boekje te schrijven: in La Boca in Buenos Aires, bij Christus de Verlosser en in een favela in Rio, en op de top van de Pico do Papagaio op Ilha Grande. Elke pagina werd een scène, gemonteerd tot een verticale video van 40 seconden.",
+            "Ik maakte van de reis een video-notitieboek. Onderweg vroeg ik de mensen die we ontmoetten om één levensles in mijn boekje te schrijven. Alle shots zijn gefilmd op plekken van de reis, zoals La Boca in Buenos Aires, Christus de Verlosser en een favela in Rio, en de top van de Pico do Papagaio op Ilha Grande. Elke pagina werd een scène, gemonteerd tot een verticale video van 40 seconden.",
         resultsNl: [
             "Gepubliceerd op de Instagram van G Adventures 18-to-Thirtysomethings",
             "Gedeeld door Oak Travel",
