@@ -120,13 +120,31 @@ export default function Footer({ locale }: { locale: Locale }) {
             </div>
 
             <div className="border-t border-line">
-                <div className="container flex flex-col gap-2 py-6 text-sm text-haze sm:flex-row sm:justify-between">
+                <div className="container flex flex-col gap-3 py-6 text-sm text-haze sm:flex-row sm:items-center sm:justify-between">
                     <p>
                         © {new Date().getFullYear()} SponsMedia. {t.rights}
                     </p>
-                    <p>
-                        {t.coc} <span className="tabular-nums">97944475</span>
-                    </p>
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                        <a
+                            href="https://agentready.md/r/sponsmedia.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="opacity-80 transition-opacity hover:opacity-100"
+                        >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src="https://agentready.md/badge/sponsmedia.com.svg"
+                                alt="AgentReady.md score for sponsmedia.com"
+                                height={20}
+                                loading="lazy"
+                                decoding="async"
+                                className="h-5 w-auto"
+                            />
+                        </a>
+                        <p>
+                            {t.coc} <span className="tabular-nums">97944475</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>
