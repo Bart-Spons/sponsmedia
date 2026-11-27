@@ -1,5 +1,5 @@
 // components/ContactFAQ.tsx
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 
 type Locale = "nl" | "en";
 
@@ -124,9 +124,7 @@ export default function ContactFAQ({ locale }: { locale: Locale }) {
             </div>
 
             {/* FAQ schema for SEO */}
-            <Script id="contact-faq-schema" type="application/ld+json">
-                {JSON.stringify(faqSchema)}
-            </Script>
+            <JsonLd data={faqSchema} />
         </section>
     );
 }

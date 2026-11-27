@@ -22,7 +22,7 @@ export default function BlogCard({
             <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-deep">
                 <Image
                     src={image}
-                    alt=""
+                    alt={title}
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]"

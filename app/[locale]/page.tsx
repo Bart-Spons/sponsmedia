@@ -1,5 +1,6 @@
 // app/[locale]/page.tsx
 import Link from "next/link";
+import { ogImage } from "@/lib/og";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
@@ -41,6 +42,7 @@ export async function generateMetadata({
         title: { absolute: title },
         description,
         openGraph: {
+            images: [ogImage(locale)],
             title,
             description,
             url: `/${locale}`,

@@ -42,7 +42,8 @@ jobs:
       # lftp in plaats van een upload-action: Hostinger verbreekt de FTP-verbinding geregeld,
       # en lftp maakt dan zelf opnieuw verbinding en gaat verder.
       # De server wordt gelijk gemaakt aan de build: oude bestanden die niet meer in out/ staan worden
-      # verwijderd. Systeembestanden (.htaccess, .well-known, Google-verificatie) blijven staan.
+      # verwijderd. Systeembestanden (.well-known, Google-verificatie) blijven staan.
+      # De .htaccess komt uit public/ en wordt wel meegestuurd (Markdown voor AI-agents, HTTPS, headers).
       - name: Uploaden naar Hostinger via FTP
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
@@ -68,7 +69,7 @@ jobs:
           set mirror:parallel-transfer-count 3
           open --env-password -u "$USERNAME" "$SERVER"
           ls
-          mirror --reverse --delete --verbose=1 --no-perms --exclude-glob .htaccess --exclude-glob .well-known/ --exclude-glob .user.ini --exclude-glob 'google*.html' --exclude-glob .ftpquota ./out/ ./
+          mirror --reverse --delete --verbose=1 --no-perms --exclude-glob .well-known/ --exclude-glob .user.ini --exclude-glob 'google*.html' --exclude-glob .ftpquota ./out/ ./
           bye
           EOF
           lftp -f deploy.lftp

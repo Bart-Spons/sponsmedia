@@ -3,7 +3,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
+import { ogImage } from "@/lib/og";
 
 type Locale = "en" | "nl";
 
@@ -44,16 +45,14 @@ export async function generateMetadata({
             siteName: "SponsMedia",
             title: "SponsMedia — Be more visible online",
             description,
-            images: [
-                { url: "/og.jpg", width: 1200, height: 630, alt: "SponsMedia" },
-            ],
+            images: [ogImage(isNL ? "nl" : "en")],
             locale: isNL ? "nl_NL" : "en_US",
         },
         twitter: {
             card: "summary_large_image",
             title: "SponsMedia — Be more visible online",
             description,
-            images: ["/og.jpg"],
+            images: [ogImage(isNL ? "nl" : "en").url],
         },
         icons: {
             icon: [
@@ -87,42 +86,55 @@ export default function LocaleLayout({
                 </a>
                 <Nav locale={params.locale} />
 
-                {/* Organization schema */}
-                <Script id="org-schema" type="application/ld+json">
-                    {JSON.stringify({
+                {/* Who SponsMedia is, for search engines and AI agents */}
+                <JsonLd
+                    data={{
                         "@context": "https://schema.org",
-                        "@type": "Organization",
-                        name: "SponsMedia",
-                        url: "https://sponsmedia.com",
-                        logo: "https://sponsmedia.com/logo.png",
-                        sameAs: [
-                            "https://www.linkedin.com/in/bartspons",
-                            "https://codepen.io/LuckyBart",
-                        ],
-                        contactPoint: [
+                        "@graph": [
                             {
-                                "@type": "ContactPoint",
-                                contactType: "customer support",
+                                "@type": "ProfessionalService",
+                                "@id": "https://sponsmedia.com/#organization",
+                                name: "SponsMedia",
+                                url: "https://sponsmedia.com",
+                                logo: "https://sponsmedia.com/logo.png",
+                                image: "https://sponsmedia.com/og.jpg",
+                                slogan: "Be more visible online",
+                                description:
+                                    params.locale === "nl"
+                                        ? "SponsMedia helpt merken online gezien te worden met websites, design, video en social media."
+                                        : "SponsMedia helps brands get seen online with websites, design, video and social media.",
                                 email: "contact@sponsmedia.com",
-                                availableLanguage: ["nl", "en"],
+                                areaServed: ["NL", "Worldwide"],
+                                knowsAbout: ["Web development", "Web design", "Branding", "Video production", "Social media"],
+                                founder: {
+                                    "@type": "Person",
+                                    "@id": "https://sponsmedia.com/#bart",
+                                    name: "Bart Spons",
+                                    url: `https://sponsmedia.com/${params.locale}/about/`,
+                                },
+                                sameAs: [
+                                    "https://www.instagram.com/sponsmedia_/",
+                                    "https://www.linkedin.com/in/bartspons",
+                                    "https://codepen.io/LuckyBart",
+                                ],
+                                contactPoint: {
+                                    "@type": "ContactPoint",
+                                    contactType: "customer support",
+                                    email: "contact@sponsmedia.com",
+                                    availableLanguage: ["nl", "en"],
+                                },
+                            },
+                            {
+                                "@type": "WebSite",
+                                "@id": "https://sponsmedia.com/#website",
+                                url: "https://sponsmedia.com",
+                                name: "SponsMedia",
+                                inLanguage: params.locale === "nl" ? "nl-NL" : "en-US",
+                                publisher: { "@id": "https://sponsmedia.com/#organization" },
                             },
                         ],
-                    })}
-                </Script>
-
-                {/* Sitelinks Search Box */}
-                <Script id="sitelinks-schema" type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "WebSite",
-                        url: "https://sponsmedia.com",
-                        potentialAction: {
-                            "@type": "SearchAction",
-                            target: "https://sponsmedia.com/en/search?q={search_term_string}",
-                            "query-input": "required name=search_term_string",
-                        },
-                    })}
-                </Script>
+                    }}
+                />
 
                 <main id="content" className="pt-16 md:pt-20">
                     {children}

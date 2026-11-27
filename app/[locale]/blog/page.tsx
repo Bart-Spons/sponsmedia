@@ -1,5 +1,6 @@
 // app/[locale]/blog/page.tsx
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
+import { ogImage } from "@/lib/og";
 import type { Metadata } from "next";
 import InteractiveBlogGrid from "@/components/InteractiveBlogGrid";
 import PageHeader from "@/components/PageHeader";
@@ -30,6 +31,7 @@ export async function generateMetadata({
         title,
         description,
         openGraph: {
+            images: [ogImage(locale)],
             title,
             description,
             type: "website",
@@ -76,9 +78,7 @@ export default async function BlogIndex({
 
     return (
         <Choreography>
-            <Script id="blog-schema" type="application/ld+json">
-                {JSON.stringify(blogSchema)}
-            </Script>
+            <JsonLd data={blogSchema} />
 
             <PageHeader
                 title="Blog"
