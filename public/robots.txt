@@ -7,6 +7,7 @@ Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+Disallow: /bottledstories/
 
 # AI assistants and AI search, explicitly allowed
 User-agent: GPTBot

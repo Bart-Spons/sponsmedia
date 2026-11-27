@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Bottled Stories – Beheer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eadfca;--panel:#fbf2e4;--panel-2:#f3e8d4;--line:#d2c3a6;--text:#5e4636;--head:#3a2416;--orange:#8f3a16;--cream:#fbf2e4;--ok:#2f6b3a;--warn:#9a5a12;--bad:#a3282f;--r:4px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 'Work Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Young Serif',Georgia,serif;font-weight:400;color:var(--head);margin:0 0 .5em;line-height:1.2}
+p{margin:0 0 1em} a{color:var(--orange)} button{font:inherit;cursor:pointer} img{max-width:100%;display:block}
+.view{display:none}.view.on{display:block}
+.btn{display:inline-block;background:transparent;border:2px solid var(--head);color:var(--head);padding:8px 18px;font-weight:600;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.btn.fill{background:var(--orange);border-color:var(--orange);color:#fbf2e4}
+.btn.small{padding:6px 12px;font-size:13px}
+label{display:block;margin-bottom:14px;font-size:14px}
+input,select,textarea{font:inherit;width:100%;margin-top:6px;padding:10px 12px;background:#fff;border:2px solid var(--head);color:var(--head)}
+.adminbar{background:var(--head);position:sticky;top:0;z-index:20}
+.adminbar .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:12px 16px;flex-wrap:wrap}
+.adminbar .ttl{color:#f3e8d4;font-family:'Young Serif',serif;font-size:20px;margin-right:auto}
+.adminbar .ttl small{color:#e8a37f;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-left:8px}
+.adminbar .btn{border-color:#f3e8d4;color:#f3e8d4}
+.atabs{display:flex;gap:4px;background:rgba(255,255,255,.08);padding:3px}
+.atabs a{color:#f3e8d4;text-decoration:none;padding:6px 14px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.atabs a.on{background:#fbf2e4;color:var(--head)}
+.admin{max-width:1100px;margin:0 auto;padding:0 16px 60px}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:28px 0 14px}
+.kicker{text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--orange);font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--panel);border:2px solid var(--head);padding:12px 14px}
+.kpi b{display:block;font-family:'Young Serif',serif;font-weight:400;font-size:24px;color:var(--head)}
+.kpi span{font-size:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.toolbar input,.toolbar select{margin:0}.toolbar input{flex:1;min-width:160px}.toolbar select{width:auto}
+.tablewrap{overflow-x:auto;border:2px solid var(--head)}
+table.data{width:100%;border-collapse:collapse;background:var(--panel)}
+table.data th,table.data td{text-align:left;padding:10px 12px;border-bottom:1px dashed var(--line);font-size:14px;vertical-align:middle}
+table.data th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:var(--panel-2);color:var(--head)}
+table.data b{color:var(--head)}
+tr.click{cursor:pointer} tr.click:hover td{background:#f6ead2}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;white-space:nowrap;border:1px solid currentColor}
+.p-ok{color:var(--ok)}.p-warn{color:var(--warn)}.p-bad{color:var(--bad)}.p-info{color:#3b4f8a}.p-mute{color:#7d6a5a}
+.card{background:var(--panel);border:2px solid var(--head);padding:18px}
+.sub{font-size:13px;color:#7d6a5a}
+.hr{height:0;border-top:1px dashed var(--head);margin:16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:#fff;border:1px solid var(--head);padding:2px 10px;font-size:13px;color:var(--head)}
+.taxgrid{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
+.bar{display:flex;height:14px;overflow:hidden;margin:10px 0 6px;background:var(--line);border:1px solid var(--head)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.rubriek{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.rubriek b{color:var(--head);font-variant-numeric:tabular-nums}
+.toggle{display:flex;gap:8px;align-items:center;font-size:14px;margin-bottom:8px}
+.toggle input,.chk input{width:auto;margin:0}
+.err{color:var(--bad);font-size:14px;min-height:20px}
+.login{max-width:400px;margin:70px auto;text-align:center;outline:1px solid var(--head);outline-offset:6px}
+.overlay{position:fixed;inset:0;background:rgba(40,24,14,.6);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:720px;max-height:92vh;overflow:auto;padding:22px 20px 28px;border:2px solid var(--head)}
+@media(min-width:760px){.overlay{align-items:center}}
+.sheet .x{float:right;background:none;border:0;font-size:26px;color:var(--head);line-height:1}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--head);color:#fbf2e4;padding:10px 18px;font-size:14px;font-weight:600;z-index:80;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+@media(max-width:760px){.taxgrid,.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.hide-m{display:none}}
+</style>
+</head>
+<body>
+<div id="admin" >
+  <div class="adminbar"><div class="wrap">
+    <div class="ttl">Bottled Stories <small>Beheer</small></div>
+    <nav class="atabs" id="atabs">
+      <a href="#dossier" data-v="dossier">Klantendossier</a>
+      <a href="#belasting" data-v="belasting">Belastingen</a>
+    </nav>
+    <a class="btn small" href="../">Naar website</a>
+    <button class="btn small" id="logoutBtn" onclick="logout()">Uitloggen</button>
+  </div></div>
+
+  <div class="admin">
+    <!-- LOGIN -->
+    <div class="view" id="v-beheer">
+      <div class="card login">
+        <img src="../img/logo.jpg" alt="Bottled Stories" style="margin:0 auto 16px;max-width:260px">
+        <h2>Inloggen beheer</h2>
+        <p class="sub">Alleen voor de eigenaar van Bottled Stories.</p>
+        <form onsubmit="return login(event)">
+          <input id="pin" type="password" inputmode="numeric" placeholder="Pincode" autocomplete="off">
+          <div class="err" id="pinErr"></div>
+          <button class="btn fill" style="width:100%">Inloggen</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- DOSSIER -->
+    <div class="view" id="v-dossier">
+      <div class="pagehead">
+        <div><div class="kicker">Stap 2</div><h2 style="margin:0">Klantendossier</h2></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn small fill" onclick="runIncasso()">Incassorun <span id="curMonthLbl"></span></button>
+          <button class="btn small" onclick="resetDemo()">Demo resetten</button>
+        </div>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="toolbar">
+        <input id="q" placeholder="Zoek op naam of e-mail…" oninput="renderDossier()">
+        <select id="fPlan" onchange="renderDossier()"><option value="">Alle abonnementen</option></select>
+        <select id="fStatus" onchange="renderDossier()">
+          <option value="">Alle statussen</option><option value="ok">Betaald</option>
+          <option value="storno">Storno / 2e incasso</option><option value="open">Openstaand</option>
+        </select>
+      </div>
+      <div class="tablewrap"><table class="data">
+        <thead><tr><th>Klant</th><th>Abonnement</th><th class="hide-m">Klant sinds</th><th>Laatste betaling</th></tr></thead>
+        <tbody id="custRows"></tbody>
+      </table></div>
+      <p class="sub" style="margin-top:10px">Tik op een klant voor gegevens, betalingen (incasso + 2e incasso) en ontvangen merken.</p>
+    </div>
+
+    <!-- BELASTING -->
+    <div class="view" id="v-belasting">
+      <div class="pagehead">
+        <div><div class="kicker">Stap 3</div><h2 style="margin:0">Belastingen</h2></div>
+        <select id="period" onchange="renderTax()" style="width:auto;margin:0"></select>
+      </div>
+      <div class="taxgrid">
+        <div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="sub">Ontvangen omzet incl. btw</div>
+            <div style="font-size:32px;font-weight:800;color:var(--head)" id="taxTotal"></div>
+            <div class="bar" id="splitBar"></div>
+            <div class="legend" id="splitLegend"></div>
+          </div>
+          <div class="tablewrap"><table class="data">
+            <thead><tr><th>Abonnement</th><th class="num">Boxen</th><th class="num">Incl. btw</th><th class="num">Btw 21%</th><th class="num">Accijns</th><th class="num">Netto omzet</th></tr></thead>
+            <tbody id="taxRows"></tbody>
+          </table></div>
+          <p class="sub" style="margin-top:10px">Alleen betalingen die echt binnen zijn tellen mee (incl. geslaagde 2e incasso's).</p>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:14px">
+            <h3>Btw-aangifte</h3>
+            <div class="rubriek"><span>1a · Omzet hoog tarief</span><b id="r1a"></b></div>
+            <div class="rubriek"><span>1a · Btw hoog tarief</span><b id="r1aBtw"></b></div>
+            <div class="rubriek"><span>5b · Voorbelasting</span><span class="sub">uit boekhouding</span></div>
+          </div>
+          <div class="card" style="margin-bottom:14px">
+            <h3>Accijns</h3>
+            <label class="toggle"><input type="checkbox" id="accInkoop" checked onchange="renderTax()"> Accijns zit al in inkoopprijs</label>
+            <div class="rubriek"><span>Accijns in verkochte boxen</span><b id="accTot"></b></div>
+            <div class="rubriek"><span>Zelf af te dragen</span><b id="accAf"></b></div>
+            <p class="sub" id="accNote" style="margin:8px 0 0"></p>
+          </div>
+          <div class="card">
+            <h3>Tarieven &amp; inhoud</h3>
+            <p class="sub">Indicatief 2026. Laten checken door de boekhouder.</p>
+            <label>Bier – € per hl per %vol<input type="number" step="0.01" id="rBier" onchange="setRates()"></label>
+            <label>Wijn &gt; 8,5% – € per hl<input type="number" step="0.01" id="rWijn" onchange="setRates()"></label>
+            <p class="sub" id="inhoudNote"></p>
+            <button class="btn small fill" onclick="copyCsv()">Kopieer als CSV voor boekhouder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="overlay" id="ov" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ---------- config ---------- */
+const VAT = 0.21;
+const DEFAULT_RATES = { bier: 9.83, wijn: 115.73, wijnLaag: 57.99 };
+const PLANS = {
+  wijn: { naam:'Mystery Wine', prijs:23.99, inhoud:'Elke maand een unieke ambachtelijke wijn',
+          tekst:'Ideaal voor de nieuwsgierige beginner die maandelijks nieuwe smaken wil ontdekken. Elk pakket bevat een zorgvuldig geselecteerde wijn met een verhaal.',
+          items:[{type:'wijn',n:1,l:0.75,abv:13}], aanname:'1 fles wijn 75 cl, 13%' },
+  bier: { naam:'Bierontdekker', prijs:16.99, inhoud:'Elke maand verrassende bieren met diepgaande verhalen',
+          tekst:'Ideaal voor de nieuwsgierige bierliefhebber die maandelijks nieuwe smaken wil ontdekken. Elk pakket bevat zorgvuldig geselecteerd speciaalbier met een verhaal.',
+          items:[{type:'bier',n:3,l:0.33,abv:6.5}], aanname:'3 bieren 33 cl, gem. 6,5%' }
+};
+const BIER_MERKEN = ["Brouwerij De Hoop – Saison","Brouwerij 't IJ – Columbus","Jopen – Hoppenbier","Oersoep – Nieuwe Tijden","Uiltje – Bird of Prey","Kees – Caramel Fudge Stout","De Molen – Op & Top","Two Chefs – Green Bullet","Walhalla – Loki"];
+const WIJN_MERKEN = ["Château La Bastide – Côtes du Rhône","Wijnhuis Limburg – Solaris","Domaine Hauvette – Jaspe","Weingut Dönnhoff – Riesling","Cascina Fontana – Dolcetto","Quinta do Crasto – Flor de Crasto","Bodega Raúl Pérez – Ultreia"];
+const CUR = '2026-11';
+const MONTHS = ['2026-07','2026-08','2026-09','2026-10','2026-11'];
+const MLBL = m => new Date(m+'-01').toLocaleDateString('nl-NL',{month:'long',year:'numeric'});
+const MSHORT = m => new Date(m+'-01').toLocaleDateString('nl-NL',{month:'short'});
+const eur = v => new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'}).format(v||0);
+const ADMIN_VIEWS = ['dossier','belasting'];
+const PUBLIC_VIEWS = ['home','abonnementen','over','hoe-het-werkt','contact'];
+
+/* ---------- state ---------- */
+let S, AUTH = false;
+try{ AUTH = sessionStorage.getItem('bs_auth')==='1'; }catch(e){}
+function store(){ try{ localStorage.setItem('bs_demo2', JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r = localStorage.getItem('bs_demo2'); if(r) return JSON.parse(r);}catch(e){} return null; }
+function rng(seed){ return () => (seed = (seed*9301+49297)%233280)/233280; }
+function seed(){
+  const r = rng(42);
+  const names = [["Sanne de Vries","Amsterdam"],["Daan Bakker","Utrecht"],["Lotte Jansen","Haarlem"],["Thijs Visser","Rotterdam"],["Eva Smit","Den Haag"],["Bram Mulder","Amersfoort"],["Noor de Boer","Leiden"],["Jesse Meijer","Zaandam"],["Fleur Bos","Delft"],["Ruben Peters","Almere"]];
+  const keys = Object.keys(PLANS);
+  const klanten = names.map(([n,city],i)=>{
+    const plan = keys[i%keys.length];
+    const start = MONTHS[Math.floor(r()*3)];
+    const betalingen = MONTHS.filter(m=>m>=start && m<CUR).map(m=>{
+      const x = r(); let st='betaald';
+      if(x>0.86) st = r()>0.4 ? 'betaald_2e' : 'oninbaar';
+      return {maand:m, bedrag:PLANS[plan].prijs, status:st};
+    });
+    return { id:'K'+(1001+i), naam:n, email:n.toLowerCase().replace(/ /g,'.').replace(/[^a-z.]/g,'')+'@mail.nl',
+      adres:'Voorbeeldstraat '+(10+i)+', '+city, iban:'NL'+(10+i)+'ABNA0'+String(417000000+i*7331).slice(0,9),
+      plan, sinds:start, geverifieerd:true, betalingen };
+  });
+  return { klanten, rates:{...DEFAULT_RATES} };
+}
+S = load() || seed();
+
+/* ---------- helpers ---------- */
+function statusPill(st){
+  return { betaald:'<span class="pill p-ok">Geïncasseerd</span>', betaald_2e:'<span class="pill p-ok">Betaald na 2e incasso</span>',
+    storno:'<span class="pill p-warn">Storno – 2e incasso nodig</span>', '2e_gepland':'<span class="pill p-info">2e incasso gepland</span>',
+    oninbaar:'<span class="pill p-bad">Openstaand</span>', gepland:'<span class="pill p-mute">Gepland</span>' }[st] || st;
+}
+const PAID = st => st==='betaald' || st==='betaald_2e';
+function merkenVoor(k, m){
+  const idx = MONTHS.indexOf(m) + parseInt(k.id.slice(1)), out=[];
+  PLANS[k.plan].items.forEach(it=>{ const pool = it.type==='bier'?BIER_MERKEN:WIJN_MERKEN; for(let j=0;j<it.n;j++) out.push(pool[(idx*3+j)%pool.length]); });
+  return [...new Set(out)];
+}
+function accijnsBox(pk){
+  return PLANS[pk].items.reduce((s,it)=>{ const hl = it.n*it.l/100;
+    return s + (it.type==='bier' ? hl*it.abv*S.rates.bier : hl*(it.abv>8.5?S.rates.wijn:S.rates.wijnLaag)); },0);
+}
+function toast(t){ const e=document.getElementById('toast'); e.textContent=t; e.classList.add('on'); clearTimeout(e._t); e._t=setTimeout(()=>e.classList.remove('on'),2400); }
+function age(dob){ const d=new Date(dob), n=new Date(); let a=n.getFullYear()-d.getFullYear(); const m=n.getMonth()-d.getMonth(); if(m<0||(m===0&&n.getDate()<d.getDate()))a--; return a; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------- routing ---------- */
+function route(){
+  let v = location.hash.slice(1);
+  if(!AUTH) v='beheer';
+  else if(!ADMIN_VIEWS.includes(v)) v='dossier';
+  if(location.hash.slice(1)!==v) history.replaceState(null,'','#'+v);
+  document.getElementById('atabs').style.display = AUTH?'flex':'none';
+  document.getElementById('logoutBtn').style.display = AUTH?'inline-block':'none';
+  document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on', e.id==='v-'+v));
+  document.querySelectorAll('.atabs a').forEach(a=>a.classList.toggle('on', a.dataset.v===v));
+  if(v==='dossier') renderDossier();
+  if(v==='belasting') renderTax();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', route);
+
+/* ---------- login (demo) ---------- */
+const PIN_HASH='03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+async function sha(t){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+async function login(ev){
+  ev.preventDefault();
+  let h=''; try{ h=await sha(document.getElementById('pin').value); }catch(e){}
+  if(h!==PIN_HASH){ document.getElementById('pinErr').textContent='Onjuiste pincode.'; return false; }
+  AUTH = true; try{ sessionStorage.setItem('bs_auth','1'); }catch(e){}
+  document.getElementById('pin').value=''; document.getElementById('pinErr').textContent='';
+  location.hash='dossier'; return false;
+}
+function logout(){ AUTH=false; try{ sessionStorage.removeItem('bs_auth'); }catch(e){} location.hash='beheer'; route(); }
+
+/* ---------- leeftijd ---------- */
+function checkGate(){
+  const v = document.getElementById('gateDob').value, err = document.getElementById('gateErr');
+  if(!v){ err.textContent='Vul je geboortedatum in.'; return; }
+  if(age(v)<18){ err.textContent='Sorry, je moet 18 jaar of ouder zijn.'; return; }
+  window._ageOk = true; try{ sessionStorage.setItem('bs_age','1'); }catch(e){}
+  document.getElementById('gate').classList.remove('on');
+}
+
+/* ---------- website ---------- */
+function planCards(){
+  return Object.entries(PLANS).map(([k,p])=>`
+    <div class="plan"><h3>${p.naam}</h3><div class="price">${eur(p.prijs)} per maand</div>
+    <p>${p.tekst}</p><button class="btn" onclick="openSignup('${k}')">Bekijk dit abonnement</button></div>`).join('');
+}
+function renderPublic(){
+  document.getElementById('plansHome').innerHTML = planCards();
+  document.getElementById('plansAbo').innerHTML = planCards();
+  document.getElementById('planTable').innerHTML = Object.values(PLANS).map(p=>`<tr><td>${p.naam}</td><td>${p.inhoud}</td><td>${eur(p.prijs)}</td></tr>`).join('');
+}
+function openSignup(plan){
+  const p = PLANS[plan];
+  sheet(`<button class="x" onclick="closeSheet()">×</button>
+    <div class="kicker">Abonnement</div><h2>${p.naam}</h2>
+    <p><b style="color:var(--head)">${eur(p.prijs)} per maand</b> · ${p.inhoud}. Maandelijks opzegbaar, betaling via automatische incasso.</p>
+    <div class="hr"></div>
+    <form onsubmit="return submitSignup(event,'${plan}')">
+      <div class="grid2"><label>Naam<input name="naam" required></label><label>E-mail<input name="email" type="email" required></label></div>
+      <label>Bezorgadres<input name="adres" required placeholder="Straat + nr, plaats"></label>
+      <div class="grid2"><label>Geboortedatum<input name="dob" type="date" required></label><label>IBAN<input name="iban" required placeholder="NL00BANK0123456789"></label></div>
+      <label class="chk"><input type="checkbox" required> Ik geef Bottled Stories toestemming om maandelijks ${eur(p.prijs)} via SEPA-incasso af te schrijven.</label>
+      <label class="chk"><input type="checkbox" required> Ik begrijp dat de bezorger mijn legitimatie controleert (18+).</label>
+      <div class="err" id="sErr"></div>
+      <button class="btn solid" style="width:100%">Abonnement starten</button>
+    </form>`);
+}
+function submitSignup(ev, plan){
+  ev.preventDefault();
+  const f = new FormData(ev.target), err = document.getElementById('sErr');
+  const iban = f.get('iban').replace(/\s/g,'').toUpperCase();
+  if(age(f.get('dob'))<18){ err.textContent='Leeftijdsverificatie mislukt: je moet 18+ zijn.'; return false; }
+  if(!/^NL\d{2}[A-Z]{4}\d{10}$/.test(iban)){ err.textContent='Controleer je IBAN (formaat NL00BANK0123456789).'; return false; }
+  S.klanten.unshift({ id:'K'+(1001+S.klanten.length), naam:f.get('naam'), email:f.get('email'), adres:f.get('adres'), iban, plan, sinds:CUR, geverifieerd:true,
+    betalingen:[{maand:CUR, bedrag:PLANS[plan].prijs, status:'gepland'}] });
+  store();
+  sheet(`<button class="x" onclick="closeSheet()">×</button>
+    <h2>Welkom bij Bottled Stories 🍷</h2>
+    <p>Je eerste ${PLANS[plan].naam}-pakket komt eraan. De eerste incasso staat gepland voor ${MLBL(CUR)}. Je ontvangt een bevestiging per e-mail.</p>
+    <button class="btn solid" onclick="closeSheet()">Sluiten</button>`);
+  return false;
+}
+
+/* ---------- dossier ---------- */
+const lastPay = k => k.betalingen[k.betalingen.length-1];
+function renderDossier(){
+  document.getElementById('curMonthLbl').textContent = MSHORT(CUR);
+  const fp = document.getElementById('fPlan');
+  if(fp.options.length===1) Object.entries(PLANS).forEach(([k,p])=>fp.add(new Option(p.naam,k)));
+  const q = document.getElementById('q').value.toLowerCase(), plan = fp.value, fs = document.getElementById('fStatus').value;
+  const list = S.klanten.filter(k=>{
+    if(q && !(k.naam.toLowerCase().includes(q)||k.email.toLowerCase().includes(q))) return false;
+    if(plan && k.plan!==plan) return false;
+    const st = lastPay(k)?.status;
+    if(fs==='ok' && !PAID(st)) return false;
+    if(fs==='storno' && !['storno','2e_gepland'].includes(st)) return false;
+    if(fs==='open' && st!=='oninbaar') return false;
+    return true;
+  });
+  document.getElementById('custRows').innerHTML = list.map(k=>{ const lp = lastPay(k);
+    return `<tr class="click" onclick="openKlant('${k.id}')"><td><b>${esc(k.naam)}</b><div class="sub">${k.id} · ${esc(k.email)}</div></td>
+      <td>${PLANS[k.plan].naam}<div class="sub">${eur(PLANS[k.plan].prijs)}/mnd</div></td><td class="hide-m">${MLBL(k.sinds)}</td>
+      <td>${lp?statusPill(lp.status)+`<div class="sub">${MSHORT(lp.maand)}</div>`:'–'}</td></tr>`; }).join('')
+    || '<tr><td colspan="4" class="sub">Geen klanten gevonden.</td></tr>';
+  const all = S.klanten.flatMap(k=>k.betalingen);
+  const mrr = S.klanten.reduce((s,k)=>s+PLANS[k.plan].prijs,0);
+  const open = all.filter(b=>['storno','2e_gepland','oninbaar'].includes(b.status)).reduce((s,b)=>s+b.bedrag,0);
+  const st = all.filter(b=>['storno','2e_gepland'].includes(b.status)).length;
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><b>${S.klanten.length}</b><span>Actieve abonnees</span></div>
+    <div class="kpi"><b>${eur(mrr)}</b><span>Omzet per maand (incl. btw)</span></div>
+    <div class="kpi"><b>${st}</b><span>Wacht op 2e incasso</span></div>
+    <div class="kpi"><b>${eur(open)}</b><span>Openstaand bedrag</span></div>`;
+}
+function openKlant(id){
+  const k = S.klanten.find(x=>x.id===id); if(!k) return;
+  const ontvangen = k.betalingen.filter(b=>PAID(b.status));
+  sheet(`<button class="x" onclick="closeSheet()">×</button>
+    <div class="kicker">${k.id}</div><h2>${esc(k.naam)}</h2>
+    <div class="grid2">
+      <div class="card"><div class="sub">Gegevens</div>${esc(k.email)}<br>${esc(k.adres)}<br><span class="sub">IBAN</span> ${k.iban.replace(/(.{4})/g,'$1 ')}<br>
+        ${k.geverifieerd?'<span class="pill p-ok" style="margin-top:6px">18+ geverifieerd</span>':''}</div>
+      <div class="card"><div class="sub">Abonnement</div><b style="color:var(--head)">${PLANS[k.plan].naam}</b> · ${eur(PLANS[k.plan].prijs)}/mnd<br>Klant sinds ${MLBL(k.sinds)}
+        <select onchange="changePlan('${k.id}',this.value)">${Object.entries(PLANS).map(([pk,p])=>`<option value="${pk}" ${pk===k.plan?'selected':''}>Wijzig naar: ${p.naam}</option>`).join('')}</select></div>
+    </div>
+    <div class="hr"></div><h3>Betalingen</h3>
+    <div class="tablewrap"><table class="data"><thead><tr><th>Maand</th><th class="num">Bedrag</th><th>Status</th><th></th></tr></thead><tbody>
+    ${[...k.betalingen].reverse().map(b=>{ const i = k.betalingen.indexOf(b); let act='';
+      if(b.status==='storno') act=`<button class="btn small" onclick="tweede('${k.id}',${i})">Plan 2e incasso</button>`;
+      if(b.status==='2e_gepland') act=`<button class="btn small fill" onclick="voerTweedeUit('${k.id}',${i})">Uitvoeren</button>`;
+      if(b.status==='oninbaar') act=`<button class="btn small" onclick="markPaid('${k.id}',${i})">Handmatig betaald</button>`;
+      return `<tr><td>${MLBL(b.maand)}</td><td class="num">${eur(b.bedrag)}</td><td>${statusPill(b.status)}</td><td>${act}</td></tr>`; }).join('')}
+    </tbody></table></div>
+    <div class="hr"></div><h3>Ontvangen merken</h3>
+    ${ontvangen.length? ontvangen.slice().reverse().map(b=>`<div style="margin-bottom:10px"><div class="sub">${MLBL(b.maand)}</div><div class="chips">${merkenVoor(k,b.maand).map(m=>`<span class="chip">${m}</span>`).join('')}</div></div>`).join('') : '<p class="sub">Nog geen pakketten ontvangen.</p>'}`);
+}
+function upd(id,msg){ store(); openKlant(id); renderDossier(); toast(msg); }
+function changePlan(id,plan){ const k=S.klanten.find(x=>x.id===id); k.plan=plan; k.betalingen.forEach(b=>{ if(b.status==='gepland') b.bedrag=PLANS[plan].prijs; }); upd(id,'Abonnement gewijzigd'); }
+function tweede(id,i){ S.klanten.find(x=>x.id===id).betalingen[i].status='2e_gepland'; upd(id,'2e incasso ingepland'); }
+function voerTweedeUit(id,i){ const ok=Math.random()>0.3; S.klanten.find(x=>x.id===id).betalingen[i].status = ok?'betaald_2e':'oninbaar'; upd(id, ok?'2e incasso geslaagd ✓':'2e incasso mislukt – openstaand'); }
+function markPaid(id,i){ S.klanten.find(x=>x.id===id).betalingen[i].status='betaald_2e'; upd(id,'Gemarkeerd als betaald'); }
+function runIncasso(){
+  let n=0,f=0;
+  S.klanten.forEach(k=>{ let b=k.betalingen.find(x=>x.maand===CUR);
+    if(!b){ b={maand:CUR,bedrag:PLANS[k.plan].prijs,status:'gepland'}; k.betalingen.push(b); }
+    if(b.status==='gepland'){ n++; if(Math.random()<0.15){ b.status='storno'; f++; } else b.status='betaald'; } });
+  store(); renderDossier(); toast(n? `${n} incasso's uitgevoerd · ${f} storno` : `Incassorun ${MSHORT(CUR)} is al gedaan`);
+}
+function resetDemo(){ try{ localStorage.removeItem('bs_demo2'); }catch(e){} S=seed(); renderDossier(); toast('Demo-data teruggezet'); }
+
+/* ---------- belasting ---------- */
+function setRates(){ const b=+document.getElementById('rBier').value, w=+document.getElementById('rWijn').value; if(b>0) S.rates.bier=b; if(w>0) S.rates.wijn=w; store(); renderTax(); }
+function inPeriod(m,p){ if(p.includes('Q')){ const [y,q]=p.split('-Q'); return m.startsWith(y) && Math.ceil(+m.slice(5)/3)===+q; } return m===p; }
+function calcTax(){
+  const p = document.getElementById('period').value, rows={};
+  Object.keys(PLANS).forEach(k=>rows[k]={n:0,incl:0});
+  S.klanten.forEach(k=>k.betalingen.forEach(b=>{ if(PAID(b.status) && inPeriod(b.maand,p) && rows[k.plan]){ rows[k.plan].n++; rows[k.plan].incl+=b.bedrag; } }));
+  const out = Object.entries(rows).map(([k,r])=>{ const excl=r.incl/(1+VAT), btw=r.incl-excl, acc=r.n*accijnsBox(k); return {k,n:r.n,incl:r.incl,excl,btw,acc,netto:excl-acc}; });
+  const T = out.reduce((t,r)=>{ ['n','incl','excl','btw','acc','netto'].forEach(x=>t[x]+=r[x]); return t; },{n:0,incl:0,excl:0,btw:0,acc:0,netto:0});
+  return {out,T,p};
+}
+function renderTax(){
+  const sel = document.getElementById('period');
+  if(!sel.options.length) [['2026-Q4','Q4 2026 (t/m nu)'],['2026-Q3','Q3 2026'],...MONTHS.slice().reverse().map(m=>[m,MLBL(m)])].forEach(([v,l])=>sel.add(new Option(l,v)));
+  document.getElementById('rBier').value=S.rates.bier; document.getElementById('rWijn').value=S.rates.wijn;
+  document.getElementById('inhoudNote').textContent = 'Aanname inhoud: ' + Object.values(PLANS).map(p=>p.naam+' = '+p.aanname).join(' · ');
+  const {out,T} = calcTax();
+  document.getElementById('taxRows').innerHTML = out.map(r=>`<tr><td>${PLANS[r.k].naam}<div class="sub">${eur(accijnsBox(r.k))} accijns/pakket</div></td>
+    <td class="num">${r.n}</td><td class="num">${eur(r.incl)}</td><td class="num">${eur(r.btw)}</td><td class="num">${eur(r.acc)}</td><td class="num"><b>${eur(r.netto)}</b></td></tr>`).join('')
+    + `<tr><td><b>Totaal</b></td><td class="num"><b>${T.n}</b></td><td class="num"><b>${eur(T.incl)}</b></td><td class="num"><b>${eur(T.btw)}</b></td><td class="num"><b>${eur(T.acc)}</b></td><td class="num"><b>${eur(T.netto)}</b></td></tr>`;
+  document.getElementById('taxTotal').textContent = eur(T.incl);
+  const pc = v => T.incl ? v/T.incl*100 : 0;
+  document.getElementById('splitBar').innerHTML = `<div style="width:${pc(T.netto)}%;background:var(--orange)"></div><div style="width:${pc(T.btw)}%;background:#c9a46a"></div><div style="width:${pc(T.acc)}%;background:#3a2416"></div>`;
+  document.getElementById('splitLegend').innerHTML = `<span><i style="background:var(--orange)"></i>Netto omzet ${eur(T.netto)}</span><span><i style="background:#c9a46a"></i>Btw ${eur(T.btw)}</span><span><i style="background:#3a2416"></i>Accijns ${eur(T.acc)}</span>`;
+  document.getElementById('r1a').textContent = eur(T.excl);
+  document.getElementById('r1aBtw').textContent = eur(T.btw);
+  const inkoop = document.getElementById('accInkoop').checked;
+  document.getElementById('accTot').textContent = eur(T.acc);
+  document.getElementById('accAf').textContent = inkoop ? eur(0) : eur(T.acc);
+  document.getElementById('accNote').textContent = inkoop
+    ? 'Ingekocht bij een Nederlandse groothandel of brouwerij: de accijns is al via de inkoopprijs betaald. Dit bedrag is alleen ter informatie.'
+    : 'Zelf ingevoerd (bijv. wijn rechtstreeks uit het buitenland): dit bedrag geef je zelf aan bij de Belastingdienst.';
+}
+function copyCsv(){
+  const {out,T,p} = calcTax(), f = v => v.toFixed(2).replace('.',',');
+  const lines = ['periode;abonnement;pakketten;incl_btw;excl_btw;btw;accijns;netto'];
+  out.forEach(r=>lines.push([p,PLANS[r.k].naam,r.n,f(r.incl),f(r.excl),f(r.btw),f(r.acc),f(r.netto)].join(';')));
+  lines.push([p,'TOTAAL',T.n,f(T.incl),f(T.excl),f(T.btw),f(T.acc),f(T.netto)].join(';'));
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>toast('CSV gekopieerd')).catch(()=>toast('Kopiëren niet toegestaan in deze weergave'));
+}
+
+/* ---------- sheet ---------- */
+function sheet(h){ document.getElementById('sheet').innerHTML=h; document.getElementById('ov').classList.add('on'); }
+function closeSheet(){ document.getElementById('ov').classList.remove('on'); }
+
+route();
+</script>
+</body>
+</html>

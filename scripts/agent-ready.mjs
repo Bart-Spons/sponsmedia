@@ -138,6 +138,7 @@ for (const file of await walk(OUT)) {
     let html = await fs.readFile(file, "utf8");
     const info = pageInfo(html, rel);
     if (rel === "index.html") continue; // the bare domain, handled below
+    if (/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) continue; // pages kept out of search (e.g. /bottledstories/)
 
     let body = htmlToMarkdown(info.main, SITE + info.urlPath);
     if (!/^# /m.test(body) && info.title) body = `# ${info.title}\n\n${body}`;
