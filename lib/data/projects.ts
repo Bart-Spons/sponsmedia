@@ -8,6 +8,7 @@ export interface Project {
     image: string;
     video?: string; // Optional field for video content
     videoMuted?: boolean; // Always mute the video
+    portrait?: boolean; // Vertical (9:16) video: shown whole on a blurred backdrop
     technologies: string[];
     category: string;
     categoryNl?: string;
@@ -18,7 +19,10 @@ export interface Project {
     // Extended fields for detailed project pages
     client?: string;
     clientNl?: string;
+    /** White (or single-colour light) logo for the dark site; falls back to the client name. */
+    clientLogo?: { src: string; width: number; height: number };
     duration?: string;
+    durationNl?: string;
     team?: string[];
     challenge?: string;
     challengeNl?: string;
@@ -37,6 +41,43 @@ export interface Project {
 }
 
 export const projectsData: Project[] = [
+    {
+        id: "g-adventures",
+        title: "G Adventures",
+        description: "A travel notebook from South America, written by the people we met along the way.",
+        image: "/images/projects/g-adventures/poster.webp",
+        video: "/video/g-adventures.mp4",
+        portrait: true,
+        technologies: ["Concept", "Filming", "Editing", "Short-form video"],
+        category: "Video Production",
+        featured: true,
+        completedDate: "2026-09",
+        client: "G Adventures",
+        duration: "17 days",
+        challenge:
+            "G Adventures wanted to show their Buenos Aires to Rio de Janeiro trip, through Argentina, Uruguay and Brazil, to a young audience. Not as another highlights reel of landmarks, but in a way that feels personal.",
+        solution:
+            "I turned the trip into a video notebook. Along the way I asked the people we met to write one piece of life advice in my notebook: a shopkeeper behind her counter, a girl in a Brazil shirt, kids on a football pitch. Every page became a scene, edited into a 40-second vertical video.",
+        results: [
+            "Published on the Instagram of G Adventures 18-to-Thirtysomethings",
+            "Shared by Oak Travel",
+            "A format that puts people, not places, at the centre of the trip",
+        ],
+        titleNl: "G Adventures",
+        descriptionNl: "Een reisnotitieboek uit Zuid-Amerika, geschreven door de mensen die we onderweg ontmoetten.",
+        categoryNl: "Videoproductie",
+        clientNl: "G Adventures",
+        durationNl: "17 dagen",
+        challengeNl:
+            "G Adventures wilde hun reis van Buenos Aires naar Rio de Janeiro, door Argentinië, Uruguay en Brazilië, laten zien aan een jong publiek. Niet als zoveelste highlightvideo van bezienswaardigheden, maar op een manier die persoonlijk voelt.",
+        solutionNl:
+            "Ik maakte van de reis een video-notitieboek. Onderweg vroeg ik de mensen die we ontmoetten om één levensles in mijn boekje te schrijven: een verkoopster achter haar toonbank, een meisje in een Braziliëshirt, kinderen op een voetbalveldje. Elke pagina werd een scène, gemonteerd tot een verticale video van 40 seconden.",
+        resultsNl: [
+            "Gepubliceerd op de Instagram van G Adventures 18-to-Thirtysomethings",
+            "Gedeeld door Oak Travel",
+            "Een format waarin mensen centraal staan, niet plekken",
+        ],
+    },
     {
         id: "capgemini",
         title: "Capgemini",

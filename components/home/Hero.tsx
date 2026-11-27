@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Img from "@/components/Img";
 import { Fragment, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -37,7 +38,7 @@ export default function Hero({
 }: {
     locale: "en" | "nl";
     copy: HeroCopy;
-    clients: { id: string; name: string }[];
+    clients: { id: string; name: string; logo?: { src: string; width: number; height: number } }[];
 }) {
     const root = useRef<HTMLElement>(null);
     const content = useRef<HTMLDivElement>(null);
@@ -280,16 +281,30 @@ export default function Hero({
 
                 <div
                     data-hero-after
-                    className="rule mt-14 flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm text-haze md:mt-20"
+                    className="rule mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 pt-5 text-sm text-haze md:mt-20"
                 >
                     <span>{copy.recentFor}</span>
                     {clients.map((c) => (
                         <Link
                             key={c.id}
                             href={`/${locale}/projects/${c.id}`}
-                            className="text-frost underline-offset-4 hover:underline"
+                            className={
+                                c.logo
+                                    ? "opacity-70 transition-opacity hover:opacity-100"
+                                    : "text-frost underline-offset-4 hover:underline"
+                            }
                         >
-                            {c.name}
+                            {c.logo ? (
+                                <Img
+                                    src={c.logo.src}
+                                    alt={c.name}
+                                    width={c.logo.width}
+                                    height={c.logo.height}
+                                    className="h-5 w-auto md:h-6"
+                                />
+                            ) : (
+                                c.name
+                            )}
                         </Link>
                     ))}
                 </div>

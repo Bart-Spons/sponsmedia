@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Img from "@/components/Img";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
@@ -64,7 +65,7 @@ export default async function Project({
 
     const meta = [
         project.client && { label: t("client"), value: pick(project.client, project.clientNl) },
-        project.duration && { label: t("duration"), value: project.duration },
+        project.duration && { label: t("duration"), value: pick(project.duration, project.durationNl) },
         { label: t("year"), value: project.completedDate.slice(0, 4) },
         project.team?.length && { label: t("team"), value: project.team.join(", ") },
     ].filter(Boolean) as { label: string; value: string }[];
@@ -118,7 +119,19 @@ export default async function Project({
                             <div key={m.label} className="relative pt-5">
                                 <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
                                 <dt className="text-sm text-haze">{m.label}</dt>
-                                <dd className="mt-2 text-lg">{m.value}</dd>
+                                <dd className="mt-2 text-lg">
+                                    {m.label === t("client") && project.clientLogo ? (
+                                        <Img
+                                            src={project.clientLogo.src}
+                                            alt={m.value}
+                                            width={project.clientLogo.width}
+                                            height={project.clientLogo.height}
+                                            className="mt-1 h-7 w-auto"
+                                        />
+                                    ) : (
+                                        m.value
+                                    )}
+                                </dd>
                             </div>
                         ))}
                     </dl>
@@ -127,10 +140,17 @@ export default async function Project({
                 {/* Key visual: opens up to full width as you scroll */}
                 <div
                     data-case-media
-                    className="relative mt-20 aspect-[4/3] w-full overflow-hidden bg-deep md:mt-28 md:aspect-video md:max-h-[100svh]"
+                    className={`relative mt-20 w-full overflow-hidden bg-deep md:mt-28 md:aspect-video md:max-h-[100svh] ${project.portrait ? "aspect-[4/5]" : "aspect-[4/3]"}`}
                 >
                     <div data-case-media-inner className="absolute inset-0">
-                        <ReelMedia item={project} priority sizes="100vw" />
+                        <ReelMedia item={project} priority sizes="100vw" sound={
+                                project.portrait
+                                    ? nl
+                                        ? { on: "Geluid aan", off: "Geluid uit" }
+                                        : { on: "Sound on", off: "Sound off" }
+                                    : undefined
+                            }
+                        />
                     </div>
                 </div>
 
