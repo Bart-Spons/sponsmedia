@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import { blogData } from "@/lib/data/blog";
 import Choreography from "@/components/motion/Choreography";
@@ -174,12 +174,8 @@ export default async function BlogPost({
     return (
         <Choreography>
             <ReadingProgress />
-            <Script id="article-schema" type="application/ld+json">
-                {JSON.stringify(articleSchema)}
-            </Script>
-            <Script id="breadcrumbs-schema" type="application/ld+json">
-                {JSON.stringify(breadcrumbSchema)}
-            </Script>
+            <JsonLd data={articleSchema} />
+            <JsonLd data={breadcrumbSchema} />
 
             <article>
                 <header className="container pt-10 md:pt-16">
@@ -233,7 +229,7 @@ export default async function BlogPost({
                         >
                             <Image
                                 src={post.cover ?? post.image}
-                                alt=""
+                                alt={post.title}
                                 fill
                                 priority
                                 sizes="(min-width: 768px) 60rem, 100vw"

@@ -1,0 +1,65 @@
+# SponsMedia on Hostinger (static export from Next.js).
+# Deployed with the site: .github/workflows/deploy.yml uploads this file.
+
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+AddType text/markdown .md
+AddCharset utf-8 .md .txt .html .xml
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Always HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # www -> sponsmedia.com
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+    # Markdown for AI agents: a request with "Accept: text/markdown" gets the
+    # page's Markdown version (built next to each index.html) instead of HTML.
+    RewriteCond %{HTTP:Accept} text/markdown [NC]
+    RewriteRule ^$ /index.md [L,T=text/markdown]
+    RewriteCond %{HTTP:Accept} text/markdown [NC]
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.md -f
+    RewriteRule ^(.+?)/?$ /$1/index.md [L,T=text/markdown]
+
+    # The bare domain goes straight to the visitor's language, without JavaScript
+    RewriteCond %{HTTP:Accept} !text/markdown [NC]
+    RewriteCond %{HTTP:Accept-Language} ^nl [NC]
+    RewriteRule ^$ /nl/ [L,R=302]
+    RewriteCond %{HTTP:Accept} !text/markdown [NC]
+    RewriteRule ^$ /en/ [L,R=302]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Caches keep HTML and Markdown versions of the same address apart
+    Header merge Vary Accept
+
+    # AI usage preferences (contentsignals.org), same as robots.txt
+    Header set Content-Signal "search=yes, ai-input=yes, ai-train=yes"
+
+    # Point agents to the site index for language models
+    Header append Link "</llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+    Header append Link "</sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\""
+
+    <FilesMatch "\.md$">
+        Header set Content-Type "text/markdown; charset=utf-8"
+        Header set X-Robots-Tag "noindex"
+    </FilesMatch>
+    <FilesMatch "^llms(-full)?\.txt$">
+        Header set Content-Type "text/plain; charset=utf-8"
+    </FilesMatch>
+
+    # Long cache for build assets, which have content hashes in their names
+    <FilesMatch "\.(js|css|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/markdown text/css application/javascript application/json image/svg+xml application/xml
+</IfModule>

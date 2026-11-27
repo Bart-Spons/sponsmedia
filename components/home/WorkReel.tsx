@@ -174,7 +174,7 @@ export function ReelMedia({
         <>
             <Image
                 src={item.image}
-                alt=""
+                alt={item.title}
                 fill
                 priority={priority}
                 sizes={sizes}
