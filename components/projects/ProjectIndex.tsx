@@ -1,5 +1,6 @@
 "use client";
 
+import { fitTitle } from "@/lib/fitTitle";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -103,10 +104,11 @@ export default function ProjectIndex({
                                     {String(i + 1).padStart(2, "0")}
                                 </span>
                             </span>
-                            <span className="overflow-hidden pb-[0.08em] md:col-span-7">
+                            <span className="overflow-hidden pb-[0.08em] [container-type:inline-size] md:col-span-7">
                                 <span
                                     data-rise
-                                    className="display block text-[clamp(2.75rem,8vw,7.5rem)] transition-[color,transform] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-4 group-hover:text-primary"
+                                    style={fitTitle(p.title, "7.5rem", "100cqi - 1rem")}
+                                    className="display block whitespace-nowrap transition-[color,transform] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-4 group-hover:text-primary"
                                 >
                                     {p.title}
                                 </span>

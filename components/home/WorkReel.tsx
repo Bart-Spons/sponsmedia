@@ -1,5 +1,6 @@
 "use client";
 
+import { fitTitle } from "@/lib/fitTitle";
 import Img from "@/components/Img";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -103,12 +104,12 @@ export default function WorkReel({
 
                     <div
                         data-focus-copy
-                        className={`md:col-span-4 ${i % 2 ? "md:order-1 md:col-start-1 md:row-start-1" : ""}`}
+                        className={`[container-type:inline-size] md:col-span-4 ${i % 2 ? "md:order-1 md:col-start-1 md:row-start-1" : ""}`}
                     >
                         <p className="text-sm text-haze">
                             {p.category}, {p.year}
                         </p>
-                        <h3 className="display mt-3 text-[clamp(2.5rem,5vw,4.5rem)]">
+                        <h3 className="display mt-3 whitespace-nowrap" style={fitTitle(p.title, "4.5rem", "100cqi")}>
                             <Link
                                 href={`/${locale}/projects/${p.id}`}
                                 className="transition-colors hover:text-primary"

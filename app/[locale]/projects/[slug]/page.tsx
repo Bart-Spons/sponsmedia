@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fitTitle } from "@/lib/fitTitle";
 import Link from "next/link";
 import Img from "@/components/Img";
 import { notFound } from "next/navigation";
@@ -93,7 +94,8 @@ export default async function Project({
                         as="h1"
                         trigger="load"
                         text={title}
-                        className="display mt-4 text-[clamp(3.5rem,13vw,13rem)]"
+                        className="display mt-4 whitespace-nowrap"
+                        style={fitTitle(title, "13rem", "min(100vw - 2rem, 86rem - 5rem)")}
                     />
                     <div className="mt-10 grid gap-8 md:mt-14 md:grid-cols-12 md:items-end">
                         <p data-meta className="max-w-[44ch] text-xl leading-relaxed text-frost/80 md:col-span-7 md:text-2xl">
