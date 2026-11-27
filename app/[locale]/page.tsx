@@ -45,12 +45,12 @@ export async function generateMetadata({
             images: [ogImage(locale)],
             title,
             description,
-            url: `/${locale}`,
+            url: `/${locale}/`,
             locale: locale === "en" ? "en_US" : "nl_NL",
         },
         alternates: {
-            canonical: `/${locale}`,
-            languages: { "en-US": "/en", "nl-NL": "/nl" },
+            canonical: `/${locale}/`,
+            languages: { "en-US": "/en/", "nl-NL": "/nl/" },
         },
     };
 }

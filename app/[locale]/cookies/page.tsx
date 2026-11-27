@@ -27,10 +27,10 @@ export async function generateMetadata({
         title,
         description,
         alternates: {
-            canonical: `/${locale}/cookies`,
+            canonical: `/${locale}/cookies/`,
             languages: {
-                "en-US": "/en/cookies",
-                "nl-NL": "/nl/cookies",
+                "en-US": "/en/cookies/",
+                "nl-NL": "/nl/cookies/",
             },
         },
     };

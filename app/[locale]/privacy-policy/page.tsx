@@ -27,10 +27,10 @@ export async function generateMetadata({
         title,
         description,
         alternates: {
-            canonical: `/${locale}/privacy-policy`,
+            canonical: `/${locale}/privacy-policy/`,
             languages: {
-                "en-US": "/en/privacy-policy",
-                "nl-NL": "/nl/privacy-policy",
+                "en-US": "/en/privacy-policy/",
+                "nl-NL": "/nl/privacy-policy/",
             },
         },
     };

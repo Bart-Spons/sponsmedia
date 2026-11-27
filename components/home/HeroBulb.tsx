@@ -33,8 +33,7 @@ export default function HeroBulb({ on }: { on: boolean }) {
 
     return (
         <div
-            className="flex h-full w-full items-center justify-center"
-            style={{ background: "radial-gradient(circle at 50% 42%, #141c2e, #070b14)" }}
+            className="bg-bulb-disc flex h-full w-full items-center justify-center"
         >
             <svg ref={svg} viewBox="0 0 100 140" className="h-auto w-[52%]" aria-hidden>
                 <defs>

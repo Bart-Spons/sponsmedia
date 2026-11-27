@@ -226,3 +226,12 @@ select option {
         height: auto;
     }
 }
+
+
+/* Soft lights and glows (kept here instead of inline styles) */
+.bg-room-light { background: radial-gradient(closest-side, rgba(226, 183, 111, 0.22), rgba(226, 183, 111, 0.06) 55%, transparent); }
+.bg-cursor-light { background: radial-gradient(600px circle at var(--mx, 70%) var(--my, 45%), rgba(255, 217, 138, 0.1), transparent 60%); }
+.bg-bulb-glow { background: radial-gradient(closest-side, rgba(255, 217, 138, 0.35), rgba(226, 183, 111, 0.12) 55%, transparent); }
+.bg-bulb-disc { background: radial-gradient(circle at 50% 42%, #141c2e, #070b14); }
+.bg-cta-glow { background: radial-gradient(closest-side, rgba(226, 183, 111, 0.16), transparent); }
+.bg-card-spot { background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 30%), rgba(226, 183, 111, 0.16), transparent 60%); }

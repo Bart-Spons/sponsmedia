@@ -80,11 +80,7 @@ export default function ServiceCards({
                         {/* Spotlight that follows the cursor */}
                         <span
                             aria-hidden
-                            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            style={{
-                                background:
-                                    "radial-gradient(22rem circle at var(--mx, 50%) var(--my, 30%), rgba(226,183,111,0.16), transparent 60%)",
-                            }}
+                            className="bg-card-spot pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         />
                         {/* Big outlined number behind the content */}
                         <span

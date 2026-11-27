@@ -159,22 +159,14 @@ export default function Hero({
             <div
                 ref={light}
                 aria-hidden
-                className="pointer-events-none absolute -right-[20vw] -top-[30vh] h-[90vh] w-[70vw] rounded-full opacity-60 will-change-transform"
-                style={{
-                    background:
-                        "radial-gradient(closest-side, rgba(226,183,111,0.22), rgba(226,183,111,0.06) 55%, transparent)",
-                }}
+                className="bg-room-light pointer-events-none absolute -right-[20vw] -top-[30vh] h-[90vh] w-[70vw] rounded-full opacity-60 will-change-transform"
             />
 
             {/* A soft light that follows the mouse */}
             <div
                 data-beam
                 aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-0"
-                style={{
-                    background:
-                        "radial-gradient(600px circle at var(--mx, 70%) var(--my, 45%), rgba(255,217,138,0.10), transparent 60%)",
-                }}
+                className="bg-cursor-light pointer-events-none absolute inset-0 opacity-0"
             />
 
             <div ref={content} className="container relative origin-bottom pb-10 pt-16 md:pb-14">
@@ -238,11 +230,7 @@ export default function Hero({
                         <div data-lens-ring className="relative h-full w-full">
                             <span
                                 data-ring-glow
-                                className="absolute -inset-[45%] rounded-full opacity-0"
-                                style={{
-                                    background:
-                                        "radial-gradient(closest-side, rgba(255,217,138,0.35), rgba(226,183,111,0.12) 55%, transparent)",
-                                }}
+                                className="bg-bulb-glow absolute -inset-[45%] rounded-full opacity-0"
                             />
                             <div className="absolute inset-[9%] overflow-hidden rounded-full">
                                 <HeroBulb on={lit} />

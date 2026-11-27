@@ -35,8 +35,8 @@ export async function generateMetadata({
         description,
         openGraph: { title, description, images: [{ url: project.image }] },
         alternates: {
-            canonical: `/${locale}/projects/${slug}`,
-            languages: { "en-US": `/en/projects/${slug}`, "nl-NL": `/nl/projects/${slug}` },
+            canonical: `/${locale}/projects/${slug}/`,
+            languages: { "en-US": `/en/projects/${slug}/`, "nl-NL": `/nl/projects/${slug}/` },
         },
     };
 }
