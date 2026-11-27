@@ -147,7 +147,7 @@ export function ReelMedia({
     priority,
     sizes = "(min-width: 768px) 66vw, 100vw",
 }: {
-    item: Pick<ReelItem, "image" | "video">;
+    item: Pick<ReelItem, "image" | "video" | "title">;
     priority: boolean;
     sizes?: string;
 }) {
