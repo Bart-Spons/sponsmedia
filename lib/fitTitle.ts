@@ -5,5 +5,5 @@
  */
 export function fitTitle(title: string, max: string, available: string) {
     const ems = Math.max(title.length, 4) * 0.64;
-    return { fontSize: `min(${max}, calc(${available} / ${ems.toFixed(2)}))` };
+    return { fontSize: `min(${max}, calc((${available}) / ${ems.toFixed(2)}))` };
 }
