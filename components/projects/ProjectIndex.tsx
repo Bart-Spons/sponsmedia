@@ -133,7 +133,11 @@ export default function ProjectIndex({
             <div
                 ref={preview}
                 aria-hidden
-                className="pointer-events-none invisible fixed left-0 top-0 z-40 hidden aspect-[4/3] w-[clamp(16rem,24vw,26rem)] overflow-hidden rounded-xl bg-deep shadow-2xl md:block"
+                className={`pointer-events-none invisible fixed left-0 top-0 z-40 hidden overflow-hidden rounded-xl bg-deep shadow-2xl md:block ${
+                    items[active]?.portrait
+                        ? "aspect-[9/16] w-[clamp(11rem,15vw,16rem)]"
+                        : "aspect-[4/3] w-[clamp(16rem,24vw,26rem)]"
+                }`}
             >
                 {items.map((p, i) => (
                     <Image
