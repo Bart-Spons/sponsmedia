@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fitTitle } from "@/lib/fitTitle";
 import Link from "next/link";
 import SplitTitle from "@/components/motion/SplitTitle";
 
@@ -38,8 +39,9 @@ export default function NextCase({
                         text={title}
                         by={long ? "words" : "chars"}
                         className={`display mt-4 transition-colors duration-500 group-hover:text-primary ${
-                            long ? "max-w-[20ch] text-[clamp(2.5rem,6vw,6rem)]" : "text-[clamp(3.5rem,13vw,13rem)]"
+                            long ? "max-w-[20ch] text-[clamp(2.5rem,6vw,6rem)]" : "whitespace-nowrap"
                         }`}
+                        style={long ? undefined : fitTitle(title, "13rem", "min(100vw - 2rem, 86rem - 5rem)")}
                     />
                 </div>
             </Link>

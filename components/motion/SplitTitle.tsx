@@ -23,6 +23,7 @@ export default function SplitTitle({
     by = "chars",
     delay = 0,
     className = "",
+    style,
     id,
 }: {
     text: string;
@@ -32,6 +33,7 @@ export default function SplitTitle({
     by?: "chars" | "words";
     delay?: number;
     className?: string;
+    style?: React.CSSProperties;
     id?: string;
 }) {
     const ref = useRef<HTMLElement>(null);
@@ -79,6 +81,7 @@ export default function SplitTitle({
             ref={ref as any}
             id={id}
             className={`split-pending ${className}`}
+            style={style}
         >
             {text}
         </Tag>
