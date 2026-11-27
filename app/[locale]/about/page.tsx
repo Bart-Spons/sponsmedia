@@ -26,13 +26,12 @@ const copy = {
         whoTitle: "Who I Am",
         whoIntro: "Bart, 26-year-old Creative Developer living in Amsterdam.",
         whoP1: "I started coding as a teenager, and the moment I shipped my first project to the web, there was no going back.",
-        whoP2: "I moved from the south of the Netherlands to Amsterdam for university and recently graduated. During my degree I spent a year studying in the United States and later worked for a year in Japan at an international branding and marketing agency. That path gave me a front-row view of how digital behaviour and marketing differ across cultures.",
+        whoP2: "I moved from the south of the Netherlands to Amsterdam for university and graduated in 2025. During my degree I spent a year studying in the United States and later worked for a year in Japan at an international branding and marketing agency. That path gave me a front-row view of how digital behaviour and marketing differ across cultures.",
         whoP3: "Over the last few years I’ve noticed a pattern: many websites look great but load slowly or break on mobile. And many social accounts publish good content but still don’t grow.",
 
         linksLead: "Connect & see work:",
         socials: {
             linkedin: "LinkedIn",
-            site: "Personal Website",
             github: "GitHub",
         },
 
@@ -72,13 +71,12 @@ const copy = {
         whoTitle: "Wie ik ben",
         whoIntro: "Bart, 26 jaar, Creative Developer in Amsterdam.",
         whoP1: "Als tiener begon ik met programmeren en vanaf het moment dat ik mijn eerste project online zette, was er geen weg meer terug.",
-        whoP2: "Ik verhuisde vanuit het zuiden van Nederland naar Amsterdam voor mijn studie die ik recent heb afgerond. Tijdens mijn studie heb ik een jaar in de Verenigde Staten gestudeerd en later een jaar in Japan gewerkt bij een internationaal branding- en marketingbureau. Deze ervaringen gaven me een uniek inkijkje in hoe digitaal gedrag en marketing per cultuur verschillen.",
+        whoP2: "Ik verhuisde vanuit het zuiden van Nederland naar Amsterdam voor mijn studie, die ik in 2025 heb afgerond. Tijdens mijn studie heb ik een jaar in de Verenigde Staten gestudeerd en later een jaar in Japan gewerkt bij een internationaal branding- en marketingbureau. Deze ervaringen gaven me een uniek inkijkje in hoe digitaal gedrag en marketing per cultuur verschillen.",
         whoP3: "De afgelopen jaren viel me iets op: veel websites zien er goed uit, maar laden traag of werken slecht op mobiel. En veel social-accounts plaatsen goede content, maar groeien tóch niet.",
 
         linksLead: "Connect & bekijk werk:",
         socials: {
             linkedin: "LinkedIn",
-            site: "Persoonlijke Website",
             github: "GitHub",
         },
 
@@ -279,29 +277,6 @@ export default async function AboutPage({
                                         {t.socials.linkedin}
                                     </a>
 
-                                    <a
-                                        href="https://bartspons.com"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-primary hover:text-primary transition-colors"
-                                        aria-label={`${t.socials.site} (opens in new tab)`}
-                                    >
-                                        <svg
-                                            className="w-5 h-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            aria-hidden
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
-                                        </svg>
-                                        {t.socials.site}
-                                    </a>
 
                                     <a
                                         href="https://github.com/Bart-Spons"
