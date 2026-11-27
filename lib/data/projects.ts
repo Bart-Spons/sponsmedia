@@ -19,6 +19,8 @@ export interface Project {
     // Extended fields for detailed project pages
     client?: string;
     clientNl?: string;
+    /** White (or single-colour light) logo for the dark site; falls back to the client name. */
+    clientLogo?: { src: string; width: number; height: number };
     duration?: string;
     durationNl?: string;
     team?: string[];

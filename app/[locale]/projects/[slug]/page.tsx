@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Img from "@/components/Img";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createTranslator } from "next-intl";
@@ -118,7 +119,19 @@ export default async function Project({
                             <div key={m.label} className="relative pt-5">
                                 <span data-line aria-hidden className="absolute inset-x-0 top-0 h-px bg-line" />
                                 <dt className="text-sm text-haze">{m.label}</dt>
-                                <dd className="mt-2 text-lg">{m.value}</dd>
+                                <dd className="mt-2 text-lg">
+                                    {m.label === t("client") && project.clientLogo ? (
+                                        <Img
+                                            src={project.clientLogo.src}
+                                            alt={m.value}
+                                            width={project.clientLogo.width}
+                                            height={project.clientLogo.height}
+                                            className="mt-1 h-7 w-auto"
+                                        />
+                                    ) : (
+                                        m.value
+                                    )}
+                                </dd>
                             </div>
                         ))}
                     </dl>
