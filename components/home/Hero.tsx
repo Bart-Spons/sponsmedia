@@ -300,7 +300,7 @@ export default function Hero({
                                     alt={c.name}
                                     width={c.logo.width}
                                     height={c.logo.height}
-                                    className="h-5 w-auto md:h-6"
+                                    className={c.logo.width / c.logo.height < 2 ? "h-10 w-auto md:h-12" : "h-6 w-auto md:h-7"}
                                 />
                             ) : (
                                 c.name

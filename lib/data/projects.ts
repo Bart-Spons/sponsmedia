@@ -53,6 +53,7 @@ export const projectsData: Project[] = [
         featured: true,
         completedDate: "2026-09",
         client: "G Adventures",
+        clientLogo: { src: "/images/clients/g-adventures.png", width: 598, height: 408 },
         duration: "17 days",
         challenge:
             "G Adventures wanted to show their Buenos Aires to Rio de Janeiro trip, through Argentina, Uruguay and Brazil, to a young audience. Not as another highlights reel of landmarks, but in a way that feels personal.",
@@ -92,6 +93,7 @@ export const projectsData: Project[] = [
         liveUrl: "https://capgemini.example.com",
         completedDate: "2025-07",
         client: "Capgemini",
+        clientLogo: { src: "/images/clients/capgemini.png", width: 1147, height: 262 },
         duration: "5 months",
         team: [
             "Frontend Developer",
@@ -139,6 +141,7 @@ export const projectsData: Project[] = [
         liveUrl: "https://mindmelt.jp",
         completedDate: "2025-08",
         client: "MindMelt Marketing Agency",
+        clientLogo: { src: "/images/clients/mindmelt.png", width: 462, height: 334 },
         duration: "3 months",
         team: ["Wordpress Developer", "UI/UX Designer"],
         challenge:

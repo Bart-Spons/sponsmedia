@@ -128,7 +128,7 @@ export default async function Project({
                                             alt={m.value}
                                             width={project.clientLogo.width}
                                             height={project.clientLogo.height}
-                                            className="mt-1 h-7 w-auto"
+                                            className={project.clientLogo.width / project.clientLogo.height < 2 ? "mt-1 h-12 w-auto" : "mt-2 h-7 w-auto"}
                                         />
                                     ) : (
                                         m.value
