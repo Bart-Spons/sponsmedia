@@ -57,10 +57,10 @@ export async function generateMetadata({
             url: `https://sponsmedia.com/${locale}/services`,
         },
         alternates: {
-            canonical: `/${locale}/services`,
+            canonical: `/${locale}/services/`,
             languages: {
-                "en-US": "/en/services",
-                "nl-NL": "/nl/services",
+                "en-US": "/en/services/",
+                "nl-NL": "/nl/services/",
             },
         },
     };

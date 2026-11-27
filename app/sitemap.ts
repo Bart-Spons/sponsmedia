@@ -18,8 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
             alternates: {
                 languages: {
                     "x-default": `${base}/`,
-                    en: `${base}/en`,
-                    nl: `${base}/nl`,
+                    en: `${base}/en/`,
+                    nl: `${base}/nl/`,
                 },
             },
         },
@@ -41,14 +41,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of locales) {
         for (const page of staticPages) {
             entries.push({
-                url: `${base}/${locale}${page}`,
+                url: `${base}/${locale}${page}/`,
                 lastModified: nowIso,
                 changeFrequency: page === "" ? "weekly" : "monthly",
                 priority: page === "" ? 1 : 0.8,
                 alternates: {
                     languages: {
-                        en: `${base}/en${page}`,
-                        nl: `${base}/nl${page}`,
+                        en: `${base}/en${page}/`,
+                        nl: `${base}/nl${page}/`,
                     },
                 },
             });
@@ -60,14 +60,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         for (const post of blogData) {
             const lastMod = new Date(post.publishDate).toISOString();
             entries.push({
-                url: `${base}/${locale}/blog/${post.id}`,
+                url: `${base}/${locale}/blog/${post.id}/`,
                 lastModified: lastMod,
                 changeFrequency: "monthly",
                 priority: 0.6,
                 alternates: {
                     languages: {
-                        en: `${base}/en/blog/${post.id}`,
-                        nl: `${base}/nl/blog/${post.id}`,
+                        en: `${base}/en/blog/${post.id}/`,
+                        nl: `${base}/nl/blog/${post.id}/`,
                     },
                 },
             });
@@ -78,14 +78,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of locales) {
         for (const project of projectsData) {
             entries.push({
-                url: `${base}/${locale}/projects/${project.id}`,
+                url: `${base}/${locale}/projects/${project.id}/`,
                 lastModified: nowIso,
                 changeFrequency: "monthly",
                 priority: 0.7,
                 alternates: {
                     languages: {
-                        en: `${base}/en/projects/${project.id}`,
-                        nl: `${base}/nl/projects/${project.id}`,
+                        en: `${base}/en/projects/${project.id}/`,
+                        nl: `${base}/nl/projects/${project.id}/`,
                     },
                 },
             });

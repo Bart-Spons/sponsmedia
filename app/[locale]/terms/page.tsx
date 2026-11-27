@@ -27,10 +27,10 @@ export async function generateMetadata({
         title,
         description,
         alternates: {
-            canonical: `/${locale}/terms`,
+            canonical: `/${locale}/terms/`,
             languages: {
-                "en-US": "/en/terms",
-                "nl-NL": "/nl/terms",
+                "en-US": "/en/terms/",
+                "nl-NL": "/nl/terms/",
             },
         },
     };

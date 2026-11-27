@@ -125,14 +125,14 @@ export async function generateMetadata({
         openGraph: {
             title: t.metaTitle,
             description: t.metaDesc,
-            url: `/${locale}/about`,
+            url: `/${locale}/about/`,
             images: [ogImage(locale)],
             type: "website",
             locale: locale === "nl" ? "nl_NL" : "en_US",
         },
         alternates: {
-            canonical: `/${locale}/about`,
-            languages: { "en-US": "/en/about", "nl-NL": "/nl/about" },
+            canonical: `/${locale}/about/`,
+            languages: { "en-US": "/en/about/", "nl-NL": "/nl/about/" },
         },
     };
 }

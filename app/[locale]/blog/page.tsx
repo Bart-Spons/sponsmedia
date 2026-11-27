@@ -38,10 +38,10 @@ export async function generateMetadata({
             locale: isNL ? "nl_NL" : "en_US",
         },
         alternates: {
-            canonical: `/${locale}/blog`,
+            canonical: `/${locale}/blog/`,
             languages: {
-                "en-US": "/en/blog",
-                "nl-NL": "/nl/blog",
+                "en-US": "/en/blog/",
+                "nl-NL": "/nl/blog/",
             },
             // 🔗 RSS autodiscovery
             types: {

@@ -84,10 +84,10 @@ export async function generateMetadata({
             images: post.image ? [post.image] : undefined,
         },
         alternates: {
-            canonical: `/${locale}/blog/${slug}`,
+            canonical: `/${locale}/blog/${slug}/`,
             languages: {
-                "en-US": `/en/blog/${slug}`,
-                "nl-NL": `/nl/blog/${slug}`,
+                "en-US": `/en/blog/${slug}/`,
+                "nl-NL": `/nl/blog/${slug}/`,
             },
         },
     };

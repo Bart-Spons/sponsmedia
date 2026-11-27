@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const isNL = params.locale === "nl";
     const base = new URL("https://sponsmedia.com");
-    const path = isNL ? "/nl" : "/en";
+    const path = isNL ? "/nl/" : "/en/";
 
     const description = isNL
         ? "SponsMedia helpt merken groeien met webdevelopment, digital design en social-first strategieën. Be more visible online."
@@ -37,7 +37,7 @@ export async function generateMetadata({
         description,
         alternates: {
             canonical: path,
-            languages: { en: "/en", nl: "/nl", "x-default": "/" },
+            languages: { en: "/en/", nl: "/nl/", "x-default": "/" },
         },
         openGraph: {
             type: "website",

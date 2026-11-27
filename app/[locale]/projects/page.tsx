@@ -42,8 +42,8 @@ export async function generateMetadata({
             locale: locale === "en" ? "en_US" : "nl_NL",
         },
         alternates: {
-            canonical: `/${locale}/projects`,
-            languages: { "en-US": "/en/projects", "nl-NL": "/nl/projects" },
+            canonical: `/${locale}/projects/`,
+            languages: { "en-US": "/en/projects/", "nl-NL": "/nl/projects/" },
         },
     };
 }

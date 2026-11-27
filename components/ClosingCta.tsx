@@ -19,10 +19,7 @@ export default function ClosingCta({
         <section aria-labelledby="cta-title" className="relative overflow-hidden border-t border-line">
             <div
                 aria-hidden
-                className="pointer-events-none absolute -bottom-[40vh] left-1/2 h-[80vh] w-[90vw] -translate-x-1/2 rounded-full"
-                style={{
-                    background: "radial-gradient(closest-side, rgba(226,183,111,0.16), transparent)",
-                }}
+                className="bg-cta-glow pointer-events-none absolute -bottom-[40vh] left-1/2 h-[80vh] w-[90vw] -translate-x-1/2 rounded-full"
             />
             <div className="container relative py-28 md:py-44">
                 <SplitTitle id="cta-title" text={title} className="display max-w-[13ch] text-[clamp(3rem,9vw,8.5rem)]" />

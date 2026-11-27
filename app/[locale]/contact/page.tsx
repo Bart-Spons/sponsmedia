@@ -31,13 +31,13 @@ export async function generateMetadata({
             title,
             description,
             locale: locale === "en" ? "en_US" : "nl_NL",
-            url: `https://sponsmedia.com/${locale}/contact`,
+            url: `https://sponsmedia.com/${locale}/contact/`,
         },
         alternates: {
-            canonical: `/${locale}/contact`,
+            canonical: `/${locale}/contact/`,
             languages: {
-                "en-US": "/en/contact",
-                "nl-NL": "/nl/contact",
+                "en-US": "/en/contact/",
+                "nl-NL": "/nl/contact/",
             },
         },
     };
