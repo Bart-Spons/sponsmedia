@@ -45,7 +45,7 @@ export const projectsData: Project[] = [
         id: "g-adventures",
         title: "G Adventures",
         description: "A travel notebook from South America, written by the people we met along the way.",
-        image: "/images/projects/g-adventures/end-shot.webp",
+        image: "/images/projects/g-adventures/la-boca.webp",
         video: "/video/g-adventures.mp4",
         portrait: true,
         technologies: ["Concept", "Filming", "Editing", "Short-form video"],
