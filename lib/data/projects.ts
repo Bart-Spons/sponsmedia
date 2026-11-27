@@ -60,8 +60,8 @@ export const projectsData: Project[] = [
         solution:
             "I turned the trip into a video notebook. Along the way I asked the people we met to write one piece of life advice in my notebook. Every shot was filmed at a stop on the trip, like La Boca in Buenos Aires, Christ the Redeemer and a favela in Rio, and the top of Pico do Papagaio on Ilha Grande. Every page became a scene, edited into a 40-second vertical video.",
         results: [
-            "Published on the Instagram of G Adventures 18-to-Thirtysomethings",
-            "Shared by Oak Travel",
+            "Posted as an Instagram collab with G Adventures 18-to-Thirtysomethings (@18to30s_gadventures)",
+            "Also live on the Instagram pages of Oak Travel and Rara Turismo",
             "A format that puts people, not places, at the centre of the trip",
         ],
         titleNl: "G Adventures",
@@ -74,8 +74,8 @@ export const projectsData: Project[] = [
         solutionNl:
             "Ik maakte van de reis een video-notitieboek. Onderweg vroeg ik de mensen die we ontmoetten om één levensles in mijn boekje te schrijven. Alle shots zijn gefilmd op plekken van de reis, zoals La Boca in Buenos Aires, Christus de Verlosser en een favela in Rio, en de top van de Pico do Papagaio op Ilha Grande. Elke pagina werd een scène, gemonteerd tot een verticale video van 40 seconden.",
         resultsNl: [
-            "Gepubliceerd op de Instagram van G Adventures 18-to-Thirtysomethings",
-            "Gedeeld door Oak Travel",
+            "Gepost als Instagram-collab met G Adventures 18-to-Thirtysomethings (@18to30s_gadventures)",
+            "Ook te zien op de Instagrampagina's van Oak Travel en Rara Turismo",
             "Een format waarin mensen centraal staan, niet plekken",
         ],
     },
