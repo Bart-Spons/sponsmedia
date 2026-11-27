@@ -69,6 +69,7 @@ export default async function ProjectsIndex({
             year: p.completedDate.slice(0, 4),
             image: p.image,
             video: p.video,
+            portrait: p.portrait,
             technologies: p.technologies,
         }));
 

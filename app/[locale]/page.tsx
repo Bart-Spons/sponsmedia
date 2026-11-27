@@ -72,6 +72,7 @@ export default async function Page({ params }: { params: { locale: Locale } }) {
         year: p.completedDate.slice(0, 4),
         image: p.image,
         video: p.video,
+        portrait: p.portrait,
         technologies: p.technologies,
     }));
 

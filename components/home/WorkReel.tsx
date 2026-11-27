@@ -2,7 +2,7 @@
 
 import Img from "@/components/Img";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -18,6 +18,7 @@ export type ReelItem = {
     year: string;
     image: string;
     video?: string;
+    portrait?: boolean;
     technologies: string[];
 };
 
@@ -146,12 +147,16 @@ export function ReelMedia({
     item,
     priority,
     sizes = "(min-width: 768px) 66vw, 100vw",
+    sound,
 }: {
-    item: Pick<ReelItem, "image" | "video" | "title">;
+    item: Pick<ReelItem, "image" | "video" | "title" | "portrait">;
     priority: boolean;
     sizes?: string;
+    /** Show a sound on/off button (case pages), with its labels. */
+    sound?: { on: string; off: string };
 }) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [muted, setMuted] = useState(true);
 
     useEffect(() => {
         const v = videoRef.current;
@@ -170,6 +175,47 @@ export function ReelMedia({
         return () => io.disconnect();
     }, []);
 
+    const zoom = "transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]";
+
+    const toggleSound = () => {
+        const v = videoRef.current;
+        if (!v) return;
+        v.muted = !v.muted;
+        if (!v.muted) v.play().catch(() => {});
+        setMuted(v.muted);
+    };
+
+    if (item.portrait) {
+        // Vertical video: blurred poster fills the frame, the video sits whole in the middle.
+        return (
+            <>
+                <Img
+                    src={item.image}
+                    alt=""
+                    fill
+                    sizes="40vw"
+                    className="scale-125 object-cover opacity-60 blur-2xl"
+                />
+                <div className={`absolute inset-y-0 left-1/2 aspect-[9/16] h-full -translate-x-1/2 ${zoom}`}>
+                    <Img src={item.image} alt={item.title} fill priority={priority} sizes="(min-width: 768px) 30vw, 60vw" className="object-cover" />
+                    {item.video && (
+                        <video
+                            ref={videoRef}
+                            src={item.video}
+                            muted
+                            loop
+                            playsInline
+                            preload="none"
+                            aria-hidden={!sound || undefined}
+                            className="absolute inset-0 h-full w-full object-cover"
+                        />
+                    )}
+                </div>
+                {sound && item.video && <SoundButton muted={muted} labels={sound} onClick={toggleSound} />}
+            </>
+        );
+    }
+
     return (
         <>
             <Img
@@ -178,7 +224,7 @@ export function ReelMedia({
                 fill
                 priority={priority}
                 sizes={sizes}
-                className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
+                className={`object-cover ${zoom}`}
             />
             {item.video && (
                 <video
@@ -188,10 +234,37 @@ export function ReelMedia({
                     loop
                     playsInline
                     preload="none"
-                    aria-hidden
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
+                    aria-hidden={!sound || undefined}
+                    className={`absolute inset-0 h-full w-full object-cover ${zoom}`}
                 />
             )}
+            {sound && item.video && <SoundButton muted={muted} labels={sound} onClick={toggleSound} />}
         </>
     );
+}
+
+function SoundButton({
+    muted,
+    labels,
+    onClick,
+}: {
+    muted: boolean;
+    labels: { on: string; off: string };
+    onClick: () => void;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            aria-pressed={!muted}
+                        className="absolute bottom-5 right-5 z-10 flex h-12 items-center gap-2 rounded-full bg-deep/70 px-5 text-sm text-frost backdrop-blur-md transition-colors hover:bg-deep/90"
+        >
+            <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+                {muted ? <path d="m22 9-6 6M16 9l6 6" /> : <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />}
+            </svg>
+            {muted ? labels.on : labels.off}
+        </button>
+    );
+}
 }
