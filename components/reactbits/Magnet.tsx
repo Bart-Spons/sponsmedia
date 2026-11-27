@@ -278,11 +278,11 @@ const Magnet = ({
   return (
     <div
       ref={wrapperRef}
-      className={wrapperClassName}
-      style={{ position: 'relative', display: 'inline-block', ...style }}
+      className={`relative inline-block ${wrapperClassName ?? ''}`}
+      style={style}
       {...props}
     >
-      <div ref={innerRef} className={innerClassName} style={{ willChange: 'transform' }}>
+      <div ref={innerRef} className={`will-change-transform ${innerClassName ?? ''}`}>
         {children}
       </div>
     </div>

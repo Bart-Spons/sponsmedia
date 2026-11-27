@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Img from "@/components/Img";
 import Link from "next/link";
 import SplitTitle from "@/components/motion/SplitTitle";
 
@@ -21,7 +21,7 @@ export default function MeetBart({
                     data-rise
                     className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-line md:col-span-5"
                 >
-                    <Image
+                    <Img
                         src="/images/bart-sofa.webp"
                         alt="Bart Spons on a sofa with his laptop"
                         fill
