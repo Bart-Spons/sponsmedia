@@ -69,7 +69,7 @@ export default function ServiceCards({
     return (
         <ul ref={root} data-stagger className="grid gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
             {items.map((s, i) => (
-                <li key={s.slug}>
+                <li key={s.slug} className="[container-type:inline-size]">
                     <Link
                         href={`/${locale}/services#${s.slug}`}
                         data-tilt
@@ -93,7 +93,7 @@ export default function ServiceCards({
                         <span className="relative [transform:translateZ(40px)]">
                             <ServiceIcon name={s.slug} className="h-14 w-14 md:h-16 md:w-16" />
                         </span>
-                        <h3 className="display relative mt-10 text-[clamp(1.9rem,2.6vw,2.5rem)] [transform:translateZ(30px)]">
+                        <h3 className="display relative mt-10 text-[clamp(1.5rem,10.5cqi,2.5rem)] hyphens-none [overflow-wrap:normal] [word-break:normal] [transform:translateZ(30px)]">
                             {s.title}
                         </h3>
                         <p className="relative mt-4 leading-relaxed text-frost/75">{s.desc}</p>
